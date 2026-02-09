@@ -1,0 +1,16 @@
+project_name:
+  type: str
+  help: The name of the project.
+module_name:
+  type: str
+  help: The name of the (first) Python module (package).
+  default: "{{ project_name|lower|replace(' ', '_') }}"
+docs_style:
+  type: str
+  choices: ['diataxis', 'dita', 'user-journey', 'architecture', 'flat']
+  help: The documentation style.
+  default: 'dita'
+robot_framework:
+  type: bool
+  help: Whether to include Robot Framework for integration testing.
+  default: false

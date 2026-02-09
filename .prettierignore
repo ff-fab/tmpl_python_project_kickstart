@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Python files (handled by Ruff)
+**/*.py
+**/*.pyc
+**/__pycache__/
+.venv/
+
+#
