@@ -1,0 +1,23 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "cat": true,
+    "head": true,
+    "tail": true,
+    "wc": true,
+    "ls": true,
+    "tree": true,
+    "pwd": true,
+    "grep": true,
+    "diff": true,
+    "which": true,
+    "echo": true,
+    "cd": true,
+    "mkdir": true,
+    "task": true,
+    "uv": true,
+    "bun": true,
+    "mkdocs": true,
+    "bd": true,
+    "showboat": true
+  }
+}

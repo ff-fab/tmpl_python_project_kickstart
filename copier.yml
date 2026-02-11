@@ -1,10 +1,27 @@
 project_name:
   type: str
   help: The name of the project.
+repo_name:
+  type: str
+  help: The name of the GitHub repository (without owner/organization).
+  default: "{{ project_name|lower|replace(' ', '-') }}"
 module_name:
   type: str
   help: The name of the (first) Python module (package).
   default: "{{ project_name|lower|replace(' ', '_') }}"
+description:
+  type: str
+  help: A short description of the project.
+license:
+  type: str
+  choices: ['MIT', 'None']
+  help: The software license to use.
+  default: 'MIT'
+codecov:
+  type: bool
+  help: Whether to include Codecov integration for coverage reporting.
+  default: "{{ license != 'None' }}"
+  when: "{{ license != 'None' }}"
 docs_style:
   type: str
   choices: ['diataxis', 'dita', 'user-journey', 'architecture', 'flat']

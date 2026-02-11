@@ -1,4 +1,4 @@
-# Build and cache the devcontainer image to GHCR.
+{% raw %}# Build and cache the devcontainer image to GHCR.
 #
 # This is separate from the CI workflow (Separation of Concerns):
 # - The image changes rarely (only when dev tooling changes)
@@ -6,7 +6,7 @@
 # - Weekly schedule picks up base image security patches automatically
 #
 # The image is pushed to
-# ghcr.io/ff-fab/{{ _copier_answers.project_name|to_nice_yaml }}-devcontainer
+# ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
 # and used by ci.yml via the devcontainers/ci action's cacheFrom parameter.
 
 name: DevContainer Build
@@ -41,7 +41,8 @@ jobs:
       - name: Build and push devcontainer image
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/ff-fab/{{ _copier_answers.project_name|to_nice_yaml }}-devcontainer
+          imageName: ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
           # Cache layers from GHCR for faster rebuilds
-          cacheFrom: ghcr.io/ff-fab/{{ _copier_answers.project_name|to_nice_yaml }}-devcontainer
+          cacheFrom: ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
           push: always
+{% endraw %}

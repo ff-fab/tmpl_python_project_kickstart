@@ -1,4 +1,4 @@
-# Main CI pipeline — runs inside the devcontainer for tool parity with local dev.
+{% raw %}# Main CI pipeline — runs inside the devcontainer for tool parity with local dev.
 
 name: CI
 
@@ -28,7 +28,7 @@ permissions:
   packages: read # Pull the devcontainer image from GHCR
 
 env:
-  DEVCONTAINER_IMAGE: ghcr.io/ff-fab/{{ _copier_answers.project_name|to_nice_yaml }}-devcontainer
+  DEVCONTAINER_IMAGE: ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
 
 jobs:
   lint:
@@ -83,7 +83,7 @@ jobs:
         if: always()
         uses: codecov/codecov-action@v5
         with:
-          files: packages/{{ _copier_answers.module_name|to_nice_yaml }}/coverage.xml
+          files: packages/{% endraw %}{{ module_name }}{% raw %}/coverage.xml
           fail_ci_if_error: false # Don't block PRs on Codecov outages
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -93,8 +93,8 @@ jobs:
         with:
           name: coverage-reports
           path: |
-            packages/{{ _copier_answers.module_name|to_nice_yaml }}/coverage.xml
-            packages/{{ _copier_answers.module_name|to_nice_yaml }}/coverage.json
+            packages/{% endraw %}{{ module_name }}{% raw %}/coverage.xml
+            packages/{% endraw %}{{ module_name }}{% raw %}/coverage.json
           retention-days: 30
 
   complexity:
@@ -120,9 +120,9 @@ jobs:
           cacheFrom: ${{ env.DEVCONTAINER_IMAGE }}
           push: never
           runCmd: task complexity
-
+{% endraw %}
 {% if robot_framework -%}
-  # ---------------------------------------------------------------------------
+{% raw %}  # ---------------------------------------------------------------------------
   # Integration Tests (Robot Framework)
   # ---------------------------------------------------------------------------
 
@@ -156,9 +156,10 @@ jobs:
         with:
           name: robot-results
           path: |
-            packages/{{ _copier_answers.module_name|to_nice_yaml }}/output.xml
-            packages/{{ _copier_answers.module_name|to_nice_yaml }}/log.html
-            packages/{{ _copier_answers.module_name|to_nice_yaml }}/report.html
-            packages/{{ _copier_answers.module_name|to_nice_yaml }}/results-integration.xml
+            packages/{% endraw %}{{ module_name }}{% raw %}/output.xml
+            packages/{% endraw %}{{ module_name }}{% raw %}/log.html
+            packages/{% endraw %}{{ module_name }}{% raw %}/report.html
+            packages/{% endraw %}{{ module_name }}{% raw %}/results-integration.xml
           retention-days: 30
+{% endraw %}
 {%- endif %}

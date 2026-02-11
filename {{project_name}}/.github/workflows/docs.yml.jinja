@@ -1,4 +1,4 @@
-# Documentation build & deploy (ADR-007)
+{% raw %}# Documentation build & deploy (ADR-007)
 #
 # - On pull requests: validates the docs build (no deploy)
 # - On push to main: builds and deploys to GitHub Pages
@@ -33,7 +33,7 @@ permissions:
   packages: read # Pull the devcontainer image from GHCR
 
 env:
-  DEVCONTAINER_IMAGE: ghcr.io/ff-fab/{{ _copier_answers.project_name|to_nice_yaml }}-devcontainer
+  DEVCONTAINER_IMAGE: ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
 
 jobs:
   build:
@@ -58,7 +58,7 @@ jobs:
           cacheFrom: ${{ env.DEVCONTAINER_IMAGE }}
           runCmd: task docs:build
         env:
-          SITE_URL: ${{ github.event_name == 'push' && 'https://ff-fab.github.io/{{ _copier_answers.project_name|to_nice_yaml }}/' || '' }}
+          SITE_URL: ${{ github.event_name == 'push' && 'https://ff-fab.github.io/{% endraw %}{{ project_name }}{% raw %}/' || '' }}
 
       - uses: actions/upload-pages-artifact@v4
         if: github.event_name == 'push'
@@ -78,3 +78,4 @@ jobs:
 
       - uses: actions/deploy-pages@v4
         id: deployment
+{% endraw %}

@@ -2,7 +2,7 @@
 # Post-create setup script for devcontainer
 set -e
 
-echo "🏠 Setting up lumehaven development environment..."
+echo "🏠 Setting up {{ _copier_answers.project_name }} development environment..."
 
 # Backend setup
 echo "📦 Setting up Python backend..."
@@ -42,6 +42,10 @@ fi
 # Install beads MCP server for Copilot integration (Python-based)
 echo "🔮 Installing beads MCP server..."
 uv tool install beads-mcp 2>/dev/null || echo "⚠️  beads-mcp install had issues, continuing..."
+
+# Install showboat — executable demo documents for agent work verification
+echo "🚢 Installing showboat..."
+uv tool install showboat 2>/dev/null || echo "⚠️  showboat install had issues, continuing..."
 
 # Initialize beads issue tracker if not already done
 cd /workspace

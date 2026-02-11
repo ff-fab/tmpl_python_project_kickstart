@@ -19,13 +19,6 @@
       "options": {
         "parser": "json"
       }
-    },
-    {
-      "files": ["*.json.jinja"],
-      "options": {
-        "parser": "json",
-        "trailingComma": "none"
-      }
     }
   ]
 }

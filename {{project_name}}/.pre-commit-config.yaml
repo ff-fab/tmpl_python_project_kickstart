@@ -10,7 +10,6 @@ repos:
       - id: editorconfig-checker
         name: EditorConfig (whitespace & encoding)
         alias: ec
-        exclude: '\.md$' # Prettier handles markdown formatting
 
   # Basic checks (trailing whitespace, YAML validity, etc.)
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -42,6 +41,7 @@ repos:
         args: ['--ignore-words-list', 'hass']
         exclude: |
           (?x)^(
+            old/.*|
             .*\.lock
           )$
 
@@ -59,6 +59,11 @@ repos:
           - json
           - markdown
           - yaml
+        exclude: |
+          (?x)^(
+            packages/backend/.*|
+            old/.*
+          )$
 
   # Ruff: Lint and format Python
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -77,9 +82,36 @@ repos:
       - id: mypy
         name: mypy (type check Python)
         args: ['--strict']
+        files: ^packages/backend/src/lumehaven/
         additional_dependencies:
-          - pytest
-          - pydantic-settings
+          - pydantic>=2.10.0
+          - pydantic-settings>=2.6.0
+          - fastapi>=0.115.0
+          - httpx>=0.27.0
+          - sse-starlette>=3.0.0
+          - uvicorn>=0.30.0
+          - ftfy>=6.1.0
+          - types-PyYAML>=6.0.0
+
+  # Beads (bd): Sync issue tracker JSONL with git
+  # pre-push: FAILS if .beads/ has uncommitted changes (forces commit-before-push)
+  # post-merge: imports changes from upstream after git pull
+  - repo: local
+    hooks:
+      - id: bd-sync-pre-push
+        name: Beads sync (pre-push)
+        entry: bash -c 'if [ ! -d .beads ] || ! command -v bd >/dev/null 2>&1; then exit 0; fi; bd sync 2>/dev/null; if [ -n "$(git status --porcelain -- .beads/*.jsonl 2>/dev/null)" ]; then echo "Uncommitted beads changes detected. Run git add .beads/ && git commit before pushing."; exit 1; fi'
+        language: system
+        always_run: true
+        pass_filenames: false
+        stages: [pre-push]
+      - id: bd-import-post-merge
+        name: Beads import (post-merge)
+        entry: bash -c 'if [ ! -d .beads ] || ! command -v bd >/dev/null 2>&1; then exit 0; fi; CHANGED=$(git diff-tree -r --name-only ORIG_HEAD HEAD -- ".beads/*.jsonl" 2>/dev/null); if [ -n "$CHANGED" ]; then echo "Beads JSONL updated by merge, importing..."; bd sync --import-only || true; fi'
+        language: system
+        always_run: true
+        pass_filenames: false
+        stages: [post-merge]
 
 # Configuration options
 default_language_version:

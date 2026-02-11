@@ -1,0 +1,146 @@
+# MkDocs configuration
+#
+# Usage (via Taskfile — single source of truth for tool commands):
+#   task docs:serve       # Local preview with hot reload
+#   task docs:build       # Build static site to site/
+#
+{% if docs_style == "diataxis" -%}
+# Structure follows the Diátaxis framework:
+#   Tutorials   — learning-oriented (getting started)
+#   How-To      — task-oriented (specific goals)
+#   Reference   — information-oriented (API, config, ADRs)
+#   Explanation — understanding-oriented (architecture, design)
+{% elif docs_style == "dita" %}
+# Structure follows a DITA-style information typing:
+#   Tasks     — action-oriented (procedures: how to do something)
+#   Concepts  — understanding-oriented (what/why, mental model)
+#   Reference — information-oriented (facts: parameters, schemas, APIs)
+#   (Optional) Troubleshooting — problem-oriented (symptoms → causes → fixes)
+{% elif docs_style == "user-journey" %}
+# Structure follows a user-journey (lifecycle) model:
+#   Get Started     — onboarding-oriented (first success quickly)
+#   Install/Setup   — environment-oriented (prereqs, installation, config)
+#   Use             — outcome-oriented (common end-to-end flows)
+#   (Optional) Operate — operations-oriented (deploy, monitor, upgrade, security)
+#   (Optional) Troubleshoot — recovery-oriented (diagnosis, known issues, fixes)
+#   Reference       — lookup-oriented (API/CLI/config, schemas)
+{% elif docs_style == "architecture" %}
+#   Overview        — system-oriented (what it is, key concepts)
+#   Core            — foundation-oriented (shared primitives/behavior)
+#   Components      — module-oriented (each feature/service/package area)
+#   (Optional) Integrations — boundary-oriented (connectors, adapters, external systems)
+#   APIs/Interfaces — contract-oriented (REST/CLI/events, schemas)
+#   (Optional) Operations — run-oriented (deployment, scaling, monitoring)
+#   Reference       — detail-oriented (configuration, parameters, ADRs)
+{%- endif %}
+
+site_name: {{ project_name }}
+site_description: {{ description }}
+# site_url defaults to GitHub Pages URL. CI can override via SITE_URL env var.
+# Local `mkdocs serve` ignores site_url for link generation.
+site_url: !ENV [SITE_URL, 'https://ff-fab.github.io/{{ repo_name }}/']
+repo_url: https://github.com/ff-fab/{{ repo_name }}
+repo_name: ff-fab/{{ repo_name }}
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    # Dark mode
+    - scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    # Light mode
+    - scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  # Admonitions (note, warning, tip, etc.)
+  - admonition
+  - pymdownx.details
+
+  # HTML / attribute extensions (required for grid cards, icon sizing)
+  - attr_list
+  - md_in_html
+
+  # Code blocks
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+  # Content tabs (e.g., showing Python / TypeScript side by side)
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  # Typography and formatting
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.keys
+
+  # Lists and task lists
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+  # Table of contents
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+  # Tables
+  - tables
+
+  # Footnotes
+  - footnotes
+
+  # Emoji (used sparingly for status indicators)
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# Navigation
+nav:
+  - Home: index.md
+
+# Directories excluded from the build (internal-only content).
+# Files matching these patterns are not copied to the output site.
+exclude_docs: |
+  TODO/
+  demos/
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ff-fab/{{ _copier_answers.repo_name }}
