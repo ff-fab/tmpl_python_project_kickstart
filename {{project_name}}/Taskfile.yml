@@ -1,0 +1,436 @@
+# https://taskfile.dev
+# Cross-platform task runner for {{project_name}}.
+#
+# Usage:
+#   task                  # List available tasks
+#   task test             # Run all tests (example task)
+#   task --list           # List available tasks
+
+version: '3'
+
+vars:
+  DIR: packages
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+
+  # ===========================================================================
+  # Planning Tasks — Beads (bd) issue tracker views
+  # ===========================================================================
+  # These wrap bd commands so you can think in phase names, not issue IDs.
+  # Phase-scoped tasks accept a search term: task plan:phase -- frontend
+
+  plan:
+    desc: Show progress per phase (epic completion overview)
+    silent: true
+    cmds:
+      - bash scripts/plan-overview.sh
+
+  plan:ready:
+    desc: Show unblocked work you can start right now
+    silent: true
+    cmds:
+      - bd ready
+
+  plan:phase:
+    desc: 'Show backlog for a phase (e.g.: task plan:phase -- frontend)'
+    silent: true
+    cmds:
+      - |
+        SEARCH="{{.CLI_ARGS}}"
+        if [ -z "$SEARCH" ]; then
+          EPIC_ID=$(bd query 'type=epic AND status=open' --json 2>/dev/null | jq -r 'sort_by(.priority) | .[0].id // empty')
+          if [ -z "$EPIC_ID" ]; then
+            echo "No open epics found." >&2; exit 1
+          fi
+          TITLE=$(bd show "$EPIC_ID" --json 2>/dev/null | jq -r '.[0].title')
+          echo "Auto-selected: $TITLE ($EPIC_ID)"
+          echo "─────────────────────────────────────────"
+        else
+          # Try as ID first (exact match or with lh- prefix)
+          EPIC_ID=$(bd show "$SEARCH" --json 2>/dev/null | jq -r 'if type == "array" then .[0] | select(.issue_type == "epic") | .id // empty else empty end')
+          if [ -z "$EPIC_ID" ]; then
+            EPIC_ID=$(bd show "lh-$SEARCH" --json 2>/dev/null | jq -r 'if type == "array" then .[0] | select(.issue_type == "epic") | .id // empty else empty end')
+          fi
+          # Fall back to title search
+          if [ -z "$EPIC_ID" ]; then
+            EPIC_ID=$(bd query "type=epic AND title=$SEARCH" --json 2>/dev/null | jq -r '.[0].id // empty')
+          fi
+          if [ -z "$EPIC_ID" ]; then
+            echo "No epic matching '$SEARCH'. Available epics:" >&2
+            bd list --type epic --all --limit 0 >&2; exit 1
+          fi
+        fi
+        bd children "$EPIC_ID"
+
+  plan:order:
+    desc: 'Show execution order within a phase (e.g.: task plan:order -- frontend)'
+    silent: true
+    cmds:
+      - |
+        SEARCH="{{.CLI_ARGS}}"
+        if [ -z "$SEARCH" ]; then
+          EPIC_ID=$(bd query 'type=epic AND status=open' --json 2>/dev/null | jq -r 'sort_by(.priority) | .[0].id // empty')
+          if [ -z "$EPIC_ID" ]; then
+            echo "No open epics found." >&2; exit 1
+          fi
+          TITLE=$(bd show "$EPIC_ID" --json 2>/dev/null | jq -r '.[0].title')
+          echo "Auto-selected: $TITLE ($EPIC_ID)"
+          echo "─────────────────────────────────────────"
+        else
+          # Try as ID first (exact match or with lh- prefix)
+          EPIC_ID=$(bd show "$SEARCH" --json 2>/dev/null | jq -r 'if type == "array" then .[0] | select(.issue_type == "epic") | .id // empty else empty end')
+          if [ -z "$EPIC_ID" ]; then
+            EPIC_ID=$(bd show "lh-$SEARCH" --json 2>/dev/null | jq -r 'if type == "array" then .[0] | select(.issue_type == "epic") | .id // empty else empty end')
+          fi
+          # Fall back to title search
+          if [ -z "$EPIC_ID" ]; then
+            EPIC_ID=$(bd query "type=epic AND title=$SEARCH" --json 2>/dev/null | jq -r '.[0].id // empty')
+          fi
+          if [ -z "$EPIC_ID" ]; then
+            echo "No epic matching '$SEARCH'. Available epics:" >&2
+            bd list --type epic --all --limit 0 >&2; exit 1
+          fi
+        fi
+        bd graph "$EPIC_ID" --compact
+
+  plan:ui:
+    desc: Interactive epic/task browser with drill-down (requires fzf)
+    silent: true
+    cmds:
+      - bash scripts/plan-interactive.sh
+
+  plan:task:
+    desc: 'Show details of a task (e.g.: task plan:task ID=lh-6yy.3)'
+    silent: true
+    vars:
+      ID: ''
+    cmds:
+      - |
+        SEARCH="{{.ID}}"
+        if [ -z "$SEARCH" ]; then SEARCH="{{.CLI_ARGS}}"; fi
+        if [ -z "$SEARCH" ]; then
+          echo "Usage: task plan:task ID=<task-id-or-title>" >&2
+          echo "   or: task plan:task -- <task-id-or-title>" >&2
+          exit 1
+        fi
+        # Try as ID first (exact match or with lh- prefix)
+        TASK_ID=$(bd show "$SEARCH" --json 2>/dev/null | jq -r 'if type == "array" then .[0] | select(.issue_type != "epic") | .id // empty else empty end')
+        if [ -z "$TASK_ID" ]; then
+          TASK_ID=$(bd show "lh-$SEARCH" --json 2>/dev/null | jq -r 'if type == "array" then .[0] | select(.issue_type != "epic") | .id // empty else empty end')
+        fi
+        # Fall back to title search
+        if [ -z "$TASK_ID" ]; then
+          TASK_ID=$(bd query "type!=epic AND title=$SEARCH" --json 2>/dev/null | jq -r '.[0].id // empty')
+        fi
+        if [ -z "$TASK_ID" ]; then
+          echo "No task matching '$SEARCH'." >&2; exit 1
+        fi
+        bd show "$TASK_ID"
+
+  # ===========================================================================
+  # Test Tasks - Top Level
+  # ===========================================================================
+
+  test:
+    desc: Run all tests (unit + integration) with coverage and summary
+    dir: '{{.DIR}}'
+    cmds:
+      # Run unit tests with coverage to enable threshold validation.
+      # Uses ignore_error so integration tests + summary always run.
+      - cmd: uv run pytest tests/unit/ -v --tb=short --junitxml=results-unit.xml --cov={{module_name}} --cov-branch --cov-report=json
+        ignore_error: true
+      - cmd: task test:integration
+        ignore_error: true
+      - uv run python tests/scripts/summarize_tests.py --coverage-file=coverage.json
+
+  test:fe:
+    desc: Run all frontend tests
+    cmds:
+      - cmd: 'test -d {{.FRONTEND_DIR}} || exit 0'
+        shell: /bin/bash
+      - task: test:fe:unit
+
+  test:e2e:
+    desc: Run E2E tests (browser + full stack)
+    cmds:
+      - task: test:e2e:run
+
+  # ===========================================================================
+  # Backend Test Tasks
+  # ===========================================================================
+
+  test:be:unit:
+    desc: Run backend unit tests only (fast, every change)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov
+      - uv run pytest tests/unit/ -v --tb=short --junitxml=results-unit.xml
+
+  test:be:integration:
+    desc: Run backend integration tests (Robot Framework)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run robot tests/integration/
+
+  test:be:cov:
+    desc: Run backend tests with coverage (terminal + XML for IDE)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov
+      - uv run pytest tests/ --cov=lumehaven --cov-branch --cov-report=term-missing --cov-report=xml
+
+  test:be:cov:html:
+    desc: Run backend tests with HTML coverage report
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run pytest tests/ --cov=lumehaven --cov-branch --cov-report=html --cov-report=term
+      - cmd: '{{if eq OS "darwin"}}open{{else}}xdg-open{{end}} htmlcov/index.html'
+        ignore_error: true
+
+  test:be:thresholds:
+    desc: Check per-module coverage thresholds
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov
+      - uv run pytest tests/ --cov=lumehaven --cov-branch --cov-report=json -q
+      - uv run python tests/scripts/check_coverage_thresholds.py --verbose
+
+  test:be:watch:
+    desc: Run backend unit tests in watch mode
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run pytest-watch tests/unit/ -- -v --tb=short
+
+  # ===========================================================================
+  # Frontend Test Tasks
+  # ===========================================================================
+
+  test:fe:unit:
+    desc: Run frontend unit tests
+    cmds:
+      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun test) || echo "Frontend unit tests skipped ({{.FRONTEND_DIR}} not found)"'
+        shell: /bin/bash
+
+  test:fe:cov:
+    desc: Run frontend tests with coverage
+    cmds:
+      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun test --coverage) || echo "Frontend coverage skipped ({{.FRONTEND_DIR}} not found)"'
+        shell: /bin/bash
+
+  # ===========================================================================
+  # Combined Coverage
+  # ===========================================================================
+
+  test:cov:
+    desc: Run all tests with coverage
+    cmds:
+      - task: test:be:cov
+      - task: test:fe:cov
+
+  # ===========================================================================
+  # Backend Lint & Typecheck
+  # ===========================================================================
+
+  lint:be:
+    desc: Run backend linting (ruff check + format check)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run ruff check src/ tests/
+      - uv run ruff format --check src/ tests/
+
+  lint:be:fix:
+    desc: Fix backend linting issues automatically
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run ruff check --fix src/ tests/
+      - uv run ruff format src/ tests/
+
+  typecheck:be:
+    desc: Run backend type checking (mypy)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run mypy src/
+
+  # ===========================================================================
+  # Frontend Lint & Typecheck
+  # ===========================================================================
+
+  lint:fe:
+    desc: Run frontend linting (eslint)
+    cmds:
+      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun run lint) || echo "Frontend lint skipped ({{.FRONTEND_DIR}} not found)"'
+        shell: /bin/bash
+
+  lint:fe:fix:
+    desc: Fix frontend linting issues automatically
+    cmds:
+      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun run lint:fix) || echo "Frontend lint:fix skipped ({{.FRONTEND_DIR}} not found)"'
+        shell: /bin/bash
+
+  typecheck:fe:
+    desc: Run frontend type checking (tsc)
+    cmds:
+      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun run typecheck) || echo "Frontend typecheck skipped ({{.FRONTEND_DIR}} not found)"'
+        shell: /bin/bash
+
+  # ===========================================================================
+  # Combined Lint & Check
+  # ===========================================================================
+
+  lint:
+    desc: Run all linting (backend + frontend)
+    cmds:
+      - task: lint:be
+      - task: lint:fe
+
+  lint:fix:
+    desc: Fix all linting issues
+    cmds:
+      - task: lint:be:fix
+      - task: lint:fe:fix
+
+  typecheck:
+    desc: Run all type checking (backend + frontend)
+    cmds:
+      - task: typecheck:be
+      - task: typecheck:fe
+
+  check:
+    desc: Run all checks (lint + typecheck + test)
+    cmds:
+      - task: lint
+      - task: typecheck
+      - task: test
+
+  pre-pr:
+    desc: Run all pre-PR quality gates (pre-commit + lint + typecheck + tests + coverage thresholds)
+    cmds:
+      - pre-commit run --all-files
+      - task: lint
+      - task: typecheck
+      - task: test:fe
+      - task: test:be:thresholds
+
+  # ===========================================================================
+  # Documentation
+  # ===========================================================================
+
+  docs:serve:
+    desc: Preview documentation site with hot reload (port 8001)
+    cmds:
+      - uv run --group docs --project {{.BACKEND_DIR}} mkdocs serve --dev-addr 0.0.0.0:8001
+
+  docs:build:
+    desc: Build documentation site (strict mode, clean output)
+    cmds:
+      - uv run --group docs --project {{.BACKEND_DIR}} mkdocs build --clean --strict
+
+  # ===========================================================================
+  # Development Servers
+  # ===========================================================================
+
+  dev:
+    desc: Start all dev servers (backend + frontend)
+    deps:
+      - dev:be
+      - dev:fe
+
+  dev:be:
+    desc: Start backend dev server with hot reload
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run uvicorn lumehaven.main:app --reload --host 0.0.0.0 --port 8000
+
+  dev:fe:
+    desc: Start frontend dev server
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun run dev
+
+  # ===========================================================================
+  # Dependency Management
+  # ===========================================================================
+
+  sync:
+    desc: Sync all dependencies (backend + frontend)
+    cmds:
+      - task: sync:be
+      - task: sync:fe
+
+  sync:be:
+    desc: Sync backend dependencies
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv sync --group dev
+
+  sync:fe:
+    desc: Sync frontend dependencies
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun install
+
+  # ===========================================================================
+  # Code Quality
+  # ===========================================================================
+
+  complexity:
+    desc: Check code complexity (radon) - backend only
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run radon cc src/lumehaven --average --show-complexity
+      - uv run xenon src/lumehaven --max-absolute B --max-modules A --max-average A
+
+  sync:codecov:
+    desc: Sync codecov.yml components from coverage_config.py
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov
+
+  # ===========================================================================
+  # CI Tasks (used in GitHub Actions)
+  # ===========================================================================
+
+  ci:test:unit:be:
+    desc: CI backend unit tests with coverage and threshold validation
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov --check
+      - uv run pytest tests/unit/ --cov=lumehaven --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
+      - uv run python tests/scripts/summarize_tests.py --unit-only --coverage-file=coverage.json
+
+  ci:test:integration:be:
+    desc: CI backend integration tests (Robot Framework)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run robot --outputdir . --xunit results-integration.xml tests/integration/
+
+  ci:test:fe:
+    desc: CI frontend test task with coverage
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun test --coverage
+
+  ci:lint:
+    desc: CI lint task (strict, no fixes)
+    cmds:
+      - task: ci:lint:be
+      # - task: ci:lint:fe  # Enable when frontend linting is set up
+
+  ci:lint:be:
+    desc: CI backend lint task (strict)
+    dir: '{{.BACKEND_DIR}}'
+    cmds:
+      - uv run ruff check src/ tests/
+      - uv run ruff format --check src/ tests/
+      - uv run mypy src/
+
+  ci:lint:fe:
+    desc: CI frontend lint task (strict)
+    dir: '{{.FRONTEND_DIR}}'
+    cmds:
+      - bun run lint
+      - bun run typecheck
