@@ -25,7 +25,7 @@ repos:
         args: ['--unsafe']
       - id: check-json
         name: Check JSON syntax
-        exclude: .devcontainer/devcontainer\.json
+        exclude: '(\.devcontainer/devcontainer\.json|\.vscode/settings\.json)$'
       - id: check-toml
         name: Check TOML syntax
       - id: check-merge-conflict
@@ -59,6 +59,7 @@ repos:
           - json
           - markdown
           - yaml
+        exclude: \.vscode/settings\.json$
 
   # Ruff: Lint and format Python
   - repo: https://github.com/astral-sh/ruff-pre-commit

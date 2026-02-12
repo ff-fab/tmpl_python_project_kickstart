@@ -24,7 +24,7 @@ repos:
         args: ['--unsafe']
       - id: check-json
         name: Check JSON syntax
-        exclude: .devcontainer/devcontainer\.json
+        exclude: '(\.devcontainer/devcontainer\.json|\.vscode/settings\.json)$'
       - id: check-toml
         name: Check TOML syntax
       - id: check-merge-conflict
@@ -61,6 +61,7 @@ repos:
           - yaml
         exclude: |
           (?x)^(
+            \.vscode/settings\.json$|
             packages/.*|
             .*\.prompt\.md$|
             .*\.instructions\.md$
