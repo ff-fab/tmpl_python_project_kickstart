@@ -18,7 +18,7 @@ dev = [
 ]
 
 [tool.ruff]
-# Python linting and formatting configuration for lumehaven backend
+# Python linting and formatting configuration
 # Aligned with frontend formatting (.prettierrc.json) for consistency
 target-version = "py314"
 line-length = 88

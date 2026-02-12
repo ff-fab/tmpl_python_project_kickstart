@@ -178,28 +178,6 @@ confirms outputs match).
 **Reference:** [Showboat README](https://github.com/simonw/showboat) — installed in
 devcontainer via `uv tool install showboat`.
 
-## Test Coverage Thresholds
-
-Per-module coverage thresholds are enforced at the **module** (directory) level — files
-are aggregated (weighted by statement/branch count) before checking against the
-threshold. See `docs/testing/03-coverage-strategy.md`.
-
-**Single source of truth:** `packages/backend/tests/coverage_config.py` —
-`MODULE_THRESHOLDS` dict. Both the pytest hook (`conftest.py`) and the standalone script
-import from it.
-
-| Risk Level | Line | Branch | Matching Rule                                    |
-| ---------- | ---- | ------ | ------------------------------------------------ |
-| Critical   | 90%  | 85%    | `adapters/*` — any adapter implementation subdir |
-| High       | 85%  | 80%    | `adapters` (framework), `config`, `state`        |
-| Medium     | 80%  | 75%    | `api`                                            |
-| Low        | 80%  | 70%    | `core`                                           |
-| Low        | 30%  | 0%     | `__root__` (package init, version)               |
-| Excluded   | —    | —      | `main.py` (entrypoint, Robot integration only)   |
-
-New adapter implementations (e.g. `adapters/homeassistant/`) auto-inherit the Critical
-threshold — no config changes needed.
-
 **Test notes:**
 
 - Shared fixtures (in `tests/fixtures/`) should be used to avoid duplication

@@ -15,7 +15,7 @@
   },
 
   "remoteEnv": {
-    "PATH": "/workspace/packages/backend/.venv/bin:${containerEnv:PATH}",
+    "PATH": "/workspace/.venv/bin:${containerEnv:PATH}",
     "UV_LINK_MODE": "symlink",
     "GH_PAGER": "cat"
   },
@@ -24,7 +24,7 @@
     "vscode": {
       "settings": {
         // Python interpreter in container
-        "python.defaultInterpreterPath": "/workspace/packages/backend/.venv/bin/python",
+        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
         "python.terminal.activateEnvironment": true,
 
         // Line length: 88 characters (matches Prettier, Ruff, and Black conventions)
@@ -84,14 +84,14 @@
         "python.linting.pylintEnabled": false,
         "python.linting.mypyEnabled": true,
         "python.analysis.typeCheckingMode": "strict",
-        "python.analysis.extraPaths": ["packages/backend/src", "packages/backend"],
-        "python.analysis.exclude": ["**/*.py,jinja", "**/*.py.jinja"],
+        "python.analysis.extraPaths": ["packages/src"],
+        "python.analysis.exclude": ["**/*.py.jinja"],
 
         // Python testing (pytest)
         "python.testing.pytestEnabled": true,
         "python.testing.unittestEnabled": false,
         "python.testing.pytestArgs": ["tests", "-v", "--tb=short"],
-        "python.testing.cwd": "${workspaceFolder}/packages/backend",
+        "python.testing.cwd": "${workspaceFolder}/packages",
 
         // Coverage Gutters - gutter icons + subtle ruler indicators
         "coverage-gutters.coverageFileNames": [

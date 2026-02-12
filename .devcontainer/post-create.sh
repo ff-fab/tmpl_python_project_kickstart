@@ -4,7 +4,7 @@ set -e
 
 echo "🏠 Setting up tmpl_smarthome_app_python development environment..."
 
-# Backend setup
+# Python setup
 echo "📦 Setting up python environment..."
 
 # Check if venv exists but has broken symlinks (stale uv cache)
@@ -16,7 +16,7 @@ if [ -d ".venv" ]; then
 fi
 
 uv sync --all-extras
-echo "✅ Backend dependencies installed"
+echo "✅ Python dependencies installed"
 
 # Generate version from git tags (setuptools_scm)
 echo "📌 Updating version from git tags..."
@@ -39,7 +39,7 @@ if [ -f ".pre-commit-config.yaml" ]; then
     echo "🪝 Installing pre-commit hooks..."
     # Use uv --directory to specify the Python environment without changing directories
     # This runs pre-commit from the repository root (where .pre-commit-config.yaml is)
-    if uv --directory packages/backend run pre-commit install --install-hooks; then
+    if uv --directory packages run pre-commit install --install-hooks; then
         echo "✅ Pre-commit hooks installed successfully"
     else
         echo "⚠️  pre-commit install had issues, but continuing..."
