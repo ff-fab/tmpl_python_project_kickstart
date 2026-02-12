@@ -2,5 +2,5 @@
   "venv": ".venv",
   "pythonVersion": "3.14",
   "reportMissingImports": "none",
-  "ignore": ["{{project_name}}/packages/src/{{module_name}}/__init__.py.jinja"]
+  "ignore": ["{{project_name}}/**/*.py.jinja"]
 }

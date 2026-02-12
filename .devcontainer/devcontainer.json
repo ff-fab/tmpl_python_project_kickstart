@@ -74,6 +74,10 @@
         "files.insertFinalNewline": true,
         "files.trimFinalNewlines": true,
         "files.trimTrailingWhitespace": true,
+        "files.associations": {
+          "*.py.jinja": "python",
+          "*.py,jinja": "python"
+        },
 
         // Python linting
         "python.linting.enabled": true,
@@ -81,6 +85,7 @@
         "python.linting.mypyEnabled": true,
         "python.analysis.typeCheckingMode": "strict",
         "python.analysis.extraPaths": ["packages/backend/src", "packages/backend"],
+        "python.analysis.exclude": ["**/*.py,jinja", "**/*.py.jinja"],
 
         // Python testing (pytest)
         "python.testing.pytestEnabled": true,
