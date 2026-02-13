@@ -2,6 +2,25 @@
 # Post-create setup script for devcontainer
 set -e
 
+ensure_git_repo() {
+    local repo_root="/workspace"
+
+    if ! command -v git >/dev/null 2>&1; then
+        echo "❌ git is required but not installed."
+        return 1
+    fi
+
+    if git -C "$repo_root" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        return 0
+    fi
+
+    echo "❌ No Git repository found at ${repo_root}."
+    echo "   Git-dependent setup cannot continue."
+    echo "   Initialize one now with: git -C ${repo_root} init -b main"
+    echo "   Tip: during scaffolding, set 'init_git_on_copy' to true to do this automatically."
+    return 1
+}
+
 echo "🏠 Setting up {{ _copier_answers.project_name }} development environment..."
 
 # Python setup
@@ -18,6 +37,9 @@ fi
 
 uv sync --all-extras
 echo "✅ Python dependencies installed"
+
+# Ensure git is available before git-dependent setup steps.
+ensure_git_repo
 
 # Generate version from git tags (setuptools_scm)
 echo "📌 Updating version from git tags..."
@@ -51,7 +73,7 @@ uv tool install showboat 2>/dev/null || echo "⚠️  showboat install had issue
 cd /workspace
 if [ ! -d ".beads" ]; then
     echo "🔮 Initializing beads issue tracker..."
-    bd init --quiet --no-hooks
+    bd init --quiet --skip-hooks
     echo "✅ Beads initialized"
 else
     echo "✅ Beads already initialized"

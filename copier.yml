@@ -37,3 +37,29 @@ robot_framework:
   type: bool
   help: Whether to include Robot Framework for integration testing.
   default: false
+init_git_on_copy:
+  type: bool
+  help: Whether to initialize a Git repository right after scaffolding.
+  default: true
+
+_tasks:
+  - command:
+      - '{{ _copier_python }}'
+      - -c
+      - |
+        import subprocess
+        import sys
+        from pathlib import Path
+
+        repo = Path(r"{{ _copier_conf.dst_path }}")
+        check = subprocess.run(
+            ["git", "-C", str(repo), "rev-parse", "--is-inside-work-tree"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        if check.returncode == 0:
+            raise SystemExit(0)
+
+        init = subprocess.run(["git", "-C", str(repo), "init", "-b", "main"])
+        raise SystemExit(init.returncode)
+    when: "{{ init_git_on_copy and _copier_operation == 'copy' }}"
