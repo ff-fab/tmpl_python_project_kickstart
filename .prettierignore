@@ -24,3 +24,4 @@ mkdocs.yml
 # AI instruction/prompt docs (must preserve YAML frontmatter formatting)
 **/*.prompt.md
 **/*.instructions.md
+**/SKILL.md

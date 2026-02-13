@@ -22,3 +22,4 @@ docs/**
 mkdocs.yml
 **/*.prompt.md
 **/*.instructions.md
+**/SKILL.md
