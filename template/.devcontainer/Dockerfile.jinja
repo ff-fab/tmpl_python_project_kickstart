@@ -21,7 +21,7 @@ RUN rm -f /etc/apt/sources.list.d/yarn.list \
 RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
 # Configure uv to use project-local virtual environments
-ENV UV_PROJECT_ENVIRONMENT="/workspace/packages/backend/.venv"
+ENV UV_PROJECT_ENVIRONMENT="/workspace/packages/.venv"
 
 # Install beads (bd) — git-backed issue tracker for AI agents
 # https://github.com/steveyegge/beads
