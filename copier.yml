@@ -58,6 +58,14 @@ _tasks:
         if check.returncode == 0:
             raise SystemExit(0)
 
-        init = subprocess.run(["git", "init", "-b", "main"])
+        # Try -b first (Git ≥ 2.28), fall back for older versions
+        init = subprocess.run(
+            ["git", "init", "-b", "main"],
+            stderr=subprocess.DEVNULL,
+        )
+        if init.returncode != 0:
+            init = subprocess.run(["git", "init"])
+            if init.returncode == 0:
+                subprocess.run(["git", "checkout", "-b", "main"])
         raise SystemExit(init.returncode)
     when: "{{ init_git_on_copy and _copier_operation == 'copy' }}"
