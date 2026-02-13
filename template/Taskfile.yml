@@ -147,157 +147,61 @@ tasks:
         ignore_error: true
       - uv run python tests/scripts/summarize_tests.py --coverage-file=coverage.json
 
-  test:fe:
-    desc: Run all frontend tests
+  test:unit:
+    desc: Run unit tests only (fast, every change)
+    dir: '{{.DIR}}'
     cmds:
-      - cmd: 'test -d {{.FRONTEND_DIR}} || exit 0'
-        shell: /bin/bash
-      - task: test:fe:unit
-
-  test:e2e:
-    desc: Run E2E tests (browser + full stack)
-    cmds:
-      - task: test:e2e:run
-
-  # ===========================================================================
-  # Backend Test Tasks
-  # ===========================================================================
-
-  test:be:unit:
-    desc: Run backend unit tests only (fast, every change)
-    dir: '{{.BACKEND_DIR}}'
-    cmds:
-      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov
       - uv run pytest tests/unit/ -v --tb=short --junitxml=results-unit.xml
 
-  test:be:integration:
-    desc: Run backend integration tests (Robot Framework)
-    dir: '{{.BACKEND_DIR}}'
+  test:integration:
+    desc: Run integration tests (Robot Framework)
+    dir: '{{.DIR}}'
     cmds:
       - uv run robot tests/integration/
 
-  test:be:cov:
-    desc: Run backend tests with coverage (terminal + XML for IDE)
-    dir: '{{.BACKEND_DIR}}'
+  test:cov:
+    desc: Run tests with coverage (terminal + XML for IDE)
+    dir: '{{.DIR}}'
     cmds:
-      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov
-      - uv run pytest tests/ --cov=lumehaven --cov-branch --cov-report=term-missing --cov-report=xml
+      - uv run pytest tests/ --cov={{module_name}} --cov-branch --cov-report=term-missing --cov-report=xml
 
-  test:be:cov:html:
-    desc: Run backend tests with HTML coverage report
-    dir: '{{.BACKEND_DIR}}'
+  test:cov:html:
+    desc: Run tests with HTML coverage report
+    dir: '{{.DIR}}'
     cmds:
-      - uv run pytest tests/ --cov=lumehaven --cov-branch --cov-report=html --cov-report=term
+      - uv run pytest tests/ --cov={{module_name}} --cov-branch --cov-report=html --cov-report=term
       - cmd: '{{if eq OS "darwin"}}open{{else}}xdg-open{{end}} htmlcov/index.html'
         ignore_error: true
 
-  test:be:thresholds:
-    desc: Check per-module coverage thresholds
-    dir: '{{.BACKEND_DIR}}'
-    cmds:
-      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov
-      - uv run pytest tests/ --cov=lumehaven --cov-branch --cov-report=json -q
-      - uv run python tests/scripts/check_coverage_thresholds.py --verbose
-
-  test:be:watch:
-    desc: Run backend unit tests in watch mode
-    dir: '{{.BACKEND_DIR}}'
+  test:watch:
+    desc: Run unit tests in watch mode
+    dir: '{{.DIR}}'
     cmds:
       - uv run pytest-watch tests/unit/ -- -v --tb=short
 
   # ===========================================================================
-  # Frontend Test Tasks
+  # Lint & Typecheck
   # ===========================================================================
 
-  test:fe:unit:
-    desc: Run frontend unit tests
-    cmds:
-      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun test) || echo "Frontend unit tests skipped ({{.FRONTEND_DIR}} not found)"'
-        shell: /bin/bash
-
-  test:fe:cov:
-    desc: Run frontend tests with coverage
-    cmds:
-      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun test --coverage) || echo "Frontend coverage skipped ({{.FRONTEND_DIR}} not found)"'
-        shell: /bin/bash
-
-  # ===========================================================================
-  # Combined Coverage
-  # ===========================================================================
-
-  test:cov:
-    desc: Run all tests with coverage
-    cmds:
-      - task: test:be:cov
-      - task: test:fe:cov
-
-  # ===========================================================================
-  # Backend Lint & Typecheck
-  # ===========================================================================
-
-  lint:be:
-    desc: Run backend linting (ruff check + format check)
-    dir: '{{.BACKEND_DIR}}'
+  lint:
+    desc: Run linting (ruff check + format check)
+    dir: '{{.DIR}}'
     cmds:
       - uv run ruff check src/ tests/
       - uv run ruff format --check src/ tests/
 
-  lint:be:fix:
-    desc: Fix backend linting issues automatically
-    dir: '{{.BACKEND_DIR}}'
+  lint:fix:
+    desc: Fix linting issues automatically
+    dir: '{{.DIR}}'
     cmds:
       - uv run ruff check --fix src/ tests/
       - uv run ruff format src/ tests/
 
-  typecheck:be:
-    desc: Run backend type checking (mypy)
-    dir: '{{.BACKEND_DIR}}'
+  typecheck:
+    desc: Run type checking (mypy)
+    dir: '{{.DIR}}'
     cmds:
       - uv run mypy src/
-
-  # ===========================================================================
-  # Frontend Lint & Typecheck
-  # ===========================================================================
-
-  lint:fe:
-    desc: Run frontend linting (eslint)
-    cmds:
-      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun run lint) || echo "Frontend lint skipped ({{.FRONTEND_DIR}} not found)"'
-        shell: /bin/bash
-
-  lint:fe:fix:
-    desc: Fix frontend linting issues automatically
-    cmds:
-      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun run lint:fix) || echo "Frontend lint:fix skipped ({{.FRONTEND_DIR}} not found)"'
-        shell: /bin/bash
-
-  typecheck:fe:
-    desc: Run frontend type checking (tsc)
-    cmds:
-      - cmd: 'test -d {{.FRONTEND_DIR}} && (cd {{.FRONTEND_DIR}} && bun run typecheck) || echo "Frontend typecheck skipped ({{.FRONTEND_DIR}} not found)"'
-        shell: /bin/bash
-
-  # ===========================================================================
-  # Combined Lint & Check
-  # ===========================================================================
-
-  lint:
-    desc: Run all linting (backend + frontend)
-    cmds:
-      - task: lint:be
-      - task: lint:fe
-
-  lint:fix:
-    desc: Fix all linting issues
-    cmds:
-      - task: lint:be:fix
-      - task: lint:fe:fix
-
-  typecheck:
-    desc: Run all type checking (backend + frontend)
-    cmds:
-      - task: typecheck:be
-      - task: typecheck:fe
 
   check:
     desc: Run all checks (lint + typecheck + test)
@@ -307,13 +211,12 @@ tasks:
       - task: test
 
   pre-pr:
-    desc: Run all pre-PR quality gates (pre-commit + lint + typecheck + tests + coverage thresholds)
+    desc: Run all pre-PR quality gates (pre-commit + lint + typecheck + tests + coverage)
     cmds:
       - pre-commit run --all-files
       - task: lint
       - task: typecheck
-      - task: test:fe
-      - task: test:be:thresholds
+      - task: test
 
   # ===========================================================================
   # Documentation
@@ -322,115 +225,56 @@ tasks:
   docs:serve:
     desc: Preview documentation site with hot reload (port 8001)
     cmds:
-      - uv run --group docs --project {{.BACKEND_DIR}} mkdocs serve --dev-addr 0.0.0.0:8001
+      - uv run --group docs --project {{.DIR}} mkdocs serve --dev-addr 0.0.0.0:8001
 
   docs:build:
     desc: Build documentation site (strict mode, clean output)
     cmds:
-      - uv run --group docs --project {{.BACKEND_DIR}} mkdocs build --clean --strict
-
-  # ===========================================================================
-  # Development Servers
-  # ===========================================================================
-
-  dev:
-    desc: Start all dev servers (backend + frontend)
-    deps:
-      - dev:be
-      - dev:fe
-
-  dev:be:
-    desc: Start backend dev server with hot reload
-    dir: '{{.BACKEND_DIR}}'
-    cmds:
-      - uv run uvicorn lumehaven.main:app --reload --host 0.0.0.0 --port 8000
-
-  dev:fe:
-    desc: Start frontend dev server
-    dir: '{{.FRONTEND_DIR}}'
-    cmds:
-      - bun run dev
+      - uv run --group docs --project {{.DIR}} mkdocs build --clean --strict
 
   # ===========================================================================
   # Dependency Management
   # ===========================================================================
 
   sync:
-    desc: Sync all dependencies (backend + frontend)
-    cmds:
-      - task: sync:be
-      - task: sync:fe
-
-  sync:be:
-    desc: Sync backend dependencies
-    dir: '{{.BACKEND_DIR}}'
+    desc: Sync dependencies
+    dir: '{{.DIR}}'
     cmds:
       - uv sync --group dev
-
-  sync:fe:
-    desc: Sync frontend dependencies
-    dir: '{{.FRONTEND_DIR}}'
-    cmds:
-      - bun install
 
   # ===========================================================================
   # Code Quality
   # ===========================================================================
 
   complexity:
-    desc: Check code complexity (radon) - backend only
-    dir: '{{.BACKEND_DIR}}'
+    desc: Check code complexity (radon)
+    dir: '{{.DIR}}'
     cmds:
-      - uv run radon cc src/lumehaven --average --show-complexity
-      - uv run xenon src/lumehaven --max-absolute B --max-modules A --max-average A
-
-  sync:codecov:
-    desc: Sync codecov.yml components from coverage_config.py
-    dir: '{{.BACKEND_DIR}}'
-    cmds:
-      - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov
+      - uv run radon cc src/{{module_name}} --average --show-complexity
+      - uv run xenon src/{{module_name}} --max-absolute B --max-modules A --max-average A
 
   # ===========================================================================
   # CI Tasks (used in GitHub Actions)
   # ===========================================================================
 
-  ci:test:unit:be:
-    desc: CI backend unit tests with coverage and threshold validation
-    dir: '{{.BACKEND_DIR}}'
+  ci:test:unit:
+    desc: CI unit tests with coverage and threshold validation
+    dir: '{{.DIR}}'
     cmds:
       - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov --check
-      - uv run pytest tests/unit/ --cov=lumehaven --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
+      - uv run pytest tests/unit/ --cov={{module_name}} --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
       - uv run python tests/scripts/summarize_tests.py --unit-only --coverage-file=coverage.json
 
-  ci:test:integration:be:
-    desc: CI backend integration tests (Robot Framework)
-    dir: '{{.BACKEND_DIR}}'
+  ci:test:integration:
+    desc: CI integration tests (Robot Framework)
+    dir: '{{.DIR}}'
     cmds:
       - uv run robot --outputdir . --xunit results-integration.xml tests/integration/
 
-  ci:test:fe:
-    desc: CI frontend test task with coverage
-    dir: '{{.FRONTEND_DIR}}'
-    cmds:
-      - bun test --coverage
-
   ci:lint:
-    desc: CI lint task (strict, no fixes)
-    cmds:
-      - task: ci:lint:be
-      # - task: ci:lint:fe  # Enable when frontend linting is set up
-
-  ci:lint:be:
-    desc: CI backend lint task (strict)
-    dir: '{{.BACKEND_DIR}}'
+    desc: CI lint task (strict)
+    dir: '{{.DIR}}'
     cmds:
       - uv run ruff check src/ tests/
       - uv run ruff format --check src/ tests/
       - uv run mypy src/
-
-  ci:lint:fe:
-    desc: CI frontend lint task (strict)
-    dir: '{{.FRONTEND_DIR}}'
-    cmds:
-      - bun run lint
-      - bun run typecheck
