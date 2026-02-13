@@ -1,5 +1,5 @@
 # https://taskfile.dev
-# Cross-platform task runner for {{project_name}}.
+# Cross-platform task runner for {{ module_name }}.
 #
 # Usage:
 #   task                  # List available tasks
@@ -10,6 +10,8 @@ version: '3'
 
 vars:
   DIR: packages
+  MODULE_NAME: '{{ module_name }}'
+{% raw %}
 
 tasks:
   default:
@@ -141,7 +143,7 @@ tasks:
     cmds:
       # Run unit tests with coverage to enable threshold validation.
       # Uses ignore_error so integration tests + summary always run.
-      - cmd: uv run pytest tests/unit/ -v --tb=short --junitxml=results-unit.xml --cov={{module_name}} --cov-branch --cov-report=json
+      - cmd: uv run pytest tests/unit/ -v --tb=short --junitxml=results-unit.xml --cov={{.MODULE_NAME}} --cov-branch --cov-report=json
         ignore_error: true
       - cmd: task test:integration
         ignore_error: true
@@ -163,13 +165,13 @@ tasks:
     desc: Run tests with coverage (terminal + XML for IDE)
     dir: '{{.DIR}}'
     cmds:
-      - uv run pytest tests/ --cov={{module_name}} --cov-branch --cov-report=term-missing --cov-report=xml
+      - uv run pytest tests/ --cov={{.MODULE_NAME}} --cov-branch --cov-report=term-missing --cov-report=xml
 
   test:cov:html:
     desc: Run tests with HTML coverage report
     dir: '{{.DIR}}'
     cmds:
-      - uv run pytest tests/ --cov={{module_name}} --cov-branch --cov-report=html --cov-report=term
+      - uv run pytest tests/ --cov={{.MODULE_NAME}} --cov-branch --cov-report=html --cov-report=term
       - cmd: '{{if eq OS "darwin"}}open{{else}}xdg-open{{end}} htmlcov/index.html'
         ignore_error: true
 
@@ -250,8 +252,8 @@ tasks:
     desc: Check code complexity (radon)
     dir: '{{.DIR}}'
     cmds:
-      - uv run radon cc src/{{module_name}} --average --show-complexity
-      - uv run xenon src/{{module_name}} --max-absolute B --max-modules A --max-average A
+      - uv run radon cc src/{{.MODULE_NAME}} --average --show-complexity
+      - uv run xenon src/{{.MODULE_NAME}} --max-absolute B --max-modules A --max-average A
 
   # ===========================================================================
   # CI Tasks (used in GitHub Actions)
@@ -262,7 +264,7 @@ tasks:
     dir: '{{.DIR}}'
     cmds:
       - uv run python tests/scripts/check_coverage_thresholds.py --sync-codecov --check
-      - uv run pytest tests/unit/ --cov={{module_name}} --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
+      - uv run pytest tests/unit/ --cov={{.MODULE_NAME}} --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
       - uv run python tests/scripts/summarize_tests.py --unit-only --coverage-file=coverage.json
 
   ci:test:integration:
@@ -278,3 +280,4 @@ tasks:
       - uv run ruff check src/ tests/
       - uv run ruff format --check src/ tests/
       - uv run mypy src/
+{% endraw %}
