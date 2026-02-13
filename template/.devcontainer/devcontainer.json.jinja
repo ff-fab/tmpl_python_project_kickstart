@@ -15,7 +15,7 @@
   },
 
   "remoteEnv": {
-    "PATH": "/workspace/.venv/bin:${containerEnv:PATH}",
+    "PATH": "/workspace/packages/.venv/bin:${containerEnv:PATH}",
     "UV_LINK_MODE": "symlink",
     "GH_PAGER": "cat"
   },
@@ -24,7 +24,7 @@
     "vscode": {
       "settings": {
         // Python interpreter in container
-        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+        "python.defaultInterpreterPath": "/workspace/packages/.venv/bin/python",
         "python.terminal.activateEnvironment": true,
 
         // Line length: 88 characters (matches Prettier, Ruff, and Black conventions)
