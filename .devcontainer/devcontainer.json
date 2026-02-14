@@ -1,5 +1,5 @@
 {
-  "name": "Template for Python and MQTT based smart home projects",
+  "name": "Template for Python project kickstarts",
   "build": {
     "dockerfile": "Dockerfile"
   },

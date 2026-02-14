@@ -2,7 +2,7 @@
 # Post-create setup script for devcontainer
 set -e
 
-echo "🏠 Setting up tmpl_smarthome_app_python development environment..."
+echo "🚀 Setting up tmpl_python_project_kickstart development environment..."
 
 # Python setup
 echo "📦 Setting up python environment..."

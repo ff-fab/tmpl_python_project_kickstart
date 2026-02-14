@@ -229,7 +229,7 @@ wheels = [
 ]
 
 [[package]]
-name = "tmpl-smarthome-app-python"
+name = "tmpl-python-project-kickstart"
 version = "0.1.0"
 source = { virtual = "." }
 

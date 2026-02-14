@@ -44,7 +44,7 @@ ensure_git_repo
 # Generate version from git tags (setuptools_scm)
 echo "📌 Updating version from git tags..."
 cd /workspace
-python scripts/update_version.py || echo "⚠️  Could not update version (git tags may not be available)"
+uv --directory packages run --group dev python scripts/update_version.py || echo "⚠️  Could not update version (git tags may not be available in this checkout)"
 
 # Install pre-commit hooks (if configured)
 cd /workspace
@@ -52,13 +52,13 @@ if [ -f ".pre-commit-config.yaml" ]; then
     echo "🪝 Installing pre-commit hooks..."
     # Use uv --directory to specify the Python environment without changing directories
     # This runs pre-commit from the repository root (where .pre-commit-config.yaml is)
-    if uv --directory packages run pre-commit install --install-hooks; then
+    if uv --directory packages run --group dev pre-commit install --install-hooks; then
         echo "✅ Pre-commit hooks installed successfully"
     else
         echo "⚠️  pre-commit install had issues, but continuing..."
     fi
     # Install additional hook stages for beads (bd) sync
-    uv --directory packages run pre-commit install --hook-type pre-push --hook-type post-merge 2>/dev/null || true
+    uv --directory packages run --group dev pre-commit install --hook-type pre-push --hook-type post-merge 2>/dev/null || true
 fi
 
 # Install beads MCP server for Copilot integration (Python-based)

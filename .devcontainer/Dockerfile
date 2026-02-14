@@ -1,4 +1,4 @@
-# tmpl_smarthome_app_python development container
+# tmpl_python_project_kickstart development container
 # Python 3.14 + uv + common dev tools
 
 FROM mcr.microsoft.com/devcontainers/python:3.14

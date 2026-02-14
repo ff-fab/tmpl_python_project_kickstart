@@ -47,7 +47,7 @@ from unittest.mock import patch
 import pytest
 
 # Import module under test
-from lumehaven.path.to.module import ClassUnderTest
+from {{ module_name }}.path.to.module import ClassUnderTest
 
 # Import shared fixtures (test data, async utilities)
 from tests.fixtures.async_utils import wait_for_condition
@@ -74,7 +74,7 @@ def mock_external_dependency():
     - File I/O
     - External services (OpenHAB, etc.)
     """
-    with patch("lumehaven.path.to.module.external_call") as mock:
+    with patch("{{ module_name }}.path.to.module.external_call") as mock:
         mock.return_value = "mocked_value"
         yield mock
 

@@ -1,4 +1,4 @@
-# tmpl_smarthome_app_python
+# tmpl_python_project_kickstart
 
 Copier template repository for scaffolding Python projects with DevContainer-first
 tooling, strict quality gates, CI workflows, and MkDocs documentation.

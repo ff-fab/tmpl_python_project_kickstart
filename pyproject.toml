@@ -1,7 +1,7 @@
 [project]
-name = "tmpl-smarthome-app-python"
+name = "tmpl-python-project-kickstart"
 version = "0.1.0"
-description = "Template for smart home apps based on Python and MQTT"
+description = "Copier template for generic Python project kickstarts"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = []

@@ -87,7 +87,7 @@ Versions are automatically derived from git tags using `setuptools_scm`:
 
 ```bash
 # Current version (from git tag or dev counter)
-python -c "from lumehaven import __version__; print(__version__)"
+python -c "from {{ module_name }} import __version__; print(__version__)"
 
 # Tag a release
 git tag v0.1.0

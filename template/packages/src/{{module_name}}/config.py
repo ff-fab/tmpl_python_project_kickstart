@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     # Application settings
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
 
-    # MQTT Server settings
+    # Network service settings
     host: str = "127.0.0.1"
     port: int = 1883
 

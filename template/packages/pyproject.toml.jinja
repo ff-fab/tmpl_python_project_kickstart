@@ -120,7 +120,7 @@ select = [
 
 # Import sorting configuration (isort integration)
 [tool.ruff.lint.isort]
-known-first-party = ["lumehaven"]
+known-first-party = ["{{ module_name }}"]
 section-order = [
     "future",
     "standard-library",
