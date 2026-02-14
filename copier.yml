@@ -41,6 +41,10 @@ robot_framework:
   type: bool
   help: Whether to include Robot Framework for integration testing.
   default: false
+release_please:
+  type: bool
+  help: Whether to include Release Please for automated releases and SemVer tagging.
+  default: true
 init_git_on_copy:
   type: bool
   help: Whether to initialize a Git repository right after scaffolding.

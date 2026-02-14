@@ -23,6 +23,16 @@ applyTo: '**'
    # Prefixes: feat:, fix:, docs:, refactor:, chore:, test:
    ```
 
+   **Conventional Commits are required.** They drive release automation:
+
+   | Prefix   | SemVer effect | Example                           |
+   | -------- | ------------- | --------------------------------- |
+   | `feat:`  | MINOR bump    | `feat: add signal routing`        |
+   | `fix:`   | PATCH bump    | `fix: correct timeout handling`   |
+   | `feat!:` | MAJOR bump    | `feat!: redesign config schema`   |
+   | `docs:`  | no release    | `docs: update setup guide`        |
+   | `chore:` | no release    | `chore: bump dependencies`        |
+
 3. **Ensure quality gates pass** before pushing — run `task pre-pr` or see
    [Pre-PR Quality Gate](#pre-pr-quality-gate) for details.
 
@@ -34,6 +44,16 @@ applyTo: '**'
    ```
 
 **Key principle:** `main` is always deployable.
+
+## Releases
+
+If this project uses **Release Please**, releases are fully automated:
+
+1. Push/merge to `main` with conventional commits.
+2. Release Please opens/updates a release PR with changelog and version bump.
+3. Merge the release PR to create a GitHub Release and SemVer tag (`vX.Y.Z`).
+
+Agents do NOT manually create tags or releases — the bot handles it.
 
 ## Issue Tracking (Beads)
 

@@ -1,0 +1,62 @@
+# Outer-repo CI — validates the Copier template itself.
+#
+# Runs on PRs to main and pushes to main.
+# Checks: YAML/TOML syntax, linting, editorconfig, Copier dry-run.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python
+        run: uv python install 3.14
+
+      - name: Install dependencies
+        run: uv sync --all-extras
+
+      - name: Run pre-commit checks
+        run: uv run pre-commit run --all-files
+
+  validate-template:
+    name: Validate Copier Template
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Set up Python
+        run: uv python install 3.14
+
+      - name: Install Copier
+        run: uv tool install copier
+
+      - name: Dry-run Copier copy
+        run: |
+          copier copy --trust --defaults \
+            -d project_name="Test Project" \
+            -d description="CI validation" \
+            . /tmp/test-scaffold
+          ls -la /tmp/test-scaffold/
+          test -f /tmp/test-scaffold/packages/pyproject.toml
