@@ -148,8 +148,7 @@ tasks:
 {% endraw %}
 {% if robot_framework %}
 {% raw %}
-      - cmd: task test:integration
-        ignore_error: true
+      - task: test:integration
 {% endraw %}
 {% endif %}
 {% raw %}
