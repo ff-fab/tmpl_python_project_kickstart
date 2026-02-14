@@ -1,4 +1,4 @@
-{% if release_please %}{% raw %}# Release Please — automates changelog, version bumps, and GitHub Releases.
+{% raw %}# Release Please — automates changelog, version bumps, and GitHub Releases.
 #
 # On every push to main, release-please updates (or opens) a release PR.
 # Merging that PR creates a GitHub Release with a SemVer tag (vX.Y.Z).
@@ -21,4 +21,4 @@ jobs:
       - uses: googleapis/release-please-action@v4
         with:
           release-type: simple
-{% endraw %}{% endif %}
+{% endraw %}

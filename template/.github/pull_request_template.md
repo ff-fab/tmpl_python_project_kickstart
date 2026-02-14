@@ -10,7 +10,7 @@
 ## Checklist
 
 - [ ] PR title uses conventional commit format (`feat:`, `fix:`, `docs:`, etc.)
-- [ ] Tests pass locally (`task test:be` / `task test:fe`)
+- [ ] Tests pass locally (`task test` or `task test:unit` / `task test:integration`)
 - [ ] Beads tasks updated (`bd close <id>` + committed before push)
 - [ ] Documentation updated (if user-facing changes)
 - [ ] ADR created (if architectural decision)
