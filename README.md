@@ -29,6 +29,7 @@ All user-facing answers are defined in `copier.yml`.
 | `coverage_threshold` | `int`  | `80`                                         | any integer (0 to disable)                                 | Minimum line-coverage percentage enforced by the test summary script (`--fail-under` default).       |
 | `docs_style`         | `str`  | `dita`                                       | `diataxis`, `dita`, `user-journey`, `architecture`, `flat` | Controls explanatory comments/style guidance in generated MkDocs config and docs instructions.       |
 | `robot_framework`    | `bool` | `false`                                      | `true`, `false`                                            | Enables Robot Framework-specific test guidance, result handling, and CI integration-test job blocks. |
+| `release_please`     | `bool` | `true`                                       | `true`, `false`                                            | Adds a Release Please workflow for automated changelog, version bumps, and SemVer tagging.           |
 | `init_git_on_copy`   | `bool` | `true`                                       | `true`, `false`                                            | Enables scaffold-time `_tasks` git initialization (`git init -b main`) during `copier copy`.         |
 
 ### Internal Copier behavior
@@ -112,6 +113,7 @@ All user-facing answers are defined in `copier.yml`.
   - additional CI integration-test job
   - Robot-aware test summary script behavior
   - Robot-aware testing instructions in `.github/instructions`
+- `release-please.yml` workflow is rendered only when `release_please == true`.
 
 ## Usage notes
 
@@ -129,8 +131,29 @@ The trust flag is required for `_tasks` execution (including `init_git_on_copy`)
 copier update --trust
 ```
 
+## Release process
+
+This repository uses [Release Please](https://github.com/googleapis/release-please) with
+GitHub Flow:
+
+1. Branch from `main` (`feat/`, `fix/`, `chore/`, etc.).
+2. Use [Conventional Commits](https://www.conventionalcommits.org/) in commit messages.
+3. Open a PR — CI runs lint and template validation.
+4. Squash-merge into `main`.
+5. Release Please opens/updates a release PR with changelog and version bump.
+6. Merge the release PR to create a GitHub Release and SemVer tag (`vX.Y.Z`).
+
+Copier consumers pin a specific version:
+
+```bash
+copier copy --vcs-ref v0.2.0 --trust gh:ff-fab/tmpl_python_project_kickstart <target>
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full commit and release conventions.
+
 ## Maintainer guidance
 
 - Keep user prompts and defaults in `copier.yml` authoritative.
 - Keep generated-user docs in `template/README.md.jinja`.
 - Keep maintainer/template behavior docs in this repository `README.md`.
+- Use conventional commits — release-please reads them for versioning.

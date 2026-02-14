@@ -4,6 +4,13 @@
 
 **{{ project_name }}** - a Python project.
 
+## Workflow
+
+- **Branching:** GitHub Flow — branch from `main`, open PR, squash-merge.
+- **Commits:** Conventional Commits required (`feat:`, `fix:`, `docs:`, `chore:`, etc.).
+- **Releases:** {% if release_please %}Automated via Release Please (SemVer tags).{% else %}Manual tagging and GitHub Releases.{% endif %}
+- **Never push directly to `main`.**
+
 ## Architecture Decision Records
 
 All major decisions are documented in `docs/adr/`. **Follow these decisions.**

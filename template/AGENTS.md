@@ -2,6 +2,21 @@
 
 This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
 
+## Commit Convention
+
+All commits **must** follow
+[Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>[optional scope]: <description>
+```
+
+Common prefixes: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
+
+Breaking changes: add `!` after the type (e.g., `feat!: redesign config`).
+
+These prefixes drive automated release versioning (if Release Please is enabled).
+
 ## Quick Reference
 
 ```bash
