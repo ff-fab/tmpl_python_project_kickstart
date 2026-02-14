@@ -18,17 +18,18 @@ The actual generated project content lives under `template/` and is selected via
 
 All user-facing answers are defined in `copier.yml`.
 
-| Answer key         | Type   | Default                                      | Choices                                                    | Behavior in scaffold                                                                                 |
-| ------------------ | ------ | -------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `project_name`     | `str`  | _none_                                       | free text                                                  | Sets display/project names (README, MkDocs, workflow image names, package metadata).                 |
-| `repo_name`        | `str`  | `project_name \| lower \| replace(' ', '-')` | free text                                                  | Used for GitHub URLs and repository naming in generated files.                                       |
-| `module_name`      | `str`  | `project_name \| lower \| replace(' ', '_')` | free text                                                  | Defines Python package directory under `packages/src/<module_name>/`.                                |
-| `description`      | `str`  | _none_                                       | free text                                                  | Populates generated README and package metadata description.                                         |
-| `license`          | `str`  | `MIT`                                        | `MIT`, `None`                                              | Controls whether `LICENSE` is rendered and influences `codecov` question visibility/default.         |
-| `codecov`          | `bool` | `license != 'None'`                          | `true`, `false`                                            | Controls rendering of `codecov.yml`; prompt only appears when license is not `None`.                 |
-| `docs_style`       | `str`  | `dita`                                       | `diataxis`, `dita`, `user-journey`, `architecture`, `flat` | Controls explanatory comments/style guidance in generated MkDocs config and docs instructions.       |
-| `robot_framework`  | `bool` | `false`                                      | `true`, `false`                                            | Enables Robot Framework-specific test guidance, result handling, and CI integration-test job blocks. |
-| `init_git_on_copy` | `bool` | `true`                                       | `true`, `false`                                            | Enables scaffold-time `_tasks` git initialization (`git init -b main`) during `copier copy`.         |
+| Answer key           | Type   | Default                                      | Choices                                                    | Behavior in scaffold                                                                                 |
+| -------------------- | ------ | -------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `project_name`       | `str`  | _none_                                       | free text                                                  | Sets display/project names (README, MkDocs, workflow image names, package metadata).                 |
+| `repo_name`          | `str`  | `project_name \| lower \| replace(' ', '-')` | free text                                                  | Used for GitHub URLs and repository naming in generated files.                                       |
+| `module_name`        | `str`  | `project_name \| lower \| replace(' ', '_')` | free text                                                  | Defines Python package directory under `packages/src/<module_name>/`.                                |
+| `description`        | `str`  | _none_                                       | free text                                                  | Populates generated README and package metadata description.                                         |
+| `license`            | `str`  | `MIT`                                        | `MIT`, `None`                                              | Controls whether `LICENSE` is rendered and influences `codecov` question visibility/default.         |
+| `codecov`            | `bool` | `license != 'None'`                          | `true`, `false`                                            | Prepare for codecov service? Prompt only appears when license is not `None`.                         |
+| `coverage_threshold` | `int`  | `80`                                         | any integer (0 to disable)                                 | Minimum line-coverage percentage enforced by the test summary script (`--fail-under` default).       |
+| `docs_style`         | `str`  | `dita`                                       | `diataxis`, `dita`, `user-journey`, `architecture`, `flat` | Controls explanatory comments/style guidance in generated MkDocs config and docs instructions.       |
+| `robot_framework`    | `bool` | `false`                                      | `true`, `false`                                            | Enables Robot Framework-specific test guidance, result handling, and CI integration-test job blocks. |
+| `init_git_on_copy`   | `bool` | `true`                                       | `true`, `false`                                            | Enables scaffold-time `_tasks` git initialization (`git init -b main`) during `copier copy`.         |
 
 ### Internal Copier behavior
 
