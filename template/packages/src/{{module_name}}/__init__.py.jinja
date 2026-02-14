@@ -3,20 +3,18 @@
 {{ _copier_answers.description }}
 """
 
-__version__: str
-
 try:
     # Try to get version from generated version file
-    # (updated by setuptools_scm at build time)
-    from {{ _copier_answers.module_name }}._version import __version__
+    # (present locally after scaffold; overwritten by setuptools_scm at build time)
+    from ._version import __version__ as __version__
 except ImportError:
     try:
         # Fallback to installed package metadata
-        from importlib.metadata import version
+        from importlib.metadata import version as _metadata_version
 
-        __version__ = version("{{ _copier_answers.module_name }}")
+        __version__: str = _metadata_version("{{ _copier_answers.module_name }}")
     except Exception:
         # Last resort fallback
-        __version__ = "0.0.0+unknown"
+        __version__: str = "0.0.0+unknown"
 
 __all__ = ["__version__"]

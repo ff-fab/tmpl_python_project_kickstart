@@ -145,8 +145,13 @@ tasks:
       # Uses ignore_error so integration tests + summary always run.
       - cmd: uv run pytest tests/unit/ -v --tb=short --junitxml=results-unit.xml --cov={{.MODULE_NAME}} --cov-branch --cov-report=json
         ignore_error: true
-      - cmd: task test:integration
-        ignore_error: true
+{% endraw %}
+{% if robot_framework %}
+{% raw %}
+      - task: test:integration
+{% endraw %}
+{% endif %}
+{% raw %}
       - uv run python tests/scripts/summarize_tests.py --coverage-file=coverage.json
 
   test:unit:
@@ -155,11 +160,17 @@ tasks:
     cmds:
       - uv run pytest tests/unit/ -v --tb=short --junitxml=results-unit.xml
 
+{% endraw %}
+{% if robot_framework %}
+{% raw %}
   test:integration:
     desc: Run integration tests (Robot Framework)
     dir: '{{.DIR}}'
     cmds:
       - uv run robot tests/integration/
+{% endraw %}
+{% endif %}
+{% raw %}
 
   test:cov:
     desc: Run tests with coverage (terminal + XML for IDE)
@@ -266,11 +277,17 @@ tasks:
       - uv run pytest tests/unit/ --cov={{.MODULE_NAME}} --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
       - uv run python tests/scripts/summarize_tests.py --unit-only --coverage-file=coverage.json
 
+{% endraw %}
+{% if robot_framework %}
+{% raw %}
   ci:test:integration:
     desc: CI integration tests (Robot Framework)
     dir: '{{.DIR}}'
     cmds:
       - uv run robot --outputdir . --xunit results-integration.xml tests/integration/
+{% endraw %}
+{% endif %}
+{% raw %}
 
   ci:lint:
     desc: CI lint task (strict)
