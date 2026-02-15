@@ -59,7 +59,7 @@ CRITICAL: You receive context from the parent agent including:
 
 - {Specific suggestion for improvement}
 
-**Next Steps:** {What the CONDUCTOR should do next} </output_format>
+**Next Steps:** {What the orchestrator should do next} </output_format>
 
 Keep feedback concise, specific, and actionable. Focus on blocking issues vs.
 nice-to-haves. Reference specific files, functions, and lines where relevant.
