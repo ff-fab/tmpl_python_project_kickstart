@@ -47,7 +47,7 @@ applyTo: '**'
    gh pr create
    ```
 
-5. **Wait for CI and merge**
+5. **Wait for CI**
 
    ```bash
    task ci:wait -- <pr-number>   # polls until all checks complete
@@ -56,11 +56,7 @@ applyTo: '**'
    **Always use `task ci:wait`** to wait for CI. Do not use `gh pr checks --watch`
    (opens alternate buffer, breaks agents) or ad-hoc polling loops.
 
-   Only merge if specifically requested by the user.
-
-   ```bash
-   gh pr merge <pr-number> --squash --delete-branch
-   ```
+   Never merge unless directly requested by the user.
 
 **Key principle:** `main` is always deployable.
 
@@ -137,15 +133,10 @@ without duplicating the rich deliberation content into beads.
 
 ## Pre-PR Quality Gate
 
-Run `task pre-pr` to execute all quality gates before creating a PR. This task runs:
+Run `task pre-pr` to execute all quality gates before creating a PR. This task runs
+pre-commit + lint + typecheck + tests + coverage.
 
-1. `pre-commit run --all-files` — formatting, whitespace, spelling, merge conflicts,
-   private key detection, editorconfig compliance
-2. `task check` — lint (ruff + eslint), typecheck (mypy + tsc), all tests (pytest +
-   Robot Framework + bun test)
-3. `task test:be:thresholds` — per-module coverage threshold enforcement
-
-All three must pass before pushing.
+All checks must pass before pushing.
 
 ## Session Completion ("Landing the Plane")
 
