@@ -36,16 +36,21 @@ Run `task --list` to see all available tasks. Key tasks for development:
 
 ## When no task exists
 
-For one-off commands not covered by the Taskfile, use `uv run`:
+For one-off commands not covered by the Taskfile, use `uv run`. Since project
+dependencies live in `packages/pyproject.toml`, run from within that directory:
 
 ```bash
-# Correct
+# Correct — run from the packages/ directory
+cd packages
 uv run pytest tests/unit/test_foo.py -v
 uv run mypy src/{{ module_name }}/_health.py
 uv run ruff check src/
 {%- if robot_framework %}
 uv run robot tests/integration/login.robot
 {%- endif %}
+
+# Or from the repo root, target the project explicitly:
+uv run --project packages pytest packages/tests/unit/test_foo.py -v
 
 # WRONG — never do this
 python -m pytest tests/unit/test_foo.py -v

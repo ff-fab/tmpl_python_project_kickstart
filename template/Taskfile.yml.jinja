@@ -164,7 +164,13 @@ tasks:
     desc: 'Run specific test file or pattern (e.g.: task test:file -- tests/unit/test_errors.py)'
     dir: '{{.DIR}}'
     cmds:
-      - uv run pytest {{.CLI_ARGS}} -v --tb=short
+      - |
+        if [ -z "{{.CLI_ARGS}}" ]; then
+          echo "Usage: task test:file -- tests/unit/test_foo.py" >&2
+          echo "   or: task test:file -- -k test_my_function" >&2
+          exit 1
+        fi
+        uv run pytest {{.CLI_ARGS}} -v --tb=short
 
 {% endraw %}
 {% if robot_framework %}
@@ -179,7 +185,12 @@ tasks:
     desc: 'Run specific Robot Framework file (e.g.: task test:file:robot -- tests/integration/login.robot)'
     dir: '{{.DIR}}'
     cmds:
-      - uv run robot {{.CLI_ARGS}}
+      - |
+        if [ -z "{{.CLI_ARGS}}" ]; then
+          echo "Usage: task test:file:robot -- tests/integration/login.robot" >&2
+          exit 1
+        fi
+        uv run robot {{.CLI_ARGS}}
 {% endraw %}
 {% endif %}
 {% raw %}
