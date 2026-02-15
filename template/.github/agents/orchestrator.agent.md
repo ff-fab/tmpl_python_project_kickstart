@@ -81,7 +81,7 @@ For each phase in the plan, execute this cycle:
 <subagent_instructions>
 When invoking subagents:
 
-**planning-subagent**:
+**researcher-subagent**:
 - Provide the user's request and any relevant context
 - Instruct to gather comprehensive context and return structured findings
 - Tell them NOT to write plans, only research and return findings
