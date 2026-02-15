@@ -62,7 +62,6 @@ applyTo: '**'
    gh pr merge <pr-number> --squash --delete-branch
    ```
 
-
 **Key principle:** `main` is always deployable.
 
 ## Releases
