@@ -11,6 +11,16 @@ repo_name:
   type: str
   help: The name of the GitHub repository (without owner/organization).
   default: "{{ project_name|lower|replace(' ', '-') }}"
+gh_token:
+  type: str
+  help: Optional GitHub token for local development integrations.
+  default: ""
+  secret: true
+concept7_token:
+  type: str
+  help: Optional Concept7 token for local development integrations.
+  default: ""
+  secret: true
 module_name:
   type: str
   help: The name of the (first) Python module (package).

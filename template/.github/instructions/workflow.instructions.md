@@ -9,6 +9,10 @@ applyTo: '**'
 
 **CRITICAL: Never push directly to main. All changes go through PRs.**
 
+**Use `git` and `gh` CLI directly** for all version control and GitHub operations
+(commits, pushes, PRs, issues, status checks). Do NOT use MCP-based git/GitHub tools
+(e.g., GitKraken MCP) — they require authentication that is not configured.
+
 1. **Create feature branch from main**
 
    ```bash

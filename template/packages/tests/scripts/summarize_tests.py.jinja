@@ -399,13 +399,18 @@ def _build_parser() -> argparse.ArgumentParser:
         default=Path("output.xml"),
         help="Path to Robot Framework output.xml (default: output.xml)",
     )
+{% endif %}
     parser.add_argument(
         "--unit-only",
         action="store_true",
+{% if robot_framework %}
         help="Only check unit test results; skip Robot Framework. "
         "Useful in CI where integration tests run as a separate job.",
-    )
+{% else %}
+        help="Only check unit test results (no integration suites). "
+        "Useful in CI where test suites run as separate jobs.",
 {% endif %}
+    )
     return parser
 
 
