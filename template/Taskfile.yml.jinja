@@ -160,6 +160,12 @@ tasks:
     cmds:
       - uv run pytest tests/unit/ -v --tb=short --junitxml=results-unit.xml
 
+  test:file:
+    desc: 'Run specific test file or pattern (e.g.: task test:file -- tests/unit/test_errors.py)'
+    dir: '{{.DIR}}'
+    cmds:
+      - uv run pytest {{.CLI_ARGS}} -v --tb=short
+
 {% endraw %}
 {% if robot_framework %}
 {% raw %}
@@ -168,6 +174,12 @@ tasks:
     dir: '{{.DIR}}'
     cmds:
       - uv run robot tests/integration/
+
+  test:file:robot:
+    desc: 'Run specific Robot Framework file (e.g.: task test:file:robot -- tests/integration/login.robot)'
+    dir: '{{.DIR}}'
+    cmds:
+      - uv run robot {{.CLI_ARGS}}
 {% endraw %}
 {% endif %}
 {% raw %}
