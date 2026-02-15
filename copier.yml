@@ -14,12 +14,12 @@ repo_name:
 gh_token:
   type: str
   help: Optional GitHub token for local development integrations.
-  default: ""
+  default: ''
   secret: true
-concept7_token:
+context7_api_key:
   type: str
-  help: Optional Concept7 token for local development integrations.
-  default: ""
+  help: Optional Context7 API key for local development integrations.
+  default: ''
   secret: true
 module_name:
   type: str

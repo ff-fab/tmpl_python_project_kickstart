@@ -14,11 +14,11 @@ applyTo: 'packages/tests/**/*.py{% if robot_framework %}, **/*.robot{% endif %}'
 | Layer       | Tool                           | Location             |
 | ----------- | ------------------------------ | -------------------- |
 | Unit        | pytest + pytest-asyncio        | `tests/unit/`        |
-{% if robot_framework %}
+{%- if robot_framework %}
 | Integration | Robot Framework + RESTinstance | `tests/integration/` |
-{% else %}
+{%- else %}
 | Integration | pytest + httpx/ASGI client     | `tests/integration/` |
-{% endif %}
+{%- endif %}
 
 ## Test Technique Documentation
 
