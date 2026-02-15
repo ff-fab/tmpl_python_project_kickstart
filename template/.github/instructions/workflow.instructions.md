@@ -137,13 +137,8 @@ without duplicating the rich deliberation content into beads.
 
 ## Pre-PR Quality Gate
 
-Run `task pre-pr` to execute all quality gates before creating a PR. This task runs:
-
-1. `pre-commit run --all-files` — formatting, whitespace, spelling, merge conflicts,
-   private key detection, editorconfig compliance
-2. `task check` — lint (ruff + eslint), typecheck (mypy + tsc), all tests (pytest +
-   Robot Framework + bun test)
-3. `task test:be:thresholds` — per-module coverage threshold enforcement
+Run `task pre-pr` to execute all quality gates before creating a PR. This task runs
+pre-commit + lint + typecheck + tests + coverage.
 
 All three must pass before pushing.
 
