@@ -15,9 +15,10 @@
   },
 
   "remoteEnv": {
-    "PATH": "/workspace/packages/.venv/bin:${containerEnv:PATH}",
+    "PATH": "/home/vscode/.local/bin:/workspace/packages/.venv/bin:${containerEnv:PATH}",
     "UV_LINK_MODE": "symlink",
-    "GH_PAGER": "cat"
+    "GH_PAGER": "cat",
+    "CONTEXT7_API_KEY": "${localEnv:CONTEXT7_API_KEY}"
   },
 
   "customizations": {
@@ -135,7 +136,14 @@
         },
 
         // Show gitignored files like htmlcov/ in explorer
-        "explorer.excludeGitIgnore": false
+        "explorer.excludeGitIgnore": false,
+
+        // GitHub integrations
+        "github.gitAuthentication": true,
+        "githubPullRequests.remotes": ["{{repo_name}}", "origin", "upstream"],
+
+        // Beads: daemon was removed in bd ≥0.50; all ops use direct mode now
+        "beads.autoStartDaemon": false
       },
       "extensions": [
         "ms-python.python",
@@ -151,12 +159,14 @@
         "vivaxy.vscode-conventional-commits",
         "ryanluker.vscode-coverage-gutters",
         "task.vscode-task",
-        "planet57.vscode-beads"
+        "planet57.vscode-beads",
+        "github.vscode-pull-request-github"
       ]
     }
   },
 
   "postCreateCommand": ".devcontainer/post-create.sh",
+  "postStartCommand": ".devcontainer/post-start.sh",
 
   "remoteUser": "vscode"
 }

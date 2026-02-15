@@ -39,7 +39,5 @@
 
     // Demos
     "showboat": true
-  },
-  "github.gitAuthentication": true,
-  "githubPullRequests.remotes": ["{{repo_name}}", "origin", "upstream"]
+  }
 }
