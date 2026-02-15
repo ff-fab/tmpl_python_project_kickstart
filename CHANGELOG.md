@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.0.0...v1.1.0) (2026-02-15)
+
+
+### Features
+
+* add ci:wait task for polling PR check status ([#10](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/10)) ([97475ee](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/97475eec84f2ef342f37a54237b401dda608a88c))
+* add tooling instruction and test:file task, generalized for Robot Framework ([#9](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/9)) ([0ca9b64](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/0ca9b64a979db530c57b000f5815bc2338c3adb9))
+
+
+### Bug Fixes
+
+* backport template improvements from cosalette project ([#7](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/7)) ([beab8f2](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/beab8f2df329d5de88540d960a564a74da493dcd))
+
 ## 1.0.0 (2026-02-15)
 
 ### Features
