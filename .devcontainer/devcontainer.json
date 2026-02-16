@@ -125,7 +125,10 @@
         },
 
         // Show gitignored files like htmlcov/ in explorer
-        "explorer.excludeGitIgnore": false
+        "explorer.excludeGitIgnore": false,
+
+        // Window title
+        "window.title": "tmpl_python_project_kickstart [devcontainer]"
       },
       "extensions": [
         "ms-python.python",
