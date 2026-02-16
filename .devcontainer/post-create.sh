@@ -39,7 +39,7 @@ if [ -f ".pre-commit-config.yaml" ]; then
     echo "🪝 Installing pre-commit hooks..."
     # Use uv --directory to specify the Python environment without changing directories
     # This runs pre-commit from the repository root (where .pre-commit-config.yaml is)
-    if uv --directory packages run pre-commit install --install-hooks; then
+    if uv run pre-commit install --install-hooks; then
         echo "✅ Pre-commit hooks installed successfully"
     else
         echo "⚠️  pre-commit install had issues, but continuing..."
