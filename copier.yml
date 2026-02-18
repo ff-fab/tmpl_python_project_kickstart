@@ -38,11 +38,6 @@ codecov:
   help: Whether to include Codecov integration for coverage reporting.
   default: "{{ license != 'None' }}"
   when: "{{ license != 'None' }}"
-docs_style:
-  type: str
-  choices: ['diataxis', 'dita', 'user-journey', 'architecture', 'flat']
-  help: The documentation style.
-  default: 'dita'
 coverage_threshold:
   type: int
   help: Minimum line coverage percentage to pass the quality gate (0 to disable).
@@ -51,6 +46,11 @@ robot_framework:
   type: bool
   help: Whether to include Robot Framework for integration testing.
   default: false
+docs_style:
+  type: str
+  choices: ['diataxis', 'dita', 'user-journey', 'architecture', 'flat']
+  help: The documentation style.
+  default: 'dita'
 release_please:
   type: bool
   help: Whether to include Release Please for automated releases and SemVer tagging.
