@@ -2,8 +2,10 @@
 
 {{ description }}
 
+{% if license == "MIT" -%}
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-%E2%89%A53.14-blue)](https://www.python.org/)
+{% endif -%}
+[![Python](https://img.shields.io/badge/python-%E2%89%A5{{ min_python_version }}-blue)](https://www.python.org/)
 
 ## Quick Start
 

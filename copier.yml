@@ -1,5 +1,9 @@
 _min_copier_version: '9.11.3'
 _subdirectory: 'template'
+min_python_version:
+  type: str
+  default: '3.14'
+  when: false
 _message_before_copy: |
   Use a modern Python runtime when invoking Copier (for example: `uvx --python 3.14 copier copy . <target>`).
   Older Python runtimes can force older Copier/questionary combinations that crash in interactive prompts.
