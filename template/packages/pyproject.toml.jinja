@@ -3,7 +3,7 @@ name = "{{ _copier_answers.project_name }}"
 version = "0.1.0"
 description = "{{ _copier_answers.description }}"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">={{ min_python_version }}"
 {% if _copier_answers.license -%}
 license = { text = "MIT" }
 {%- endif %}
