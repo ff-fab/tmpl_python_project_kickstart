@@ -16,7 +16,7 @@
 
   "remoteEnv": {
     "PATH": "/workspace/.venv/bin:${containerEnv:PATH}",
-    "UV_LINK_MODE": "symlink",
+    "UV_LINK_MODE": "copy",
     "GH_PAGER": "cat"
   },
 

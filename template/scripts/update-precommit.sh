@@ -11,7 +11,7 @@ if [ ! -f ".pre-commit-config.yaml" ]; then
 fi
 
 echo "🔄 Updating pre-commit hooks to latest versions..."
-uv --directory packages run --group dev pre-commit autoupdate
+uv run --group dev pre-commit autoupdate
 
 echo ""
 echo "✅ Pre-commit hooks updated!"
