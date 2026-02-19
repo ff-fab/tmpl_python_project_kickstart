@@ -160,7 +160,13 @@ tasks:
   test:file:
     desc: 'Run specific test file or pattern (e.g.: task test:file -- packages/tests/unit/test_errors.py)'
     cmds:
-      - uv run pytest {{.CLI_ARGS}} -v --tb=short
+      - |
+        if [ -z "{{.CLI_ARGS}}" ]; then
+          echo "Usage: task test:file -- packages/tests/unit/test_foo.py" >&2
+          echo "   or: task test:file -- -k test_my_function" >&2
+          exit 1
+        fi
+        uv run pytest {{.CLI_ARGS}} -v --tb=short
 
 {% endraw %}
 {% if robot_framework %}
@@ -286,7 +292,7 @@ tasks:
     desc: CI unit tests with coverage summary
     cmds:
       - uv run pytest {{.PKG}}/tests/unit/ --cov={{.MODULE_NAME}} --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
-      - uv run python {{.PKG}}/tests/scripts/summarize_tests.py --coverage-file=coverage.json --fail-under={{ coverage_threshold }}
+      - uv run python {{.PKG}}/tests/scripts/summarize_tests.py --coverage-file=coverage.json --fail-under={{ coverage_threshold }}{% endraw %}{% if robot_framework %} --unit-only{% endif %}{% raw %}
 
 {% endraw %}
 {% if robot_framework %}
