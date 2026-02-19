@@ -59,4 +59,4 @@ jobs:
             -d description="CI validation" \
             . /tmp/test-scaffold
           ls -la /tmp/test-scaffold/
-          test -f /tmp/test-scaffold/packages/pyproject.toml
+          test -f /tmp/test-scaffold/pyproject.toml
