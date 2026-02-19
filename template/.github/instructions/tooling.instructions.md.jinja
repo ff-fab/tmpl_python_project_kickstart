@@ -19,11 +19,11 @@ Run `task --list` to see all available tasks. Key tasks for development:
 | Need                          | Command                                      |
 | ----------------------------- | -------------------------------------------- |
 | Run all unit tests            | `task test:unit`                             |
-| Run a specific test file      | `task test:file -- tests/unit/test_foo.py`   |
+| Run a specific test file      | `task test:file -- packages/tests/unit/test_foo.py`   |
 | Run tests matching a pattern  | `task test:file -- -k test_my_function`      |
 {%- if robot_framework %}
 | Run integration tests         | `task test:integration`                      |
-| Run specific Robot file       | `task test:file:robot -- tests/integration/login.robot` |
+| Run specific Robot file       | `task test:file:robot -- packages/tests/integration/login.robot` |
 {%- endif %}
 | Run tests with coverage       | `task test:cov`                              |
 | Lint (ruff check + format)    | `task lint`                                  |
@@ -37,25 +37,19 @@ Run `task --list` to see all available tasks. Key tasks for development:
 
 ## When no task exists
 
-For one-off commands not covered by the Taskfile, use `uv run`. Since project
-dependencies live in `packages/pyproject.toml`, run from within that directory:
+For one-off commands not covered by the Taskfile, use `uv run` from the repo root:
 
 ```bash
-# Correct — run from the packages/ directory
-cd packages
-uv run pytest tests/unit/test_foo.py -v
-uv run mypy src/{{ module_name }}/_health.py
-uv run ruff check src/
+uv run pytest packages/tests/unit/test_foo.py -v
+uv run mypy packages/src/{{ module_name }}/_health.py
+uv run ruff check packages/src/
 {%- if robot_framework %}
-uv run robot tests/integration/login.robot
+uv run robot packages/tests/integration/login.robot
 {%- endif %}
 
-# Or from the repo root, target the project explicitly:
-uv run --project packages pytest packages/tests/unit/test_foo.py -v
-
 # WRONG — never do this
-python -m pytest tests/unit/test_foo.py -v
-python tests/scripts/summarize_tests.py
+python -m pytest packages/tests/unit/test_foo.py -v
+python packages/tests/scripts/summarize_tests.py
 ```
 
 ## Why

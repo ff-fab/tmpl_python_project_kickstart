@@ -200,7 +200,7 @@ confirms outputs match).
 | **Location**  | `docs/demos/`                    |
 | **Filename**  | `<branch-name>.md`               |
 | **Committed** | Yes — part of the PR             |
-| **MkDocs**    | Excluded (not published to site) |
+| **Docs site** | Excluded (not published to site) |
 | **Verify**    | `showboat verify` must exit 0    |
 
 **Key commands:** `init`, `note`, `exec`, `pop`, `verify`, `extract`

@@ -163,7 +163,7 @@ The agent decides the scope based on work complexity:
 | **Location**  | `docs/demos/`                    |
 | **Filename**  | `<branch-name>.md`               |
 | **Committed** | Yes — part of the PR             |
-| **MkDocs**    | Excluded (not published to site) |
+| **Docs site** | Excluded (not published to site) |
 | **Verify**    | `showboat verify` must exit 0    |
 
 ### Reference
