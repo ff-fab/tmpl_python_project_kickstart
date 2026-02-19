@@ -2,6 +2,9 @@
 
 {{ description }}
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-%E2%89%A53.14-blue)](https://www.python.org/)
+
 ## Quick Start
 
 ### Prerequisites
@@ -73,18 +76,15 @@ task --list            # Show all available tasks
 ### Formatting
 
 - **Python**: Ruff (88-char line length, double quotes)
-- **Frontend**: Prettier (88-char line length, single quotes)
 - **All files**: LF line endings (enforced via `.gitattributes`)
 
 ### Linting
 
 - **Python**: Ruff (comprehensive rule set)
-- **TypeScript**: ESLint
 
 ### Type Checking
 
 - **Python**: mypy (strict mode)
-- **TypeScript**: TypeScript compiler (strict mode)
 
 All tools are **auto-configured in DevContainer** via `.devcontainer/devcontainer.json`.
 Format on save is enabled by default.
