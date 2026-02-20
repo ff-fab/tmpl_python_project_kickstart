@@ -7,7 +7,7 @@ min_python_version:
   default: '3.14'
   when: false
 _message_before_copy: |
-  Use a modern Python runtime when invoking Copier (for example: `uvx --python 3.14 copier copy . <target>`).
+  Use a modern Python runtime when invoking Copier (for example: `uvx --python 3.14 --with jinja2-time copier copy . <target>`).
   Older Python runtimes can force older Copier/questionary combinations that crash in interactive prompts.
 
 project_name:

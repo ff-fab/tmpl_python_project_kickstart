@@ -50,13 +50,16 @@ jobs:
         run: uv python install 3.14
 
       - name: Install Copier
-        run: uv tool install copier
+        run: uv tool install copier --with jinja2-time
 
       - name: Dry-run Copier copy
         run: |
           copier copy --trust --defaults \
             -d project_name="Test Project" \
             -d description="CI validation" \
+            -d github_org="test-org" \
+            -d author_name="Test Author" \
+            -d author_email="test@example.com" \
             . /tmp/test-scaffold
           ls -la /tmp/test-scaffold/
           test -f /tmp/test-scaffold/pyproject.toml
