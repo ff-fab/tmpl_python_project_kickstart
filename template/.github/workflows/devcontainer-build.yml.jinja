@@ -6,7 +6,7 @@
 # - Weekly schedule picks up base image security patches automatically
 #
 # The image is pushed to
-# ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
+# ghcr.io/{% endraw %}{{ github_org }}/{{ project_name }}{% raw %}-devcontainer
 # and used by ci.yml via the devcontainers/ci action's cacheFrom parameter.
 
 name: DevContainer Build
@@ -41,8 +41,8 @@ jobs:
       - name: Build and push devcontainer image
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
+          imageName: ghcr.io/{% endraw %}{{ github_org }}/{{ project_name }}{% raw %}-devcontainer
           # Cache layers from GHCR for faster rebuilds
-          cacheFrom: ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
+          cacheFrom: ghcr.io/{% endraw %}{{ github_org }}/{{ project_name }}{% raw %}-devcontainer
           push: always
 {% endraw %}

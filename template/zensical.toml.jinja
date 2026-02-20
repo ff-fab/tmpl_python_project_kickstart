@@ -48,10 +48,10 @@ site_description = "{{ description }}"
 # Canonical URL for the deployed site. Used for sitemap and social cards.
 # Note: zensical.toml does not support environment variable substitution.
 # The CI workflow hardcodes the same URL, so this is the single source of truth.
-site_url = "https://ff-fab.github.io/{{ repo_name }}/"
+site_url = "https://{{ github_org }}.github.io/{{ repo_name }}/"
 
-repo_url = "https://github.com/ff-fab/{{ repo_name }}"
-repo_name = "ff-fab/{{ repo_name }}"
+repo_url = "https://github.com/{{ github_org }}/{{ repo_name }}"
+repo_name = "{{ github_org }}/{{ repo_name }}"
 edit_uri = "edit/main/docs/"
 
 # ---------------------------------------------------------------------------
@@ -189,4 +189,4 @@ emoji_generator = "zensical.extensions.emoji.to_svg"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
-link = "https://github.com/ff-fab/{{ repo_name }}"
+link = "https://github.com/{{ github_org }}/{{ repo_name }}"
