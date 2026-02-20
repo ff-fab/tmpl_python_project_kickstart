@@ -28,7 +28,7 @@ permissions:
   packages: read # Pull the devcontainer image from GHCR
 
 env:
-  DEVCONTAINER_IMAGE: ghcr.io/ff-fab/{% endraw %}{{ project_name }}{% raw %}-devcontainer
+  DEVCONTAINER_IMAGE: ghcr.io/{% endraw %}{{ github_org }}/{{ project_name }}{% raw %}-devcontainer
 
 jobs:
   lint:

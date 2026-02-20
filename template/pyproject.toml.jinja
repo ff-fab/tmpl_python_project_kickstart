@@ -2,13 +2,13 @@
 name = "{{ _copier_answers.project_name }}"
 version = "0.1.0"
 description = "{{ _copier_answers.description }}"
-readme = "packages/README.md"
+readme = "README.md"
 requires-python = ">={{ min_python_version }}"
 {% if _copier_answers.license -%}
 license = { text = "MIT" }
 {%- endif %}
 authors = [
-    { name = "Fabian Koerner", email = "mail@fabiankoerner.com" }
+    { name = "{{ author_name }}", email = "{{ author_email }}" }
 ]
 
 dependencies = [
