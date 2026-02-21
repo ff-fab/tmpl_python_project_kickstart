@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.2.0...v1.3.0) (2026-02-21)
+
+
+### Features
+
+* update README with quick start instructions and fix devcontainer paths ([#23](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/23)) ([084cec0](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/084cec04578d43f1e82810a8926be06d25eaa408))
+
 ## [1.2.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.1.0...v1.2.0) (2026-02-21)
 
 
