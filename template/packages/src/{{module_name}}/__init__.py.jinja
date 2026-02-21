@@ -3,18 +3,17 @@
 {{ _copier_answers.description }}
 """
 
+from importlib.metadata import PackageNotFoundError, version
+
 try:
-    # Try to get version from generated version file
-    # (present locally after scaffold; overwritten by setuptools_scm at build time)
+    # Prefer the generated version file (setuptools_scm at build time)
     from ._version import __version__
 except ImportError:
     try:
         # Fallback to installed package metadata
-        from importlib.metadata import version as _metadata_version
-
-        __version__: str = _metadata_version("{{ _copier_answers.module_name }}")
-    except Exception:
-        # Last resort fallback
-        __version__: str = "0.0.0+unknown"
+        __version__ = version("{{ _copier_answers.module_name }}")
+    except PackageNotFoundError:
+        # Last resort fallback for editable installs without metadata
+        __version__ = "0.0.0+unknown"
 
 __all__ = ["__version__"]

@@ -186,6 +186,13 @@ tasks:
         fi
         uv run robot {{.CLI_ARGS}}
 {% endraw %}
+{% else %}
+{% raw %}
+  test:integration:
+    desc: Run integration tests (pytest)
+    cmds:
+      - uv run pytest {{.PKG}}/tests/integration/ -v --tb=short -m integration
+{% endraw %}
 {% endif %}
 {% raw %}
 
@@ -301,6 +308,13 @@ tasks:
     desc: CI integration tests (Robot Framework)
     cmds:
       - uv run robot --outputdir . --xunit results-integration.xml {{.PKG}}/tests/integration/
+{% endraw %}
+{% else %}
+{% raw %}
+  ci:test:integration:
+    desc: CI integration tests (pytest)
+    cmds:
+      - uv run pytest {{.PKG}}/tests/integration/ -v --tb=short -m integration --junitxml=results-integration.xml
 {% endraw %}
 {% endif %}
 {% raw %}
