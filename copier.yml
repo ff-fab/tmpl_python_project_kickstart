@@ -100,5 +100,10 @@ _tasks:
             init = subprocess.run(["git", "init"])
             if init.returncode == 0:
                 subprocess.run(["git", "checkout", "-b", "main"])
+
+        if init.returncode == 0:
+            subprocess.run(["git", "config", "user.name", "{{ author_name }}"])
+            subprocess.run(["git", "config", "user.email", "{{ author_email }}"])
+
         raise SystemExit(init.returncode)
     when: "{{ init_git_on_copy and _copier_operation == 'copy' }}"
