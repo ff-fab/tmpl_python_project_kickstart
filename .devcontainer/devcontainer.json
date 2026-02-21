@@ -128,7 +128,24 @@
         "explorer.excludeGitIgnore": false,
 
         // Window title
-        "window.title": "tmpl_python_project_kickstart [devcontainer]"
+        "window.title": "tmpl_python_project_kickstart [devcontainer]",
+
+        // Window theming – PyPI and Python brand colors
+        "workbench.colorCustomizations": {
+          // Title bar: Python blue background, white text
+          "titleBar.activeBackground": "#006DAD",
+          "titleBar.activeForeground": "#FFFFFF",
+          "titleBar.inactiveBackground": "#005687",
+          "titleBar.inactiveForeground": "#A0D0ED",
+
+          // Activity bar (PyPi brand colors)
+          "activityBar.background": "#306998",
+          "activityBar.foreground": "#FFD43B",
+          "activityBar.inactiveForeground": "#C0DCF0",
+          "activityBar.activeBorder": "#FFD43B",
+          "activityBarBadge.background": "#FFD43B",
+          "activityBarBadge.foreground": "#306998"
+        }
       },
       "extensions": [
         "ms-python.python",

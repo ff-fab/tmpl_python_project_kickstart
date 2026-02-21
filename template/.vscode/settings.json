@@ -19,7 +19,7 @@
     "mkdir": true,
 
     // Version control
-    //"git": true,
+    "git": true,
     //"gh": true,
 
     // Task runner (all targets defined in Taskfile.yml)
@@ -29,7 +29,7 @@
     "uv": true,
 
     // Documentation
-    "mkdocs": true,
+    "zensical": true,
 
     // Planning / project management
     "bd": true,

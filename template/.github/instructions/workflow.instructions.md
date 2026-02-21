@@ -9,10 +9,6 @@ applyTo: '**'
 
 **CRITICAL: Never push directly to main. All changes go through PRs.**
 
-**Use `git` and `gh` CLI directly** for all version control and GitHub operations
-(commits, pushes, PRs, issues, status checks). Do NOT use MCP-based git/GitHub tools
-(e.g., GitKraken MCP) — they require authentication that is not configured.
-
 1. **Create feature branch from main**
 
    ```bash
@@ -150,10 +146,10 @@ until `git push` succeeds.
 3. **Create showboat demo** (if significant code/config change, or when requested):
 
    ```bash
-   showboat init docs/demos/<branch-name>.md "<Title of Work>"
-   showboat note docs/demos/<branch-name>.md "What was done and why."
-   showboat exec docs/demos/<branch-name>.md bash "<proof command>"
-   showboat verify docs/demos/<branch-name>.md  # Must exit 0
+   showboat init docs/planning/demos/<branch-name>.md "<Title of Work>"
+   showboat note docs/planning/demos/<branch-name>.md "What was done and why."
+   showboat exec docs/planning/demos/<branch-name>.md bash "<proof command>"
+   showboat verify docs/planning/demos/<branch-name>.md  # Must exit 0
    ```
 
    Skip for: documentation-only changes, beads-only changes, trivial formatting fixes.
@@ -197,10 +193,10 @@ confirms outputs match).
 
 | Convention    | Value                            |
 | ------------- | -------------------------------- |
-| **Location**  | `docs/demos/`                    |
+| **Location**  | `docs/planning/demos/`           |
 | **Filename**  | `<branch-name>.md`               |
 | **Committed** | Yes — part of the PR             |
-| **Docs site** | Excluded (not published to site) |
+| **Zensical**  | Excluded (not published to site) |
 | **Verify**    | `showboat verify` must exit 0    |
 
 **Key commands:** `init`, `note`, `exec`, `pop`, `verify`, `extract`
