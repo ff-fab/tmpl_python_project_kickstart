@@ -6,6 +6,12 @@ tooling, strict quality gates, CI workflows, and MkDocs documentation.
 The actual generated project content lives under `template/` and is selected via
 `_subdirectory: template` in `copier.yml`.
 
+## Quick start
+
+```bash
+  uvx --python 3.14 --with jinja2-time copier copy --trust --vcs-ref main https://github.com/ff-fab/tmpl_python_project_kickstart <target-dir>
+```
+
 ## Template at a glance
 
 - **Template engine:** Copier (`_min_copier_version: 9.11.3`)
