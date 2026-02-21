@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.1.0...v1.2.0) (2026-02-21)
+
+
+### Features
+
+* modernize template (root pyproject.toml, Zensical, pinned uv) ([#19](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/19)) ([0bb334b](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/0bb334bce1533d6bf44b3f307e473c01d416b54a))
+* set git user.name and user.email after repo init ([#22](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/22)) ([3d51739](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/3d51739c0263e41c4255b666ff904180dee0861f))
+
+
+### Bug Fixes
+
+* add retry mechanism for subagent failures in orchestration process ([#13](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/13)) ([7cd873e](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/7cd873e4b39f2a1b14049015b8389d519efdf2c7))
+* conditionally include robotcode extension when robot_framework is enabled ([#11](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/11)) ([c7d54e1](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/c7d54e15e7de8ed96ea8a1b1ae24fe479e45582c))
+* gate MIT badge on license, DRY python version, fix prettier ([#18](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/18)) ([91b1f9a](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/91b1f9adba34da41d6fce0e61894782abf2440db))
+* update devcontainer window title and pre-commit hook installation ([#14](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/14)) ([ca5a618](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/ca5a618b4798aee6a636be2787aa8e9eb1e79b71))
+
 ## [1.1.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.0.0...v1.1.0) (2026-02-15)
 
 
