@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.2.0...v1.3.0) (2026-02-22)
+
+
+### Features
+
+* update README with quick start instructions and fix devcontainer paths ([#23](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/23)) ([084cec0](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/084cec04578d43f1e82810a8926be06d25eaa408))
+
+
+### Bug Fixes
+
+* move endraw before coverage_threshold so Copier interpolates it ([#26](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/26)) ([44f03fa](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/44f03fac285d3b221f53318e3eb58b2d3a5d1359))
+
 ## [1.2.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.1.0...v1.2.0) (2026-02-21)
 
 
