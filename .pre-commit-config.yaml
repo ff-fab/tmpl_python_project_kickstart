@@ -59,7 +59,11 @@ repos:
           - json
           - markdown
           - yaml
-        exclude: \.vscode/settings\.json$
+        exclude: |
+          (?x)^(
+            \.vscode/settings\.json|
+            CHANGELOG\.md
+          )$
 
   # Ruff: Lint and format Python
   - repo: https://github.com/astral-sh/ruff-pre-commit
