@@ -299,7 +299,7 @@ tasks:
     desc: CI unit tests with coverage summary
     cmds:
       - uv run pytest {{.PKG}}/tests/unit/ --cov={{.MODULE_NAME}} --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
-      - uv run python {{.PKG}}/tests/scripts/summarize_tests.py --coverage-file=coverage.json --fail-under={{ coverage_threshold }}{% endraw %}{% if robot_framework %} --unit-only{% endif %}{% raw %}
+      - uv run python {{.PKG}}/tests/scripts/summarize_tests.py --coverage-file=coverage.json --fail-under={% endraw %}{{ coverage_threshold }}{% if robot_framework %} --unit-only{% endif %}{% raw %}
 
 {% endraw %}
 {% if robot_framework %}
