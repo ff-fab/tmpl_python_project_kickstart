@@ -1,6 +1,6 @@
 ---
 agent: agent
-description: 'Create a showboat demo that proves the current branch work. Analyzes the diff, runs quality checks, and builds a reproducible proof-of-work document.'
+description: 'Create a showboat demo that proves the current branch work. Analyzes the diff and builds a reproducible proof-of-work document.'
 ---
 
 # Showboat Demo
@@ -44,7 +44,8 @@ Run `showboat --help` to understand the available commands and options.
 3. **Add proof commands** using `showboat exec`. Choose commands that demonstrate the
    work is correct:
    - `task pre-pr` or specific test commands for code changes
-   - `git diff main --stat` to show scope
+   - `git diff main...HEAD --stat` to show scope (three-dot merge-base ensures
+     reproducibility even if `main` advances)
    - Feature-specific commands (API calls, CLI output, etc.)
 
 4. **If an exec block fails**, remove it with `showboat pop` and retry with a corrected

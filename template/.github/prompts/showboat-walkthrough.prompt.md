@@ -21,8 +21,8 @@ full project walkthrough.
 1. **Map the project structure:**
 
    ```bash
-   find . -type f -name '*.py' | head -60
-   tree -I '__pycache__|.git|node_modules|.venv' --dirsfirst -L 3
+   find . -type d \( -name '.venv' -o -name '.git' -o -name 'node_modules' -o -name '__pycache__' \) -prune -false -o -type f -name '*.py' | head -60
+   find . -maxdepth 3 \( -name '__pycache__' -o -name '.git' -o -name 'node_modules' -o -name '.venv' \) -prune -o -print | sed 's|^\./||' | sort
    ```
 
 2. **Identify the entry points** — `main.py`, `__init__.py`, `config.py`, CLI entry
@@ -42,7 +42,9 @@ full project walkthrough.
 
 ## Step 3: Build the Walkthrough
 
-Initialize the showboat document:
+Initialize the showboat document. Walkthroughs live in `docs/planning/` (not
+`docs/planning/demos/`) because they are standalone reference documents, not
+branch-specific proof-of-work artifacts.
 
 ```bash
 showboat init docs/planning/walkthrough.md "Code Walkthrough: <Project Name>"
@@ -61,13 +63,13 @@ For each section of the walkthrough:
 
    ```bash
    # Show a specific function or class
-   showboat exec docs/planning/walkthrough.md bash "sed -n '10,35p' src/mypackage/core.py"
+   showboat exec docs/planning/walkthrough.md bash "sed -n '10,35p' packages/src/<module_name>/core.py"
 
    # Show a key pattern with grep context
-   showboat exec docs/planning/walkthrough.md bash "grep -n -A 10 'class MyClass' src/mypackage/core.py"
+   showboat exec docs/planning/walkthrough.md bash "grep -n -A 10 'class MyClass' packages/src/<module_name>/core.py"
 
    # Show a whole short file
-   showboat exec docs/planning/walkthrough.md bash "cat src/mypackage/config.py"
+   showboat exec docs/planning/walkthrough.md bash "cat packages/src/<module_name>/config.py"
    ```
 
 3. **Add connecting commentary** between snippets, explaining:
