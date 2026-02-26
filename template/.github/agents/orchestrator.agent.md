@@ -65,7 +65,7 @@ context. Do not implement yourself!
    - Tell you to do the git commit and continue
 
 ### 2D. Continue or Complete
-- Land the plane (showboat, git commit, ...)
+- Land the plane (git commit, push, ...)
 - If more phases remain: Return to step 2A for next phase
 - If all phases complete: Proceed to Phase 3
 
