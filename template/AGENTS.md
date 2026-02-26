@@ -108,66 +108,10 @@ item. The gate task references the TODO doc but contains no decision logic itsel
 - Date-triggered TODOs stay markdown-only
 - When closing a gate task: create an ADR, update the TODO, or create new tasks
 
-## Showboat Demos (Proof of Work)
+## Showboat Demos
 
-**Showboat** creates executable demo documents that prove an agent's work. Every session
-that changes code or configuration MUST produce a showboat demo before pushing.
-
-### What is a Showboat Demo?
-
-A markdown file that mixes commentary with executable code blocks and their captured
-output. The demo serves as both:
-
-- **Documentation** — what was changed and why
-- **Reproducible proof** — `showboat verify` re-runs all code blocks and confirms
-  outputs match
-
-### When to Create a Demo
-
-- **Required:** Any session that changes code, configuration, or infrastructure
-- **Skip:** Documentation-only changes, beads-only changes, trivial formatting fixes
-
-### How to Create a Demo
-
-```bash
-# 1. Initialize the demo (use the branch name as filename)
-showboat init docs/planning/demos/<branch-name>.md "<Title describing the work>"
-
-# 2. Add commentary explaining what was done
-showboat note docs/planning/demos/<branch-name>.md "Describe the change and its purpose."
-
-# 3. Run commands that prove it works (output is captured automatically)
-showboat exec docs/planning/demos/<branch-name>.md bash "<test or verification command>"
-
-# 4. If a command fails, remove it and redo
-showboat pop docs/planning/demos/<branch-name>.md
-showboat exec docs/planning/demos/<branch-name>.md bash "<corrected command>"
-
-# 5. Verify the demo is reproducible (MUST exit 0)
-showboat verify docs/planning/demos/<branch-name>.md
-```
-
-### Demo Content Guidelines
-
-The agent decides the scope based on work complexity:
-
-- **Simple fix:** Note explaining the fix + one `exec` proving the test passes
-- **New feature:** Notes on design choices + multiple `exec` blocks showing the feature
-  works (API responses, test runs, etc.)
-- **Refactoring:** Before/after notes + proof that tests still pass
-
-### Conventions
-
-| Convention    | Value                            |
-| ------------- | -------------------------------- |
-| **Location**  | `docs/planning/demos/`           |
-| **Filename**  | `<branch-name>.md`               |
-| **Committed** | Yes — part of the PR             |
-| **Zensical**  | Excluded (not published to site) |
-| **Verify**    | `showboat verify` must exit 0    |
-
-### Reference
-
-- [Showboat README](https://github.com/simonw/showboat)
-- Installed in devcontainer via `uv tool install showboat`
-- Key commands: `init`, `note`, `exec`, `pop`, `verify`, `extract`
+Showboat demos are executable markdown documents that mix commentary with code blocks
+and their captured output — serving as both documentation and reproducible proof of
+work. They are **opt-in**: create one when requested by the user, or suggest one after
+significant code changes. See the `showboat-demo` skill for the full workflow and
+conventions.
