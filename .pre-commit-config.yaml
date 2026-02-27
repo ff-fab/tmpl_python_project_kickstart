@@ -86,6 +86,17 @@ repos:
           - pytest
           - pydantic-settings
 
+  # Copier template: Catch files missing .jinja suffix
+  - repo: local
+    hooks:
+      - id: check-jinja-suffix
+        name: Check Jinja suffix on template files
+        entry: ./scripts/check-jinja-suffix.sh
+        language: system
+        pass_filenames: false
+        files: ^template/
+        always_run: false
+
 # Configuration options
 default_language_version:
   python: python3.14
