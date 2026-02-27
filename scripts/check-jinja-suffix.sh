@@ -28,8 +28,8 @@ fi
 #   {{ … }}  — variable interpolation
 #   {% … %}  — block tags (if/for/macro/etc.)
 #
-# We use a negative look-behind (?<!\$) to ignore GitHub Actions' ${{ }}
-# syntax, which is legitimate literal text in workflow files.
+# We use (^|[^$]) to ignore GitHub Actions' ${{ }} syntax, which is
+# legitimate literal text in workflow files.
 while IFS= read -r -d '' file; do
     # Skip .jinja files (already rendered by Copier)
     [[ "$file" == *.jinja ]] && continue
@@ -40,14 +40,14 @@ while IFS= read -r -d '' file; do
     fi
 
     # Look for Jinja expressions in file contents
-    if grep -Pn '(?<!\$)\{\{|(?<!\$)\{%' "$file" > /dev/null 2>&1; then
+    if grep -nE '(^|[^$])\{\{|(^|[^$])\{%' "$file" > /dev/null 2>&1; then
         if [ "$FOUND" -eq 0 ]; then
             echo "ERROR: Template files with Jinja expressions missing .jinja suffix:"
             echo ""
         fi
         FOUND=$((FOUND + 1))
         echo "  $file"
-        grep -Pn '(?<!\$)\{\{|(?<!\$)\{%' "$file" | head -5 | sed 's/^/    /'
+        grep -nE '(^|[^$])\{\{|(^|[^$])\{%' "$file" | head -5 | sed 's/^/    /'
         echo ""
         EXIT_CODE=1
     fi
