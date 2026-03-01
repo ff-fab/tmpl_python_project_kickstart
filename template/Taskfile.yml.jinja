@@ -141,7 +141,13 @@ tasks:
     desc: Run all tests (unit + integration) with coverage and summary
     cmds:
       # Run all tests with coverage to enable threshold validation.
-      - cmd: uv run pytest {{.PKG}}/tests/unit/ -v --tb=short --junitxml=results-unit.xml --cov={{.MODULE_NAME}} --cov-branch --cov-report=json
+      - cmd: |
+          # Tolerate empty test directories in early development.
+          if ! find {{.PKG}}/tests/unit/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+            echo "ℹ No unit tests found — skipping"
+            exit 0
+          fi
+          uv run pytest {{.PKG}}/tests/unit/ -v --tb=short --junitxml=results-unit.xml --cov={{.MODULE_NAME}} --cov-branch --cov-report=json
         ignore_error: true
 {% endraw %}
 {% if robot_framework %}
@@ -155,7 +161,13 @@ tasks:
   test:unit:
     desc: Run unit tests only (fast, every change)
     cmds:
-      - uv run pytest {{.PKG}}/tests/unit/ -v --tb=short --junitxml=results-unit.xml
+      - |
+        # Tolerate empty test directories in early development.
+        if ! find {{.PKG}}/tests/unit/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+          echo "ℹ No unit tests found — skipping"
+          exit 0
+        fi
+        uv run pytest {{.PKG}}/tests/unit/ -v --tb=short --junitxml=results-unit.xml
 
   test:file:
     desc: 'Run specific test file or pattern (e.g.: task test:file -- packages/tests/unit/test_errors.py)'
@@ -191,7 +203,12 @@ tasks:
   test:integration:
     desc: Run integration tests (pytest)
     cmds:
-      - uv run pytest {{.PKG}}/tests/integration/ -v --tb=short -m integration
+      - |
+        if ! find {{.PKG}}/tests/integration/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+          echo "ℹ No integration tests found — skipping"
+          exit 0
+        fi
+        uv run pytest {{.PKG}}/tests/integration/ -v --tb=short -m integration
 {% endraw %}
 {% endif %}
 {% raw %}
@@ -298,8 +315,14 @@ tasks:
   ci:test:unit:
     desc: CI unit tests with coverage summary
     cmds:
-      - uv run pytest {{.PKG}}/tests/unit/ --cov={{.MODULE_NAME}} --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
-      - uv run python {{.PKG}}/tests/scripts/summarize_tests.py --coverage-file=coverage.json --fail-under={% endraw %}{{ coverage_threshold }}{% if robot_framework %} --unit-only{% endif %}{% raw %}
+      - |
+        # Tolerate empty test directories so PRs aren't blocked in early development.
+        if ! find {{.PKG}}/tests/unit/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+          echo "ℹ No unit tests found in {{.PKG}}/tests/unit/ — skipping"
+          exit 0
+        fi
+        uv run pytest {{.PKG}}/tests/unit/ --cov={{.MODULE_NAME}} --cov-branch --cov-report=xml --cov-report=json --cov-report=term --junitxml=results-unit.xml
+        uv run python {{.PKG}}/tests/scripts/summarize_tests.py --coverage-file=coverage.json --fail-under={% endraw %}{{ coverage_threshold }}{% if robot_framework %} --unit-only{% endif %}{% raw %}
 
 {% endraw %}
 {% if robot_framework %}
@@ -314,7 +337,12 @@ tasks:
   ci:test:integration:
     desc: CI integration tests (pytest)
     cmds:
-      - uv run pytest {{.PKG}}/tests/integration/ -v --tb=short -m integration --junitxml=results-integration.xml
+      - |
+        if ! find {{.PKG}}/tests/integration/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+          echo "ℹ No integration tests found — skipping"
+          exit 0
+        fi
+        uv run pytest {{.PKG}}/tests/integration/ -v --tb=short -m integration --junitxml=results-integration.xml
 {% endraw %}
 {% endif %}
 {% raw %}
