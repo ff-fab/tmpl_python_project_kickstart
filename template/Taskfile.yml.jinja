@@ -12,6 +12,13 @@ vars:
   PKG: packages
   MODULE_NAME: '{{ module_name }}'
 {% raw %}
+  # Guard vars: detect whether test files exist.
+  # Used by test tasks to skip gracefully when directories are empty
+  # (common in early development). The find runs lazily per task invocation.
+  HAS_UNIT_TESTS:
+    sh: find {{.PKG}}/tests/unit/ \( -name 'test_*.py' -o -name '*_test.py' \) 2>/dev/null | grep -qm1 . && echo true || echo false
+  HAS_INTEGRATION_TESTS:
+    sh: find {{.PKG}}/tests/integration/ \( -name 'test_*.py' -o -name '*_test.py' \) 2>/dev/null | grep -qm1 . && echo true || echo false
 
 tasks:
   default:
@@ -142,8 +149,7 @@ tasks:
     cmds:
       # Run all tests with coverage to enable threshold validation.
       - cmd: |
-          # Tolerate empty test directories in early development.
-          if ! find {{.PKG}}/tests/unit/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+          if [ "{{.HAS_UNIT_TESTS}}" != "true" ]; then
             echo "ℹ No unit tests found — skipping"
             exit 0
           fi
@@ -156,14 +162,19 @@ tasks:
 {% endraw %}
 {% endif %}
 {% raw %}
-      - uv run python {{.PKG}}/tests/scripts/summarize_tests.py --coverage-file=coverage.json
+      - |
+        # Only run the summary when pytest actually produced results.
+        if [ -f results-unit.xml ]; then
+          uv run python {{.PKG}}/tests/scripts/summarize_tests.py --coverage-file=coverage.json
+        else
+          echo "ℹ No test results — skipping summary"
+        fi
 
   test:unit:
     desc: Run unit tests only (fast, every change)
     cmds:
       - |
-        # Tolerate empty test directories in early development.
-        if ! find {{.PKG}}/tests/unit/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+        if [ "{{.HAS_UNIT_TESTS}}" != "true" ]; then
           echo "ℹ No unit tests found — skipping"
           exit 0
         fi
@@ -204,7 +215,7 @@ tasks:
     desc: Run integration tests (pytest)
     cmds:
       - |
-        if ! find {{.PKG}}/tests/integration/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+        if [ "{{.HAS_INTEGRATION_TESTS}}" != "true" ]; then
           echo "ℹ No integration tests found — skipping"
           exit 0
         fi
@@ -316,8 +327,7 @@ tasks:
     desc: CI unit tests with coverage summary
     cmds:
       - |
-        # Tolerate empty test directories so PRs aren't blocked in early development.
-        if ! find {{.PKG}}/tests/unit/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+        if [ "{{.HAS_UNIT_TESTS}}" != "true" ]; then
           echo "ℹ No unit tests found in {{.PKG}}/tests/unit/ — skipping"
           exit 0
         fi
@@ -338,7 +348,7 @@ tasks:
     desc: CI integration tests (pytest)
     cmds:
       - |
-        if ! find {{.PKG}}/tests/integration/ \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+        if [ "{{.HAS_INTEGRATION_TESTS}}" != "true" ]; then
           echo "ℹ No integration tests found — skipping"
           exit 0
         fi
