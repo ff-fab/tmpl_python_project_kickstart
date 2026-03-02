@@ -117,6 +117,9 @@ cd /workspace
 if [ ! -d ".beads" ]; then
     echo "🔮 Initializing beads issue tracker..."
     bd init --quiet --skip-hooks
+    if [ ! -d ".beads/dolt" ]; then
+        echo "⚠️  bd init did not create .beads/dolt — Dolt backend may be unavailable"
+    fi
     echo "✅ Beads initialized"
 else
     echo "✅ Beads already initialized"
