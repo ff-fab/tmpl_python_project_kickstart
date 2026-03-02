@@ -216,3 +216,19 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Dolt database files (added by bd init)
+.dolt/
+*.db
+
+# Runtime files
+bd.sock
+bd.sock.startlock
+sync-state.json
+last-touched
+dolt-server.pid
+dolt-server.port
+dolt-server.lock
+dolt-server.activity
+dolt-server.log
+dolt-monitor.pid
