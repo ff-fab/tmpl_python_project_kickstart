@@ -130,7 +130,7 @@ without duplicating the rich deliberation content into beads.
 ## Pre-PR Quality Gate
 
 Run `task pre-pr` to execute all quality gates before creating a PR. This task runs
-pre-commit + lint + typecheck + tests + coverage.
+pre-commit + lint + typecheck + tests + coverage + complexity.
 
 All checks must pass before pushing.
 
