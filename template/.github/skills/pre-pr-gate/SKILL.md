@@ -11,7 +11,7 @@ This skill automates the full pre-PR workflow. Follow these steps in order.
 ## Step 1: Run Quality Gates
 
 Run the deterministic quality gate task. This runs pre-commit checks, lint, typecheck,
-all tests, and coverage thresholds:
+all tests, coverage thresholds, and complexity checks:
 
 ```bash
 task pre-pr
