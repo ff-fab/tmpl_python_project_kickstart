@@ -3,22 +3,19 @@
 {{ description }}
 
 [![CI](https://github.com/{{ github_org }}/{{ repo_name }}/actions/workflows/ci.yml/badge.svg)](https://github.com/{{ github_org }}/{{ repo_name }}/actions/workflows/ci.yml)
-{% if docs_style != "none" -%}
 [![Docs](https://github.com/{{ github_org }}/{{ repo_name }}/actions/workflows/docs.yml/badge.svg)](https://{{ github_org }}.github.io/{{ repo_name }}/)
-{% endif -%}
 {% if license == "MIT" -%}
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 {% endif -%}
 [![Python](https://img.shields.io/badge/python-%E2%89%A5{{ min_python_version }}-blue)](https://www.python.org/)
 
-{% if docs_style != "none" -%}
 **[Documentation](https://{{ github_org }}.github.io/{{ repo_name }}/)** ·
 **[Quickstart](https://{{ github_org }}.github.io/{{ repo_name }}/getting-started/quickstart/)** ·
 **[API Reference](https://{{ github_org }}.github.io/{{ repo_name }}/reference/api/)**
 
 ---
 
-{% endif -%}
+
 ## What is {{ project_name }}?
 
 <!-- TODO: One-paragraph description of what this project does and who it's for. -->
@@ -41,17 +38,15 @@ pip install {{ repo_name }}
 # TODO: Add a minimal usage example here
 ```
 
-{% if docs_style != "none" -%}
 See the [Quickstart](https://{{ github_org }}.github.io/{{ repo_name }}/getting-started/quickstart/)
 for a full walkthrough.
 
-{% endif -%}
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, commands, project
 structure, and code quality standards.
 
-{% if docs_style != "none" -%}
 ## Documentation
 
 Full documentation is published at
@@ -65,7 +60,7 @@ Full documentation is published at
 | [Reference](https://{{ github_org }}.github.io/{{ repo_name }}/reference/) | API docs, CLI options, schemas |
 | [ADRs](https://{{ github_org }}.github.io/{{ repo_name }}/adr/) | Architecture Decision Records |
 
-{% endif -%}
+
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
