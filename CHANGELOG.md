@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.4.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.3.0...v1.4.0) (2026-03-04)
+
+
+### Features
+
+* lint for template files missing .jinja suffix ([#33](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/33)) ([cf22f58](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/cf22f58c83bc713e7ec827b02be32a9be3e71016))
+* tolerate empty unit test directories in CI ([#34](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/34)) ([6f5ea21](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/6f5ea217cf60dea2380db589bdcaaff1e1cc1e19))
+
+
+### Bug Fixes
+
+* :bug: enabled jinja for .env file ([#32](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/32)) ([bd985ca](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/bd985ca6b05a5a205705d7eb5ef5ea692a4e6fab))
+* exclude CHANGELOG.md from Prettier pre-commit hook ([#27](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/27)) ([f43d7e5](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/f43d7e56ba9cc7f017469c7759e70437f5ad6ed1))
+* include complexity checks in pre-pr gate ([#36](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/36)) ([ff78cdd](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/ff78cdd653ec177923c50089f058426a4ab14b1f))
+* install Dolt and start sql-server for beads (bd) issue tracker ([#31](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/31)) ([6752782](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/6752782e68742622be63b902d49863369cc92cc4))
+
 ## [1.3.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.2.0...v1.3.0) (2026-02-22)
 
 
