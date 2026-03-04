@@ -1,13 +1,15 @@
 # Contributing to {{ project_name }}
 
-## Quick Start
+Thank you for your interest in contributing to {{ project_name }}! This guide covers
+everything you need to get a development environment running and start making changes.
 
-### Prerequisites
+## Prerequisites
 
-- Docker and Docker Compose (for DevContainer)
+- Python ≥ {{ min_python_version }}
+- Docker (for DevContainer development)
 - VS Code with DevContainers extension
 
-### Setup (2 minutes)
+## Setup (2 minutes)
 
 ```bash
 # Clone the repository
@@ -23,27 +25,19 @@ code .
 
 That's it! You're ready to develop.
 
-### Optional Local Authentication
-
-You can provide two local variables during setup to authenticate against their
-respective services:
-
-- `GH_TOKEN` for GitHub
-- `CONTEXT7_API_KEY` for Context7
-
 ## Common Commands
 
 **Quick reference (via [Taskfile](https://taskfile.dev)):**
 
 ```bash
-task test              # Run all tests
-task lint              # Lint all code
+task test              # Run all tests (unit + integration + coverage)
+task test:unit         # Run unit tests only
+task lint              # Lint all code (Ruff check + format)
 task lint:fix          # Auto-fix lint issues
+task typecheck         # Type check (mypy strict)
 task check             # Run all checks (lint + typecheck + test)
-task docs:build        # Build documentation site
+task pre-pr            # Full pre-PR quality gate
 task docs:serve        # Serve documentation site locally
-task plan              # Show project phase progress
-task plan:ui           # Interactive project progress view
 task --list            # Show all available tasks
 ```
 
@@ -54,46 +48,44 @@ task --list            # Show all available tasks
 ├── .devcontainer/              # DevContainer configuration
 │   ├── devcontainer.json       # Container setup + VS Code settings
 │   ├── Dockerfile              # Container image
-│   ├── post-create.sh          # Auto-setup script
+│   └── post-create.sh          # Auto-setup script
 ├── packages/
-│   ├── src/{{ module_name }}/      # Source code
-│   ├── tests/                  # All tests
-│   └── pyproject.toml          # Python configuration (Ruff, mypy, pytest)
-├── docs/                       # Documentation
+│   ├── src/{{ module_name }}/  # Source code
+│   ├── tests/                  # Unit & integration tests
+│   └── pyproject.toml          # Python project configuration
+├── docs/                       # Documentation (Zensical)
 │   ├── adr/                    # Architecture Decision Records
-│   └── TODO/                   # Pending decisions and deferred topics
-├── VERSIONING.md               # Version management documentation
-├── zensical.toml                # Documentation site config
+│   ├── getting-started/        # Quickstart & setup
+│   ├── concepts/               # Architecture & design explanations
+│   ├── guides/                 # How-to guides
+│   └── reference/              # API reference & schemas
+├── renovate.json               # Automated dependency updates
+└── zensical.toml               # Documentation site config
 ```
 
 ## Code Quality
 
-### Formatting
-
-- **Python**: Ruff (88-char line length, double quotes)
-- **All files**: LF line endings (enforced via `.gitattributes`)
-
-### Linting
-
-- **Python**: Ruff (comprehensive rule set)
-
-### Type Checking
-
-- **Python**: mypy (strict mode)
+- **Linting & formatting**: [Ruff](https://docs.astral.sh/ruff/) (88-char line length,
+  double quotes)
+- **Type checking**: [mypy](https://mypy-lang.org/) (strict mode)
+- **Testing**: [pytest](https://docs.pytest.org/) with pytest-asyncio
+- **Coverage**: ≥{{ coverage_threshold }}% threshold (lines and branches)
+- **Pre-commit**: EditorConfig, trailing whitespace, codespell, Ruff, mypy
 
 All tools are **auto-configured in DevContainer** via `.devcontainer/devcontainer.json`.
 Format on save is enabled by default.
 
-## Versioning
+## Workflow
 
-Versions are automatically derived from git tags using `setuptools_scm`:
+This project follows **GitHub Flow**:
 
-```bash
-# Current version (from git tag or dev counter)
-python -c "from {{ module_name }} import __version__; print(__version__)"
+1. Create a feature branch from `main`
+2. Make changes with [conventional commits](https://www.conventionalcommits.org/)
+    (`feat:`, `fix:`, `docs:`, `chore:`, etc.)
+3. Run `task pre-pr` to pass all quality gates
+4. Open a pull request — never push directly to `main`
 
-# Tag a release
-git tag v0.1.0
-```
+## License
 
-See [VERSIONING.md](VERSIONING.md) for details.
+By contributing, you agree that your contributions will be licensed under the
+[MIT License](LICENSE).

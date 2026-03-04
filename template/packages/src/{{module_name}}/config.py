@@ -4,8 +4,9 @@ Configuration is loaded from environment variables and/or .env files.
 """
 
 from functools import lru_cache
-from typing import Literal
+from typing import Annotated, Literal
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,11 +20,11 @@ class Settings(BaseSettings):
     )
 
     # Application settings
-    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
 
     # Network service settings
     host: str = "127.0.0.1"
-    port: int = 1883
+    port: Annotated[int, Field(ge=1, le=65535)] = 1883
 
 
 @lru_cache
@@ -32,5 +33,10 @@ def get_settings() -> Settings:
 
     Returns:
         Settings instance (cached after first call).
+
+    Note:
+        Uses ``@lru_cache`` — call ``get_settings.cache_clear()`` in tests that
+        mutate environment variables, or use the ``_reset_settings_cache``
+        fixture from ``tests/fixtures/config.py``.
     """
     return Settings()
