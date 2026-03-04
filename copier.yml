@@ -70,6 +70,10 @@ release_please:
   type: bool
   help: Whether to include Release Please for automated releases and SemVer tagging.
   default: true
+include_sbom:
+  type: bool
+  help: Whether to include syft SBOM generation (CycloneDX JSON) in the devcontainer and Taskfile.
+  default: false
 init_git_on_copy:
   type: bool
   help: Whether to initialize a Git repository right after scaffolding.

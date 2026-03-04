@@ -21,8 +21,11 @@ RUN rm -f /etc/apt/sources.list.d/yarn.list \
 # Install go-task (task runner - https://taskfile.dev)
 RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
-# Install Dolt (versioned database required by beads issue tracker)
-RUN sudo bash -c 'curl -fsSL https://github.com/dolthub/dolt/releases/latest/download/install.sh | bash'
+{% if include_sbom %}
+# Install syft (SBOM generator — https://github.com/anchore/syft)
+# renovate: datasource=docker depName=docker.io/anchore/syft
+COPY --from=docker.io/anchore/syft:v1.26.1 /syft /usr/local/bin/syft
+{% endif %}
 
 # Configure uv to use project-local virtual environments
 ENV UV_PROJECT_ENVIRONMENT="/workspace/.venv"
@@ -33,4 +36,4 @@ RUN mkdir -p /home/vscode/.vscode-server /home/vscode/.vscode-server/extensions 
     && chown -R vscode:vscode /home/vscode/.vscode-server
 
 # Verify installations
-RUN uv --version && python --version && task --version && fzf --version
+RUN uv --version && python --version && task --version && fzf --version{% if include_sbom %} && syft --version{% endif %}

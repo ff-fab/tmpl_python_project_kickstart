@@ -45,22 +45,6 @@ install_bd() {
 echo "🔮 Installing/updating beads CLI..."
 if install_bd; then
     hash -r
-    # Fix ICU version mismatch: prebuilt bd binary may link against an older ICU
-    # than what the container provides (e.g., ICU 74 vs Trixie's ICU 76).
-    # Create compatibility symlinks so the binary can load.
-    if ! bd version &>/dev/null; then
-        echo "⚠️  bd binary has ICU mismatch, creating compatibility symlinks..."
-        local_icu=$(ldconfig -p | grep -oP 'libicui18n\.so\.\K[0-9]+' | head -1)
-        needed_icu=$(ldd "$(which bd)" 2>/dev/null | grep -oP 'libicui18n\.so\.\K[0-9]+' || true)
-        if [ -n "$local_icu" ] && [ -n "$needed_icu" ] && [ "$local_icu" != "$needed_icu" ]; then
-            for lib in libicui18n libicuuc libicudata; do
-                sudo ln -sf "/lib/x86_64-linux-gnu/${lib}.so.${local_icu}" \
-                            "/lib/x86_64-linux-gnu/${lib}.so.${needed_icu}"
-            done
-            sudo ldconfig
-            echo "✅ Symlinked ICU ${needed_icu} → ${local_icu}"
-        fi
-    fi
     echo "✅ $(bd --version)"
 else
     echo "❌ Failed to install bd after multiple attempts"
@@ -117,24 +101,9 @@ cd /workspace
 if [ ! -d ".beads" ]; then
     echo "🔮 Initializing beads issue tracker..."
     bd init --quiet --skip-hooks
-    if [ ! -d ".beads/dolt" ]; then
-        echo "⚠️  bd init did not create .beads/dolt — Dolt backend may be unavailable"
-    fi
     echo "✅ Beads initialized"
 else
     echo "✅ Beads already initialized"
-fi
-
-# Start Dolt server via bd (manages port, PID, and lifecycle automatically)
-if command -v bd >/dev/null 2>&1 && command -v dolt >/dev/null 2>&1 && [ -d ".beads/dolt" ]; then
-    if ! bd dolt test --quiet 2>/dev/null; then
-        echo "🔮 Starting Dolt server..."
-        if bd dolt start; then
-            echo "✅ Dolt server started"
-        else
-            echo "⚠️  Dolt server failed to start (check bd dolt logs)"
-        fi
-    fi
 fi
 
 # SSH: seed known_hosts for GitHub so the first git push doesn't trigger a TOFU prompt.

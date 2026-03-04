@@ -310,7 +310,23 @@ tasks:
     cmds:
       - uv run radon cc {{.PKG}}/src/{{.MODULE_NAME}} --average --show-complexity
       - uv run xenon {{.PKG}}/src/{{.MODULE_NAME}} --max-absolute B --max-modules A --max-average A
+{% endraw %}
+{% if include_sbom %}
+{% raw %}
+  # ===========================================================================
+  # Supply Chain
+  # ===========================================================================
 
+  sbom:
+    desc: Generate CycloneDX SBOM from built wheel
+    cmds:
+      - rm -rf dist/
+      - uv run --with build python -m build
+      - syft dist/*.whl -o cyclonedx-json=dist/{{.MODULE_NAME}}.cdx.json
+      - echo "SBOM written to dist/{{.MODULE_NAME}}.cdx.json"
+{% endraw %}
+{% endif %}
+{% raw %}
   # ===========================================================================
   # CI Helpers
   # ===========================================================================
