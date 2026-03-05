@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.4.0...v1.5.0) (2026-03-05)
+
+
+### Features
+
+* wire cognitive complexity and symilar into quality gates ([#38](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/38)) ([81380ba](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/81380ba39fddf7ecb3fc043525cf7c5706aeb52c))
+
 ## [1.4.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.3.0...v1.4.0) (2026-03-04)
 
 
