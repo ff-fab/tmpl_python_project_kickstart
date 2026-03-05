@@ -47,6 +47,9 @@ If push fails, resolve conflicts and retry. NEVER stop before pushing.
 gh pr create
 ```
 
+**STOP. Do NOT merge the PR.** Your job ends here. The human reviewer decides when to
+merge. Never approve-and-merge, never enable auto-merge — even if all CI checks pass.
+
 ## Step 5: Report Summary
 
 After completing all steps, provide a brief summary:

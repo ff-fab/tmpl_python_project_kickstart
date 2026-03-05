@@ -52,7 +52,9 @@ applyTo: '**'
    **Always use `task ci:wait`** to wait for CI. Do not use `gh pr checks --watch`
    (opens alternate buffer, breaks agents) or ad-hoc polling loops.
 
-   Never merge unless directly requested by the user.
+   **NEVER merge a PR unless the user explicitly requests it.** Do not approve-and-merge,
+   do not enable auto-merge, do not merge after CI passes. Your job ends at creating the
+   PR and waiting for CI — the human reviewer decides when to merge.
 
 **Key principle:** `main` is always deployable.
 
@@ -172,6 +174,7 @@ until `git push` succeeds.
 - If push fails, resolve and retry until it succeeds
 - Beads state MUST be committed before pushing — the pre-push hook will reject pushes
   with uncommitted `.beads/` changes
+- NEVER merge a PR — only the user decides when to merge
 
 ## Test Notes
 
