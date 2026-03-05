@@ -316,7 +316,15 @@ tasks:
   similarity:
     desc: Check for code duplication (symilar)
     cmds:
-      - uv run symilar --min-similarity-lines 4 --ignore-imports --ignore-signatures $(find {{.PKG}}/src/{{.MODULE_NAME}} -name '*.py')
+      - |
+        OUTPUT=$(uv run symilar -d 4 --ignore-imports --ignore-signatures \
+          $(find {{.PKG}}/src/{{.MODULE_NAME}} -name '*.py'))
+        echo "$OUTPUT"
+        DUPES=$(echo "$OUTPUT" | grep -oP 'duplicates=\K[0-9]+')
+        if [ "${DUPES:-0}" -gt 0 ]; then
+          echo "❌ Found $DUPES duplicate lines"
+          exit 1
+        fi
 {% endraw %}
 {% if include_sbom %}
 {% raw %}
