@@ -25,6 +25,32 @@ ensure_git_repo() {
 
 echo "🏠 Setting up {{ _copier_answers.project_name }} development environment..."
 
+# Install dolt — versioned SQL database used by beads (bd) as its backing store.
+# Installed at runtime (not in Dockerfile) to avoid Docker layer cache staleness
+# and to support retry logic for network flakiness.
+install_dolt() {
+    local attempts=3
+    local n=1
+    while [ "$n" -le "$attempts" ]; do
+        if curl -fsSL https://github.com/dolthub/dolt/releases/latest/download/install.sh | sudo bash; then
+            return 0
+        fi
+        echo "⚠️  dolt install attempt ${n}/${attempts} failed"
+        n=$((n + 1))
+        sleep 2
+    done
+    return 1
+}
+
+echo "🗃️  Installing/updating dolt (beads database backend)..."
+if install_dolt; then
+    hash -r
+    echo "✅ dolt $(dolt version 2>/dev/null | head -1)"
+else
+    echo "❌ Failed to install dolt after multiple attempts"
+    exit 1
+fi
+
 # Install beads (bd) — git-backed issue tracker for AI agents
 # Installed at runtime (not in Dockerfile) to avoid Docker layer cache staleness
 # and to support retry logic for network flakiness.
