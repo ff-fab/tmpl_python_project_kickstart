@@ -9,10 +9,20 @@
 # Outputs a single JSON object to stdout with keys:
 #     metadata, reviews, review_comments, conversation_comments, changed_files, ci_status
 #
-# Each section is always present. If a section has no data, it contains an empty array.
-# Errors are reported on stderr and the section is set to {"error": "..."}.
+# Each section key is always present. Sections that represent lists contain an empty array
+# when they have no data, and also fall back to an empty array if fetching fails. The
+# metadata section may contain {"error": "..."} on failure. Errors are always reported
+# on stderr.
 
 set -euo pipefail
+
+# ---------- prerequisites ----------
+for cmd in gh jq; do
+    command -v "$cmd" >/dev/null 2>&1 || {
+        echo "Error: '$cmd' is required but not installed." >&2
+        exit 1
+    }
+done
 
 # ---------- resolve PR number ----------
 PR_NUMBER="${1:-}"
@@ -92,20 +102,29 @@ echo "  [6/6] CI status checks..." >&2
 # Combine both commit statuses and check runs for full coverage.
 HEAD_SHA=$(gh api "repos/${REPO}/pulls/${PR_NUMBER}" --jq '.head.sha' 2>/dev/null || echo "")
 
-CI_STATUS='{"statuses": [], "check_runs": []}'
+CI_STATUS='{"state": "unknown", "statuses": [], "check_runs": []}'
 if [[ -n "$HEAD_SHA" ]]; then
+    # Commit status endpoint returns {state, statuses: [...]}
     STATUSES=$(gh api "repos/${REPO}/commits/${HEAD_SHA}/status" \
         --jq '{state, statuses: [.statuses[] | {context, state, description, target_url}]}' \
         2>/dev/null || echo '{"state": "unknown", "statuses": []}')
 
-    CHECK_RUNS=$(fetch_all_pages "repos/${REPO}/commits/${HEAD_SHA}/check-runs" | \
-        jq '{check_runs: [.check_runs[]? | {name, status, conclusion, html_url, output: {title: .output.title, summary: (.output.summary // "" | if length > 500 then .[0:500] + "... (truncated)" else . end)}}]}' \
-        2>/dev/null || echo '{"check_runs": []}')
+    # Check-runs endpoint returns {total_count, check_runs: [...]}, NOT a bare
+    # array — so we must NOT use fetch_all_pages (which assumes arrays).
+    # Use per_page=100 and extract the array directly with --jq.
+    CHECK_RUNS=$(gh api "repos/${REPO}/commits/${HEAD_SHA}/check-runs" \
+        -F per_page=100 \
+        --jq '[.check_runs[]? | {name, status, conclusion, html_url, output: {title: .output.title, summary: (.output.summary // "" | if length > 500 then .[0:500] + "... (truncated)" else . end)}}]' \
+        2>/dev/null || echo '[]')
+
+    STATE=$(echo "$STATUSES" | jq -r '.state')
+    STATUS_ARRAY=$(echo "$STATUSES" | jq '.statuses')
 
     CI_STATUS=$(jq -n \
-        --argjson statuses "$STATUSES" \
-        --argjson checks "$CHECK_RUNS" \
-        '{statuses: $statuses, check_runs: $checks}')
+        --arg state "$STATE" \
+        --argjson statuses "$STATUS_ARRAY" \
+        --argjson check_runs "$CHECK_RUNS" \
+        '{state: $state, statuses: $statuses, check_runs: $check_runs}')
 fi
 
 # ---------- assemble final output ----------
