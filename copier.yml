@@ -2,6 +2,22 @@ _min_copier_version: '9.11.3'
 _subdirectory: 'template'
 _jinja_extensions:
   - jinja2_time.TimeExtension
+
+# Files that are generated on first `copier copy` but left untouched during
+# `copier update` — i.e. initial skeleton / user-owned content.
+_skip_if_exists:
+  # User application code
+  - packages/src/*/main.py
+  - packages/src/*/config.py
+  # Test scaffolding
+  - packages/tests/conftest.py
+  - packages/tests/fixtures/async_utils.py
+  - packages/tests/fixtures/config.py
+  # Project documentation
+  - README.md
+  - CONTRIBUTING.md
+  - AGENTS.md
+  - docs/adr/*
 min_python_version:
   type: str
   default: '3.14'
