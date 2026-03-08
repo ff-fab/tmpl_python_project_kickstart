@@ -25,8 +25,8 @@ Close all completed beads tasks and sync state:
 
 ```bash
 bd close <id>
-bd sync
-git add .beads/ && git commit -m "chore: sync beads state"
+bd export
+git add .beads/ && git commit -m "chore: update beads state"
 ```
 
 The pre-push hook will reject pushes with uncommitted `.beads/` changes.

@@ -65,8 +65,8 @@ until `git push` succeeds.
 3. **Close beads tasks and commit** - Beads state MUST be committed before pushing:
    ```bash
    bd close <id>                # Close finished work
-   bd sync                      # Export to JSONL
-   git add .beads/ && git commit -m "chore: sync beads state"
+   bd export                    # Export to JSONL
+   git add .beads/ && git commit -m "chore: update beads state"
    ```
 4. **PUSH TO REMOTE** - This is MANDATORY:
    ```bash
