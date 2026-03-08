@@ -10,7 +10,7 @@ repos:
       - id: editorconfig-checker
         name: EditorConfig (whitespace & encoding)
         alias: ec
-        exclude: '\.md$' # Prettier handles markdown formatting
+        exclude: '\.md(\.jinja)?$' # Prettier handles markdown formatting
 
   # Basic checks (trailing whitespace, YAML validity, etc.)
   - repo: https://github.com/pre-commit/pre-commit-hooks
