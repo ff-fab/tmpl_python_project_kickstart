@@ -16,8 +16,10 @@ user feedback.
    - Read relevant files identified in searches
    - Use code symbol searches for specific functions/classes
    - Explore dependencies and related code
-{% if context7_api_key %}   - Use #upstash/context7/* for framework/library context as needed
-{% endif %}
+{%- if context7_api_key %}
+   - Use #upstash/context7/* for framework/library context as needed
+{%- endif %}
+
 2. **Stop research at 90% confidence** - you have enough context when you can answer:
    - What files/functions are relevant?
    - How does the existing code work in this area?
