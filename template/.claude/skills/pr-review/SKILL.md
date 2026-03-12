@@ -6,7 +6,14 @@ description:
   arguments, reviews ALL open PRs (excluding please-release). Use when the user says
   "review this PR", "check PR feedback", "what did reviewers say", "review all PRs",
   "address review comments", or any variation involving pull request review.
+allowed-tools:
+  - Bash(gh *)
+  - Bash(bash *)
+  - Read
+  - Grep
 ---
+
+<!-- ultrathink -->
 
 # PR Review
 
