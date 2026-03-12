@@ -5,24 +5,23 @@ applyTo: '**/*.md'
 
 # Documentation Instructions
 
-## Documentation System\
+## Documentation System
 
 | Component      | Choice                                                         |
 | -------------- | -------------------------------------------------------------- |
 | Site Generator | Zensical (`zensical.toml`)                                     |
 | Theme          | Zensical (modern theme)                                        |
-
-{% if docs_style == "diataxis" %}
+{%- if docs_style == "diataxis" %}
 | Structure      | Diátaxis (Tutorials / How-To / Reference / Explanation)        |
-{% elif docs_style == "dita" %}
+{%- elif docs_style == "dita" %}
 | Structure      | Structured "information typing" (DITA): Concept/Task/Reference |
-{% elif docs_style == "user-journey" %}
+{%- elif docs_style == "user-journey" %}
 | Structure      | User Journey (guided flow through tasks along lifecycle)       |
-{% elif docs_style == "architecture" %}
+{%- elif docs_style == "architecture" %}
 | Structure      | Architecture-Centric (system overview, components, details)    |
-{% elif docs_style == "flat" %}
+{%- elif docs_style == "flat" %}
 | Structure      | Flat (no enforced structure, clear sectioning and navigation)  |
-{% endif %}
+{%- endif %}
 | CLI            | `task docs:serve`, `task docs:build`                           |
 
 ## ADR Format
