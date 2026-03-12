@@ -6,7 +6,14 @@ description:
   arguments, reviews ALL open PRs (excluding please-release). Use when the user says
   "review this PR", "check PR feedback", "what did reviewers say", "review all PRs",
   "address review comments", or any variation involving pull request review.
+allowed-tools:
+  - Bash(gh *)
+  - Bash(bash *)
+  - Read
+  - Grep
 ---
+
+<!-- ultrathink -->
 
 # PR Review
 
@@ -46,7 +53,7 @@ comments, conversation comments, and CI status) in a single deterministic pass w
 pagination.
 
 ```bash
-bash .github/skills/pr-review/fetch-pr-feedback.sh <PR_NUMBER>
+bash "$(skill_dir)/fetch-pr-feedback.sh" <PR_NUMBER>
 ```
 
 **This step is mandatory for every PR.** Do not skip it. Do not substitute ad-hoc `gh`
