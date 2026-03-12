@@ -37,8 +37,7 @@
       "Bash(gh run watch *)",
       "Bash(gh repo view *)",
       "Bash(gh search *)",
-      "Bash(gh api *)",
-      "Bash(gh status)"
+      "Bash(gh status *)"
     ],
     "denyTools": ["Bash(python *)", "Bash(python3 *)"]
   }

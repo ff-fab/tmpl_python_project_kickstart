@@ -33,7 +33,7 @@ If `$ARGUMENTS` is empty, list every open PR and filter:
 
 ```bash
 gh pr list --state open --json number,title,author,headRefName \
-  --jq '.[] | select(.author.login != "please-release" and (.headRefName | startswith("please-release") | not))'
+  --jq '.[] | select((.author.login == "please-release" | not) and (.headRefName | startswith("please-release") | not))'
 ```
 
 This excludes PRs authored by `please-release` AND PRs from branches starting with

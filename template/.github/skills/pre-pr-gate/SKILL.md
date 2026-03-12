@@ -49,7 +49,10 @@ and explain the issue to the user rather than looping indefinitely.
 
 ## Step 3 — Close beads tasks
 
-Check for completed beads tasks and sync state:
+If `bd` is not available or `.beads/` doesn't exist, skip this step
+entirely — beads is not present in every project.
+
+Otherwise, check for completed beads tasks and sync state:
 
 ```bash
 bd list
@@ -66,9 +69,6 @@ git add .beads/ && git commit -m "chore: update beads state"
 If there are no completed tasks to close, still run `bd export` and check
 whether `.beads/` has any uncommitted changes (the user may have modified
 state manually). Commit them if so.
-
-If `bd` is not available or `.beads/` doesn't exist, skip this step
-entirely — beads is not present in every project.
 
 ## Step 4 — Push
 
