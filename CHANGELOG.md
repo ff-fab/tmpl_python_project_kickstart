@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.6.0...v1.6.1) (2026-03-13)
+
+
+### Bug Fixes
+
+* replace piped beads install with direct binary download ([#52](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/52)) ([1665834](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/16658343ab434e42297f3146d37ce54535ebb89e))
+
 ## [1.6.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.5.0...v1.6.0) (2026-03-13)
 
 
