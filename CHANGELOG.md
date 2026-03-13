@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.7.1...v1.7.2) (2026-03-13)
+
+
+### Bug Fixes
+
+* ci-wait exits after repeated API failures instead of looping forever ([#58](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/58)) ([06341a3](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/06341a3cc4d7dc0b8f2c2aa34157001fd21eebb8))
+
 ## [1.7.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.7.0...v1.7.1) (2026-03-13)
 
 
