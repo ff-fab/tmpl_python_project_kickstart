@@ -112,7 +112,7 @@ if [ -d ".venv" ]; then
     fi
 fi
 
-uv sync --all-extras
+uv sync --all-groups
 echo "✅ Python dependencies installed"
 
 # Ensure git is available before git-dependent setup steps.
