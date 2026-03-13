@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.6.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.5.0...v1.6.0) (2026-03-13)
+
+
+### Features
+
+* add _skip_if_exists for skeleton files during copier update ([#47](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/47)) ([b7e2850](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/b7e28500dd8b882c847a757a3a6aff6c60e1bf41))
+* add anthropic.claude-code VSCode extension to devcontainers ([#48](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/48)) ([e34f753](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/e34f753c096522f3a987e983b3c36cdf59dcae09))
+* add Claude Code skills, settings, and dual Copilot/Claude support ([#50](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/50)) ([e5243a5](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/e5243a542aeaaf00eb6c7cba0b8e096b9756817c))
+* add CLAUDE.md to copier template ([#49](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/49)) ([1f1e7f4](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/1f1e7f40ab5dca89025fe1ac47c0ab418c434a65))
+* auto-invoke Context7 MCP for library docs in Copilot agents ([#45](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/45)) ([66bc337](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/66bc337e2aa0e5f1be4c09254910c1b3b74db0ba))
+* replace pr-review prompt with deterministic skill + gh script ([#40](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/40)) ([d3f21fe](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/d3f21fef056cd298fb21a9a261ce0ef74b1f8a46))
+
+
+### Bug Fixes
+
+* **ci-wait:** prevent pipefail from bypassing API error retry ([#44](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/44)) ([010c34c](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/010c34c1e540a2931152c2a3e66969990f8e8d6c))
+* harden fetch-pr-feedback.sh against invalid JSON and POST bug ([#43](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/43)) ([46bb6b3](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/46bb6b3c4d3a754e8bfdecc9ee208e12ea1bfeb6))
+* install dolt in post-create before beads (bd) ([#42](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/42)) ([923770d](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/923770d57559e398944d33a1d10f0b89077646e8))
+* replace removed `bd sync` with `bd export` / `bd dolt pull` ([#46](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/46)) ([c6ccd14](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/c6ccd14b45906ce56bc8e8c81c814b8edf33a9cb))
+
 ## [1.5.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.4.0...v1.5.0) (2026-03-05)
 
 
