@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.7.0...v1.7.1) (2026-03-13)
+
+
+### Bug Fixes
+
+* ensure ~/.local/bin exists before bd install ([#56](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/56)) ([3919f6d](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/3919f6d74c50b65be9289909f9004d88843aae1a))
+
 ## [1.7.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.6.1...v1.7.0) (2026-03-13)
 
 
