@@ -59,6 +59,8 @@ fi
 # bash, because that script's WSL-detection echo statements leak into command
 # substitutions and corrupt the download URL (stdout pollution bug).
 install_bd() {
+    # Ensure fallback install directory exists (CI may not have ~/.local/bin)
+    mkdir -p "$HOME/.local/bin"
     local attempts=3
     local n=1
     local arch
