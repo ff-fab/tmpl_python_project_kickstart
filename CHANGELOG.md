@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.6.1...v1.7.0) (2026-03-13)
+
+
+### Features
+
+* add update tasks and gh api permission ([#54](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/54)) ([f92b9d5](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/f92b9d559247408b10556e0c619220561f8e6d9b))
+
 ## [1.6.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.6.0...v1.6.1) (2026-03-13)
 
 
