@@ -55,6 +55,8 @@ fi
 # Installed at runtime (not in Dockerfile) to avoid Docker layer cache staleness
 # and to support retry logic for network flakiness.
 install_bd() {
+    # Ensure fallback install directory exists (CI may not have ~/.local/bin)
+    mkdir -p "$HOME/.local/bin"
     local attempts=3
     local n=1
     while [ "$n" -le "$attempts" ]; do
