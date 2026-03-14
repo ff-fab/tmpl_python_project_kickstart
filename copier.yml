@@ -8,11 +8,9 @@ _jinja_extensions:
 _skip_if_exists:
   # User application code
   - packages/src/*/main.py
-  - packages/src/*/config.py
   # Test scaffolding
   - packages/tests/conftest.py
   - packages/tests/fixtures/async_utils.py
-  - packages/tests/fixtures/config.py
   # Project documentation
   - README.md
   - CONTRIBUTING.md
