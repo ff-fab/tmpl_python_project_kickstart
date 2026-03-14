@@ -6,9 +6,7 @@
 {%- if docker_publish %}
 #
 # When a release is created, the publish job builds and pushes the
-# multi-arch container image to GHCR. Doing it here (rather than on a
-# release or tag event) avoids the GitHub Actions restriction that blocks
-# GITHUB_TOKEN-created events from triggering other workflow runs.
+# multi-arch container image to GHCR.
 #
 # Tag strategy:
 #   latest, 1.2.3, 1.2, 1  — stable release (this workflow)
