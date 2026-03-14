@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.7.3...v1.8.0) (2026-03-14)
+
+
+### Features
+
+* skip entire packages/ directory on copier update ([#62](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/62)) ([bb57fb5](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/bb57fb5fa6bc6235c9af1040f51ca2773eced054))
+
 ## [1.7.3](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.7.2...v1.7.3) (2026-03-14)
 
 
