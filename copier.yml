@@ -85,6 +85,10 @@ include_sbom:
   type: bool
   help: Whether to include syft SBOM generation (CycloneDX JSON) in the devcontainer and Taskfile.
   default: false
+docker_publish:
+  type: bool
+  help: Whether to include Docker image build & publish on release (multi-arch, GHCR).
+  default: false
 init_git_on_copy:
   type: bool
   help: Whether to initialize a Git repository right after scaffolding.
