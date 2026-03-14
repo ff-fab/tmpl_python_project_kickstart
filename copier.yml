@@ -6,11 +6,8 @@ _jinja_extensions:
 # Files that are generated on first `copier copy` but left untouched during
 # `copier update` — i.e. initial skeleton / user-owned content.
 _skip_if_exists:
-  # User application code
-  - packages/src/*/main.py
-  # Test scaffolding
-  - packages/tests/conftest.py
-  - packages/tests/fixtures/async_utils.py
+  # User application code & test scaffolding
+  - packages/**
   # Project documentation
   - README.md
   - CONTRIBUTING.md
