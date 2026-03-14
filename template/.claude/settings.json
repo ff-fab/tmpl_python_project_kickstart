@@ -1,7 +1,9 @@
 {
   "permissions": {
-    "allow": ["Skill(pre-pr-gate)", "Skill(pre-pr-gate:*)", "Skill(pr-review)"],
-    "allowedTools": [
+    "allow": [
+      "Skill(pre-pr-gate)",
+      "Skill(pre-pr-gate:*)",
+      "Skill(pr-review)",
       "Read",
       "Edit",
       "Write",
@@ -41,6 +43,6 @@
       "Bash(gh search *)",
       "Bash(gh status *)"
     ],
-    "denyTools": ["Bash(python *)", "Bash(python3 *)"]
+    "deny": ["Bash(python *)", "Bash(python3 *)"]
   }
 }
