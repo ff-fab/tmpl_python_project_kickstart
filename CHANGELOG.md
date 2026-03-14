@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.7.2...v1.7.3) (2026-03-14)
+
+
+### Bug Fixes
+
+* remove deprecated application configuration file ([#60](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/60)) ([cc6d7a9](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/cc6d7a953e6df977d43be5ed8482f72829a57cb8))
+
 ## [1.7.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.7.1...v1.7.2) (2026-03-13)
 
 
