@@ -82,7 +82,7 @@ install_bd() {
         if curl -fsSL "$url" -o "/tmp/${tarball}" \
             && tar -xzf "/tmp/${tarball}" -C /tmp \
             && { install -m 755 /tmp/bd /usr/local/bin/bd 2>/dev/null \
-                || install -m 755 /tmp/bd "$HOME/.local/bin/bd"; }; then
+                || { mkdir -p "$HOME/.local/bin" && install -m 755 /tmp/bd "$HOME/.local/bin/bd"; }; }; then
             rm -f "/tmp/${tarball}" /tmp/bd
             return 0
         fi
@@ -96,6 +96,23 @@ install_bd() {
 echo "🔮 Installing/updating beads CLI..."
 if install_bd; then
     hash -r
+    # Fix ICU version mismatch: prebuilt bd binary may link against an older ICU
+    # than what the container provides (e.g., ICU 74 vs Trixie's ICU 76).
+    # Create compatibility symlinks so the binary can load.
+    if ! bd version &>/dev/null; then
+        echo "⚠️  bd binary has ICU mismatch, creating compatibility symlinks..."
+        multiarch="$(dpkg-architecture -qDEB_HOST_MULTIARCH 2>/dev/null || echo x86_64-linux-gnu)"
+        local_icu=$(ldconfig -p | grep -oP 'libicui18n\.so\.\K[0-9]+' | head -1)
+        needed_icu=$(ldd "$(which bd)" 2>/dev/null | grep -oP 'libicui18n\.so\.\K[0-9]+' || true)
+        if [ -n "$local_icu" ] && [ -n "$needed_icu" ] && [ "$local_icu" != "$needed_icu" ]; then
+            for lib in libicui18n libicuuc libicudata; do
+                sudo ln -sf "/lib/${multiarch}/${lib}.so.${local_icu}" \
+                            "/lib/${multiarch}/${lib}.so.${needed_icu}"
+            done
+            sudo ldconfig
+            echo "✅ Symlinked ICU ${needed_icu} → ${local_icu}"
+        fi
+    fi
     echo "✅ $(bd --version)"
 else
     echo "❌ Failed to install bd after multiple attempts"
