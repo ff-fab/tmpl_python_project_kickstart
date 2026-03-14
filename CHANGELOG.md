@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.8.1...v1.8.2) (2026-03-14)
+
+
+### Bug Fixes
+
+* backport improvements from gas2mqtt scaffolded project ([#66](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/66)) ([ef1f66f](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/ef1f66fbb047f2d215b03902c46258eedbecea0b))
+
 ## [1.8.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.8.0...v1.8.1) (2026-03-14)
 
 
