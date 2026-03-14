@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.8.0...v1.8.1) (2026-03-14)
+
+
+### Bug Fixes
+
+* correct invalid permission field names in .claude/settings.json ([#64](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/64)) ([b1c1627](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/b1c1627eed6a687ed372deac60c52e936601414f))
+
 ## [1.8.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.7.3...v1.8.0) (2026-03-14)
 
 
