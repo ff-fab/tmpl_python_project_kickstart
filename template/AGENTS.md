@@ -1,6 +1,6 @@
 # Agent Instructions
 
-This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
+This project uses **bd** (beads) for issue tracking. Run `bd prime` to get started.
 
 ## GitHub Tooling Policy
 
@@ -39,9 +39,8 @@ These prefixes drive automated release versioning (if Release Please is enabled)
 ```bash
 bd ready              # Find available work
 bd show <id>          # View issue details
-bd update <id> --status in_progress  # Claim work
+bd update <id> --claim  # Claim work (assigns + in_progress)
 bd close <id>         # Complete work
-bd sync               # Sync with git
 ```
 
 ## Landing the Plane (Session Completion)
@@ -56,8 +55,7 @@ until `git push` succeeds.
 3. **Close beads tasks and commit** - Beads state MUST be committed before pushing:
    ```bash
    bd close <id>                # Close finished work
-   bd sync                      # Export to JSONL
-   git add .beads/ && git commit -m "chore: sync beads state"
+   git add .beads/ && git commit -m "chore: update beads state"
    ```
 4. **PUSH TO REMOTE** - This is MANDATORY:
    ```bash
@@ -70,11 +68,17 @@ until `git push` succeeds.
    gh pr create
    ```
 6. **Wait for CI** (if PR exists):
+
    ```bash
    task ci:wait -- <pr-number>   # polls until all checks complete
    ```
+
    **Always use `task ci:wait`** — do not use `gh pr checks --watch` (opens alternate
    buffer, breaks agents) or ad-hoc polling loops.
+
+   **STOP here. Do NOT merge the PR.** Do not approve, do not enable auto-merge, do not
+   merge even if all CI checks pass. The human reviewer decides when to merge.
+
 7. **Clean up** - Clear stashes, prune remote branches
 8. **Verify** - All changes committed AND pushed
 9. **Hand off** - Provide context for next session
@@ -87,13 +91,14 @@ until `git push` succeeds.
 - If push fails, resolve and retry until it succeeds
 - Beads state MUST be committed before pushing — the pre-push hook will reject pushes
   with uncommitted `.beads/` changes
+- NEVER merge a PR unless the user explicitly requests it
 
 ## Beads vs TODO: Two Systems, Distinct Purposes
 
-| System           | Purpose            | Content type            | Location     |
-| ---------------- | ------------------ | ----------------------- | ------------ |
-| **Beads (`bd`)** | Work tracking      | Actionable tasks, epics | `.beads/`    |
-| **TODO folder**  | Deferred decisions | Rich deliberation docs  | `docs/TODO/` |
+| System           | Purpose            | Content type            | Location                        |
+| ---------------- | ------------------ | ----------------------- | ------------------------------- |
+| **Beads (`bd`)** | Work tracking      | Actionable tasks, epics | `.beads/`                       |
+| **TODO folder**  | Deferred decisions | Rich deliberation docs  | `docs/TODO/` (create as needed) |
 
 **Beads** tracks _work_: things to build, fix, or ship.
 
@@ -110,8 +115,9 @@ item. The gate task references the TODO doc but contains no decision logic itsel
 
 ## Showboat Demos (Proof of Work)
 
-**Showboat** creates executable demo documents that prove an agent's work. Every session
-that changes code or configuration MUST produce a showboat demo before pushing.
+**Showboat** creates executable demo documents that prove an agent's work. Consider
+creating a showboat demo for sessions that make significant code or configuration
+changes — especially when reviewers would benefit from reproducible proof.
 
 ### What is a Showboat Demo?
 
@@ -124,7 +130,8 @@ output. The demo serves as both:
 
 ### When to Create a Demo
 
-- **Required:** Any session that changes code, configuration, or infrastructure
+- **Recommended:** Sessions with significant code, configuration, or infrastructure
+  changes
 - **Skip:** Documentation-only changes, beads-only changes, trivial formatting fixes
 
 ### How to Create a Demo

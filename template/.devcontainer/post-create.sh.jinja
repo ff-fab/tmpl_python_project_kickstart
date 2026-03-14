@@ -107,9 +107,9 @@ if install_bd; then
         if [ -n "$local_icu" ] && [ -n "$needed_icu" ] && [ "$local_icu" != "$needed_icu" ]; then
             for lib in libicui18n libicuuc libicudata; do
                 sudo ln -sf "/lib/${multiarch}/${lib}.so.${local_icu}" \
-                            "/lib/${multiarch}/${lib}.so.${needed_icu}"
+                            "/lib/${multiarch}/${lib}.so.${needed_icu}" || true
             done
-            sudo ldconfig
+            sudo ldconfig || true
             echo "✅ Symlinked ICU ${needed_icu} → ${local_icu}"
         fi
     fi
