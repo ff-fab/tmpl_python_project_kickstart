@@ -50,7 +50,7 @@ context7_api_key:
 module_name:
   type: str
   help: The name of the (first) Python module (package).
-  default: "{{ project_name|lower|replace(' ', '_') }}"
+  default: "{{ project_name|lower|replace(' ', '_')|replace('-', '_') }}"
   validator: >-
     {% if not module_name | regex_search('^[a-zA-Z_][a-zA-Z0-9_]*$') %}
     {{ module_name }} is not a valid Python package name (must start with a letter or underscore and contain only letters, digits, and underscores)
