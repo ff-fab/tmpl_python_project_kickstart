@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.3](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.8.2...v1.8.3) (2026-03-18)
+
+
+### Bug Fixes
+
+* ensure beads.role git config is set even when .beads/ already exists ([077e89f](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/077e89fe21e73a892a5c7415b01f8a7b61bb647a))
+* validate module_name as valid Python package name ([db1f7e8](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/db1f7e875b2cf78664033eebcaee52143bacf84f))
+
 ## [1.8.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.8.1...v1.8.2) (2026-03-14)
 
 
