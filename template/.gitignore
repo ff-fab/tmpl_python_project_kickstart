@@ -230,3 +230,4 @@ __marimo__/
 .beads/dolt/dolt-server.activity
 .beads/dolt/dolt-server.log
 .beads/dolt/dolt-monitor.pid
+.beads/dolt-monitor.pid
