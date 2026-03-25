@@ -79,12 +79,12 @@ repos:
         name: Ruff (format Python)
 
   # mypy: Type checking for Python
+  # Config (including strict mode) lives in [tool.mypy] in pyproject.toml.
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.19.1
     hooks:
       - id: mypy
         name: mypy (type check Python)
-        args: ['--strict']
         files: ^packages/src/
         additional_dependencies:
           - pydantic>=2.10.0
