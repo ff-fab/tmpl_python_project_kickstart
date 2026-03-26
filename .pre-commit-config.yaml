@@ -75,16 +75,15 @@ repos:
       - id: ruff-format
         name: Ruff (format Python)
 
-  # mypy: Type checking for Python
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.19.1
+  # ty: Type checking for Python (Astral)
+  - repo: local
     hooks:
-      - id: mypy
-        name: mypy (type check Python)
-        args: ['--strict']
-        additional_dependencies:
-          - pytest
-          - pydantic-settings
+      - id: ty
+        name: ty (type check Python)
+        entry: uv run ty check
+        language: system
+        types: [python]
+        pass_filenames: false
 
   # Copier template: Catch files missing .jinja suffix
   - repo: local
