@@ -78,18 +78,16 @@ repos:
       - id: ruff-format
         name: Ruff (format Python)
 
-  # mypy: Type checking for Python
-  # Config (including strict mode) lives in [tool.mypy] in pyproject.toml.
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.19.1
+  # ty: Type checking for Python (Astral)
+  # Config lives in [tool.ty] in pyproject.toml.
+  - repo: local
     hooks:
-      - id: mypy
-        name: mypy (type check Python)
-        files: ^packages/src/
-        additional_dependencies:
-          - pydantic>=2.10.0
-          - pydantic-settings>=2.6.0
-          - types-PyYAML>=6.0.0
+      - id: ty
+        name: ty (type check Python)
+        entry: uv run ty check
+        language: system
+        types: [python]
+        pass_filenames: false
 
   # Beads (bd): Export issue tracker JSONL and keep git in sync
   # pre-push: FAILS if .beads/ has uncommitted changes (forces commit-before-push)

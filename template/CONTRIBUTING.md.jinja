@@ -34,7 +34,7 @@ task test              # Run all tests (unit + integration + coverage)
 task test:unit         # Run unit tests only
 task lint              # Lint all code (Ruff check + format)
 task lint:fix          # Auto-fix lint issues
-task typecheck         # Type check (mypy strict)
+task typecheck         # Type check (ty strict)
 task check             # Run all checks (lint + typecheck + test)
 task pre-pr            # Full pre-PR quality gate
 task docs:serve        # Serve documentation site locally
@@ -67,10 +67,10 @@ task --list            # Show all available tasks
 
 - **Linting & formatting**: [Ruff](https://docs.astral.sh/ruff/) (88-char line length,
   double quotes)
-- **Type checking**: [mypy](https://mypy-lang.org/) (strict mode)
+- **Type checking**: [ty](https://docs.astral.sh/ty/) (strict mode)
 - **Testing**: [pytest](https://docs.pytest.org/) with pytest-asyncio
 - **Coverage**: ≥{{ coverage_threshold }}% threshold (lines and branches)
-- **Pre-commit**: EditorConfig, trailing whitespace, codespell, Ruff, mypy
+- **Pre-commit**: EditorConfig, trailing whitespace, codespell, Ruff, ty
 
 All tools are **auto-configured in DevContainer** via `.devcontainer/devcontainer.json`.
 Format on save is enabled by default.

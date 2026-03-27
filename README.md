@@ -15,7 +15,7 @@ The actual generated project content lives under `template/` and is selected via
 ## Template at a glance
 
 - **Template engine:** Copier (`_min_copier_version: 9.11.3`)
-- **Generated stack:** Python 3.14, `uv`, `hatchling`, `pytest`, `ruff`, `mypy`,
+- **Generated stack:** Python 3.14, `uv`, `hatchling`, `pytest`, `ruff`, `ty`,
   `pyright`, MkDocs Material, pre-commit
 - **Workspace style:** DevContainer + VS Code defaults + Taskfile commands
 - **Optional toggles:** MIT license file, Codecov config, Robot Framework CI/tests
@@ -74,7 +74,7 @@ All user-facing answers are defined in `copier.yml`.
   - Python `>=3.14`
   - build backend (`hatchling`)
   - runtime deps (`pydantic`, `pydantic-settings`)
-  - strict `pytest`, `coverage`, `ruff`, `mypy`, and `pyright` defaults
+  - strict `pytest`, `coverage`, `ruff`, `ty`, and `pyright` defaults
   - `setuptools_scm` version strategy and generated `_version.py`
 
 ### 3) Task automation
@@ -109,7 +109,7 @@ All user-facing answers are defined in `copier.yml`.
 ### 6) Quality gates and contribution workflow
 
 - `.pre-commit-config.yaml` wires EditorConfig, basic hygiene checks, spellcheck,
-  Prettier, Ruff, and mypy.
+  Prettier, Ruff, and ty.
 - Local hooks also enforce `bd` sync expectations during `pre-push` / `post-merge`.
 - `AGENTS.md` documents contributor/agent workflow and handoff expectations.
 
