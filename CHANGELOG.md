@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.9.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.8.3...v1.9.0) (2026-03-27)
+
+
+### Features
+
+* replace mypy with ty (Astral) for type checking ([#74](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/74)) ([a06d930](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/a06d93082b2c335c9c8a60cf84e3d8d7f7767888))
+
+
+### Bug Fixes
+
+* consolidate tool configs — remove pyrightconfig.json and mypy --strict duplication ([#73](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/73)) ([b21e1c8](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/b21e1c8c93aed53c33431dbad617ea84c22ca2cb))
+
+
+### Performance Improvements
+
+* cache bd task list in plan scripts to eliminate redundant API calls ([#71](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/71)) ([70abfab](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/70abfab098175ad996831a6a8ecf0bd029f9d5ad))
+
 ## [1.8.3](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.8.2...v1.8.3) (2026-03-18)
 
 
