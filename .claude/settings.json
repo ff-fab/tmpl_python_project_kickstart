@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api:*)",
+      "Bash(curl -sL \"https://api.github.com/search/repositories?q=ty-pre-commit+org:astral-sh\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(i[''''full_name''''], i[''''html_url'''']\\) for i in d.get\\(''''items'''',[]\\)]\")",
+      "Bash(gh pr:*)",
+      "Bash(uv run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}

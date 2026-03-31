@@ -29,9 +29,11 @@ echo "🏠 Setting up {{ _copier_answers.project_name }} development environment
 # Installed at runtime (not in Dockerfile) to avoid Docker layer cache staleness
 # and to support retry logic for network flakiness.
 install_dolt() {
+    set -o pipefail
     local attempts=3
     local n=1
     while [ "$n" -le "$attempts" ]; do
+        # TODO: pin dolt version + checksum for supply-chain hardening
         if curl -fsSL https://github.com/dolthub/dolt/releases/latest/download/install.sh | sudo bash; then
             return 0
         fi
