@@ -32,7 +32,10 @@ install_dolt() {
     local attempts=3
     local n=1
     while [ "$n" -le "$attempts" ]; do
-        if curl -fsSL https://github.com/dolthub/dolt/releases/latest/download/install.sh | sudo bash; then
+        # TODO: pin dolt version + checksum for supply-chain hardening
+        # Subshell scopes pipefail so curl failures propagate without
+        # leaking the option to the rest of the script (see BashFAQ #105).
+        if ( set -o pipefail; curl -fsSL https://github.com/dolthub/dolt/releases/latest/download/install.sh | sudo bash ); then
             return 0
         fi
         echo "⚠️  dolt install attempt ${n}/${attempts} failed"
