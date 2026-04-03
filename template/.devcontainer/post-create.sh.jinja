@@ -173,12 +173,12 @@ if ! git config beads.role >/dev/null 2>&1; then
     echo "✅ Set beads.role = maintainer"
 fi
 
-# Initialize beads issue tracker if not already done (server mode for concurrency)
+# Initialize beads issue tracker if not already done
 cd /workspace
 if [ ! -d ".beads" ]; then
     echo "🔮 Initializing beads issue tracker..."
-    bd init --server --quiet --skip-hooks
-    echo "✅ Beads initialized (server mode)"
+    bd init --quiet --skip-hooks
+    echo "✅ Beads initialized"
 else
     echo "✅ Beads already initialized"
 fi
