@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.9.1...v1.9.2) (2026-04-03)
+
+
+### Bug Fixes
+
+* scaffold passes strict pre-commit on first commit ([#78](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/78)) ([101848f](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/101848f32d07229dc50b70ff0be7093b24c5586a))
+
 ## [1.9.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.9.0...v1.9.1) (2026-04-03)
 
 
