@@ -167,6 +167,12 @@ uv tool install beads-mcp 2>/dev/null || echo "⚠️  beads-mcp install had iss
 echo "🚢 Installing showboat..."
 uv tool install showboat 2>/dev/null || echo "⚠️  showboat install had issues, continuing..."
 
+# Ensure beads.role is set BEFORE init so bd doesn't prompt for sole-maintainer
+if ! git config beads.role >/dev/null 2>&1; then
+    git config beads.role maintainer
+    echo "✅ Set beads.role = maintainer"
+fi
+
 # Initialize beads issue tracker if not already done
 cd /workspace
 if [ ! -d ".beads" ]; then
@@ -175,12 +181,6 @@ if [ ! -d ".beads" ]; then
     echo "✅ Beads initialized"
 else
     echo "✅ Beads already initialized"
-fi
-
-# Ensure beads.role is set even if bd init was skipped (e.g. .beads/ already existed)
-if ! git config beads.role >/dev/null 2>&1; then
-    git config beads.role maintainer
-    echo "✅ Set beads.role = maintainer (was missing from git config)"
 fi
 
 # SSH: seed known_hosts for GitHub so the first git push doesn't trigger a TOFU prompt.
