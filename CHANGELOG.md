@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.9.0...v1.9.1) (2026-04-03)
+
+
+### Bug Fixes
+
+* address template review findings from downstream update ([#75](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/75)) ([f7b346f](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/f7b346f6f2a4d3054decfe4d28e147f329d9f305))
+
 ## [1.9.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.8.3...v1.9.0) (2026-03-27)
 
 
