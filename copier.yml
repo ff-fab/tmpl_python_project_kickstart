@@ -47,6 +47,10 @@ context7_api_key:
   help: Optional Context7 API key for local development integrations.
   default: ''
   secret: true
+surge_token:
+  type: bool
+  help: Whether to enable documentation preview deployments on PRs (requires SURGE_TOKEN repository secret).
+  default: false
 module_name:
   type: str
   help: The name of the (first) Python module (package).
