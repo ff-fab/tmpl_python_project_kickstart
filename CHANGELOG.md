@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.9.2...v1.10.0) (2026-04-10)
+
+
+### Features
+
+* backport template updates from cosalette analysis ([#80](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/80)) ([589deab](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/589deabb888cdebb888dd74c06766bc431385a4f))
+
 ## [1.9.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.9.1...v1.9.2) (2026-04-03)
 
 
