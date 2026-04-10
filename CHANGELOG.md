@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.10.0...v1.10.1) (2026-04-10)
+
+
+### Bug Fixes
+
+* update template workflow and task guidance ([#82](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/82)) ([cba5264](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/cba5264665d70caba4e5fb15915c69d61c1767f5))
+
 ## [1.10.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.9.2...v1.10.0) (2026-04-10)
 
 
