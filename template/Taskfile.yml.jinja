@@ -150,7 +150,7 @@ tasks:
     desc: Export beads DB to .beads/issues.jsonl (run after bd close)
     silent: true
     preconditions:
-      - sh: command -v bd
+      - sh: command -v bd >/dev/null 2>&1
         msg: bd is not installed
       - sh: test -d .beads
         msg: .beads/ directory not found
