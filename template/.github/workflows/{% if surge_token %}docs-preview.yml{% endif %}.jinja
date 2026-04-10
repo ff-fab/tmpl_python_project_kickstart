@@ -26,7 +26,7 @@ on:
 
 {% raw %}
 env:
-  DEVCONTAINER_IMAGE: ghcr.io/{% endraw %}{{ github_org }}/{{ repo_name }}{% raw %}-devcontainer
+  DEVCONTAINER_IMAGE: ghcr.io/{% endraw %}{{ github_org }}/{{ project_name }}{% raw %}-devcontainer
   SURGE_DOMAIN: {% endraw %}{{ repo_name }}{% raw %}-pr-${{ github.event.pull_request.number }}.surge.sh
 
 permissions:

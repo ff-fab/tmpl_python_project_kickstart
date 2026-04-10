@@ -45,6 +45,85 @@ def _require(data: dict[str, Any], key: str, label: str = "") -> Any:
     return data[key]
 
 
+def _expect_list(value: Any, label: str) -> list[Any]:
+    """Require list type with an actionable validation error."""
+    if not isinstance(value, list):
+        msg = f"'{label}' must be a list"
+        raise ValueError(msg)
+    return value
+
+
+def _expect_dict(value: Any, label: str) -> dict[str, Any]:
+    """Require dict type with an actionable validation error."""
+    if not isinstance(value, dict):
+        msg = f"'{label}' must be an object"
+        raise ValueError(msg)
+    return value
+
+
+def _expect_str(value: Any, label: str) -> str:
+    """Require string type with an actionable validation error."""
+    if not isinstance(value, str):
+        msg = f"'{label}' must be a string"
+        raise ValueError(msg)
+    return value
+
+
+def _validate_option(option: Any, index: int) -> dict[str, Any]:
+    """Validate one considered option payload."""
+    label = f"considered_options[{index}]"
+    opt = _expect_dict(option, label)
+
+    name = _expect_str(_require(opt, "name", label), f"{label}.name")
+    if not name.strip():
+        msg = f"'{label}.name' must be a non-empty string"
+        raise ValueError(msg)
+
+    _expect_str(_require(opt, "description", label), f"{label}.description")
+
+    advantages = _expect_list(_require(opt, "advantages", label), f"{label}.advantages")
+    disadvantages = _expect_list(
+        _require(opt, "disadvantages", label), f"{label}.disadvantages"
+    )
+
+    if not advantages:
+        msg = f"'{label}.advantages' must contain at least one item"
+        raise ValueError(msg)
+    if not disadvantages:
+        msg = f"'{label}.disadvantages' must contain at least one item"
+        raise ValueError(msg)
+
+    for i, item in enumerate(advantages):
+        _expect_str(item, f"{label}.advantages[{i}]")
+    for i, item in enumerate(disadvantages):
+        _expect_str(item, f"{label}.disadvantages[{i}]")
+
+    chosen = opt.get("chosen")
+    if chosen is not None and not isinstance(chosen, bool):
+        msg = f"'{label}.chosen' must be a boolean"
+        raise ValueError(msg)
+
+    return opt
+
+
+def _validate_matrix_row(row: Any, index: int) -> dict[str, Any]:
+    """Validate one decision matrix row payload."""
+    label = f"decision_matrix[{index}]"
+    item = _expect_dict(row, label)
+    _expect_str(_require(item, "criterion", label), f"{label}.criterion")
+
+    scores = _expect_dict(_require(item, "scores", label), f"{label}.scores")
+    for key, score in scores.items():
+        if not isinstance(key, str):
+            msg = f"'{label}.scores' keys must be strings"
+            raise ValueError(msg)
+        if not isinstance(score, int) or not 1 <= score <= 5:
+            msg = f"'{label}.scores.{key}' must be an integer between 1 and 5"
+            raise ValueError(msg)
+
+    return item
+
+
 def _validate_new_or_supersede(data: dict[str, Any]) -> None:
     """Structural validation for new/supersede ADR inputs."""
     for field in (
@@ -62,9 +141,21 @@ def _validate_new_or_supersede(data: dict[str, Any]) -> None:
     ):
         _require(data, field)
 
-    impact = data["impact"]
-    options = data["considered_options"]
-    matrix = data.get("decision_matrix")
+    impact = _expect_str(data["impact"], "impact")
+
+    raw_options = _expect_list(data["considered_options"], "considered_options")
+    if len(raw_options) < 2:
+        msg = "At least two considered options are required"
+        raise ValueError(msg)
+    options = [_validate_option(option, i) for i, option in enumerate(raw_options)]
+
+    raw_matrix = data.get("decision_matrix")
+    matrix = None
+    if raw_matrix is not None:
+        matrix = [
+            _validate_matrix_row(row, i)
+            for i, row in enumerate(_expect_list(raw_matrix, "decision_matrix"))
+        ]
 
     # Impact-driven matrix enforcement.
     if impact in ("moderate", "high") and not matrix:
@@ -123,8 +214,8 @@ def _validate_amendment(data: dict[str, Any]) -> None:
     ):
         _require(data, field)
 
-    scope = data["amendment_scope"]
-    content = data["amendment_content"]
+    scope = _expect_str(data["amendment_scope"], "amendment_scope")
+    content = _expect_dict(data["amendment_content"], "amendment_content")
 
     if scope in ("additive", "corrective"):
         _require(data, "amendment_rationale", "amendment")
@@ -454,11 +545,19 @@ def render_amendment(data: dict[str, Any]) -> str:
 
 def find_adr_file(adr_dir: Path, adr_ref: str) -> Path:
     """Find the file matching an ADR reference like 'ADR-006'."""
-    for path in sorted(adr_dir.iterdir()):
-        if path.name.startswith(adr_ref):
-            return path
-    msg = f"Cannot find file for {adr_ref} in {adr_dir}"
-    raise FileNotFoundError(msg)
+    matches = [
+        path
+        for path in sorted(adr_dir.iterdir())
+        if path.is_file() and path.name.startswith(adr_ref)
+    ]
+    if not matches:
+        msg = f"Cannot find file for {adr_ref} in {adr_dir}"
+        raise FileNotFoundError(msg)
+    if len(matches) > 1:
+        match_list = ", ".join(str(path) for path in matches)
+        msg = f"Multiple files found for {adr_ref} in {adr_dir}: {match_list}"
+        raise ValueError(msg)
+    return matches[0]
 
 
 def update_superseded_status(adr_path: Path, new_adr_ref: str) -> None:

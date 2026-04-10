@@ -336,7 +336,7 @@ tasks:
     cmds:
       - uv run radon cc {{.PKG}}/src/{{.MODULE_NAME}} --average --show-complexity
       - uv run xenon {{.PKG}}/src/{{.MODULE_NAME}} --max-absolute B --max-modules A --max-average A
-      - uv run flake8 --select CCR001 --max-cognitive-complexity 15 {{.PKG}}/src/{{.MODULE_NAME}}
+      - uv run flake8 {{.PKG}}/src/{{.MODULE_NAME}}
 
   similarity:
     desc: Check for code duplication (symilar — ships with pylint)
