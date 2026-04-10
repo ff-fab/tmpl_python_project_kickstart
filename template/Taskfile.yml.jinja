@@ -269,6 +269,11 @@ tasks:
       - task: typecheck
       - task: test
 
+  quality:summary:
+    desc: Run lint, typecheck, and unit tests, then output a JSON summary
+    cmds:
+      - bash scripts/quality-summary.sh
+
   pre-pr:
     desc: Run all pre-PR quality gates (pre-commit + lint + typecheck + tests + coverage + complexity + similarity)
     cmds:
@@ -292,6 +297,11 @@ tasks:
     desc: Build documentation site (clean output)
     cmds:
       - uv run --group docs zensical build --clean
+
+  adr:create:
+    desc: Create or amend an ADR from a validated JSON input file
+    cmds:
+      - uv run scripts/render_adr.py {{.CLI_ARGS}}
 
   # ===========================================================================
   # Dependency Management
@@ -326,7 +336,7 @@ tasks:
     cmds:
       - uv run radon cc {{.PKG}}/src/{{.MODULE_NAME}} --average --show-complexity
       - uv run xenon {{.PKG}}/src/{{.MODULE_NAME}} --max-absolute B --max-modules A --max-average A
-      - uv run flake8 --select CCR001 --max-cognitive-complexity 15 {{.PKG}}/src/{{.MODULE_NAME}}
+      - uv run flake8 {{.PKG}}/src/{{.MODULE_NAME}}
 
   similarity:
     desc: Check for code duplication (symilar — ships with pylint)

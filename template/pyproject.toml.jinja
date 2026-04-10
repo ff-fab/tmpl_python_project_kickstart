@@ -4,8 +4,8 @@ version = "0.1.0"
 description = "{{ _copier_answers.description }}"
 readme = "README.md"
 requires-python = ">={{ min_python_version }}"
-{% if _copier_answers.license -%}
-license = { text = "MIT" }
+{% if _copier_answers.license and _copier_answers.license != "None" -%}
+license = "{{ _copier_answers.license }}"
 {%- endif %}
 authors = [
     { name = "{{ author_name }}", email = "{{ author_email }}" }
@@ -103,6 +103,9 @@ select = [
     "SIM",    # flake8-simplify (simplify complex code)
     "ARG",    # flake8-unused-arguments (catch unused function parameters)
 ]
+# External linter codes: suppress Ruff warnings for noqa directives from
+# flake8-cognitive-complexity (CCR001), which Ruff doesn't natively support.
+external = ["CCR001"]
 
 # Per-file rule exceptions: Allow unused args in specific contexts
 [tool.ruff.lint.per-file-ignores]

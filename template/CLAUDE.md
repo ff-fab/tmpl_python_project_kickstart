@@ -27,6 +27,8 @@ Reusable workflow definitions available as slash commands in Claude Code (`/pr-r
   CI, review comments, and code quality
 - **pre-pr-gate** — End-of-session workflow: `task pre-pr`, close beads, push, create PR
 - **showboat-demo** — Create reproducible proof-of-work demos with `showboat`
+- **adr-create** — Create or amend ADRs via schema-conforming JSON
+  (`task adr:create -- input.json`)
 
 ## Key Rules
 
