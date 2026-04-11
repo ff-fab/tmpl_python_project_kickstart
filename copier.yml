@@ -95,7 +95,7 @@ beads_prefix:
     Prefix for beads issue IDs (e.g. 'cos' produces cos-a3f2).
     Convention: for multi-word names take the first letter of each word;
     for single words take the first three letters.
-  default: "{%- set parts = project_name.lower().replace('-', '_').split('_') -%}{%- if parts | length > 1 -%}{%- for p in parts -%}{{ p[0] }}{%- endfor -%}{%- else -%}{{ project_name[:3] | lower }}{%- endif -%}"
+  default: "{%- set parts = project_name.lower().replace(' ', '_').replace('-', '_').split('_') | reject('equalto', '') | list -%}{%- if parts | length > 1 -%}{%- for p in parts -%}{{ p[0] }}{%- endfor -%}{%- else -%}{{ project_name[:3] | lower }}{%- endif -%}"
   validator: >-
     {% if not beads_prefix | regex_search('^[a-z][a-z0-9_]*$') %}
     {{ beads_prefix }} is not a valid beads prefix (must start with a lowercase letter and contain only lowercase letters, digits, and underscores)
