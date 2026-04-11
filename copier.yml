@@ -89,6 +89,17 @@ release_please:
   type: bool
   help: Whether to include Release Please for automated releases and SemVer tagging.
   default: true
+beads_prefix:
+  type: str
+  help: >-
+    Prefix for beads issue IDs (e.g. 'cos' produces cos-a3f2).
+    Convention: for multi-word names take the first letter of each word;
+    for single words take the first three letters.
+  default: "{%- set parts = project_name.lower().replace(' ', '_').replace('-', '_').split('_') | reject('equalto', '') | list -%}{%- if parts | length > 1 -%}{%- for p in parts -%}{{ p[0] }}{%- endfor -%}{%- else -%}{{ project_name[:3] | lower }}{%- endif -%}"
+  validator: >-
+    {% if not beads_prefix | regex_search('^[a-z][a-z0-9_]*$') %}
+    {{ beads_prefix }} is not a valid beads prefix (must start with a lowercase letter and contain only lowercase letters, digits, and underscores)
+    {% endif %}
 include_sbom:
   type: bool
   help: Whether to include syft SBOM generation (CycloneDX JSON) in the devcontainer and Taskfile.

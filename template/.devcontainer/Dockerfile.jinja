@@ -28,7 +28,7 @@ COPY --from=docker.io/anchore/syft:v1.42.3 /syft /usr/local/bin/syft
 {% endif %}
 
 # Configure uv to use project-local virtual environments
-ENV UV_PROJECT_ENVIRONMENT="/workspace/.venv"
+ENV UV_PROJECT_ENVIRONMENT="/workspaces/{{ repo_name }}/.venv"
 
 # Create .vscode-server directory with proper ownership
 # This prevents permission issues when volumes are mounted

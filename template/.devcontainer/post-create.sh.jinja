@@ -5,7 +5,7 @@ set -e
 export PATH="/home/vscode/.local/bin:$PATH"
 
 ensure_git_repo() {
-    local repo_root="/workspace"
+    local repo_root="/workspaces/{{ repo_name }}"
 
     if ! command -v git >/dev/null 2>&1; then
         echo "❌ git is required but not installed."
@@ -124,7 +124,7 @@ fi
 
 # Python setup
 echo "📦 Setting up Python..."
-cd /workspace
+cd /workspaces/{{ repo_name }}
 
 # Check if venv exists but has broken symlinks (stale uv cache)
 if [ -d ".venv" ]; then
@@ -142,11 +142,11 @@ ensure_git_repo
 
 # Generate version from git tags (setuptools_scm)
 echo "📌 Updating version from git tags..."
-cd /workspace
-uv run --group dev python /workspace/scripts/update_version.py || echo "⚠️  Could not update version (git tags may not be available in this checkout)"
+cd /workspaces/{{ repo_name }}
+uv run --group dev python /workspaces/{{ repo_name }}/scripts/update_version.py || echo "⚠️  Could not update version (git tags may not be available in this checkout)"
 
 # Install pre-commit hooks (if configured)
-cd /workspace
+cd /workspaces/{{ repo_name }}
 if [ -f ".pre-commit-config.yaml" ]; then
     echo "🪝 Installing pre-commit hooks..."
     # Run pre-commit from the repository root (where .pre-commit-config.yaml is)
@@ -174,10 +174,10 @@ if ! git config beads.role >/dev/null 2>&1; then
 fi
 
 # Initialize beads issue tracker if not already done
-cd /workspace
+cd /workspaces/{{ repo_name }}
 if [ ! -d ".beads" ]; then
     echo "🔮 Initializing beads issue tracker..."
-    bd init --quiet --skip-hooks
+    bd init --quiet --skip-hooks --prefix "{{ beads_prefix }}"
     echo "✅ Beads initialized"
 else
     echo "✅ Beads already initialized"
