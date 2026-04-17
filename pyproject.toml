@@ -17,6 +17,11 @@ dev = [
     "ty>=0.0.28"
 ]
 
+[tool.ty]
+
+[tool.ty.src]
+exclude = [".claude/**"]
+
 [tool.ty.environment]
 python-version = "3.14"
 
