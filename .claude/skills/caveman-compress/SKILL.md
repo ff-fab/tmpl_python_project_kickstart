@@ -28,7 +28,7 @@ as `<filename>.original.md`.
 
 2. Run:
 
-cd caveman-compress && python3 -m scripts <absolute_filepath>
+cd .claude/skills/caveman-compress && python3 -m scripts <absolute_filepath>
 
 3. The CLI will:
 

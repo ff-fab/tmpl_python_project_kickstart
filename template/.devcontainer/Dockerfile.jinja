@@ -34,14 +34,22 @@ RUN set -eux; \
         arm64) TASK_ARCH='arm64' ;; \
         *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;; \
     esac; \
-    TASK_URL="https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_linux_${TASK_ARCH}.tar.gz"; \
+    TASK_TARBALL="task_linux_${TASK_ARCH}.tar.gz"; \
+    TASK_URL="https://github.com/go-task/task/releases/download/${TASK_VERSION}/${TASK_TARBALL}"; \
+    TASK_CHECKSUMS_URL="https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_checksums.txt"; \
     for i in 1 2 3; do \
         curl -fsSL "${TASK_URL}" -o /tmp/task.tar.gz && break || sleep 5; \
     done; \
+    for i in 1 2 3; do \
+        curl -fsSL "${TASK_CHECKSUMS_URL}" -o /tmp/task_checksums.txt && break || sleep 5; \
+    done; \
+    grep "  ${TASK_TARBALL}$" /tmp/task_checksums.txt > /tmp/task.sha256; \
+    echo "  /tmp/task.tar.gz" >> /tmp/task.sha256; \
+    sha256sum -c /tmp/task.sha256; \
     cd /tmp && tar -xzf task.tar.gz task && \
     mv task /usr/local/bin/ && \
     chmod +x /usr/local/bin/task && \
-    rm -f /tmp/task.tar.gz
+    rm -f /tmp/task.tar.gz /tmp/task_checksums.txt /tmp/task.sha256
 
 # Install dolt (versioned SQL database backend for the beads/bd issue tracker).
 # Baked into the image so the container starts reliably without a runtime download.

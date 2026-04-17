@@ -2,7 +2,7 @@
   "name": "{{ _copier_answers.project_name }}",
   "build": {
     "dockerfile": "Dockerfile",
-    "cacheFrom": "ghcr.io/{{ github_org }}/{{ repo_name }}-devcontainer"
+    "cacheFrom": "ghcr.io/{{ github_org }}/{{ project_name }}-devcontainer"
   },
   "workspaceFolder": "/workspaces/{{ repo_name }}",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/{{ repo_name }},type=bind,consistency=cached",

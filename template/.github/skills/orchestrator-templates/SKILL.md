@@ -80,8 +80,10 @@ File name: `<epic-name>-complete.md` (use kebab-case)
 </plan_complete_style_guide>
 
 <git_commit_style_guide>
+Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`, `build`, `ci`, `style`, `revert`
+
 ```
-fix/feat/chore/test/refactor: Short description of the change (max 50 characters)
+<type>(<scope>): Short description of the change (max 50 characters)
 
 - Concise bullet point 1 describing the changes
 - Concise bullet point 2 describing the changes
@@ -89,5 +91,5 @@ fix/feat/chore/test/refactor: Short description of the change (max 50 characters
 ...
 ```
 
-DON'T include references to the plan or phase numbers in the commit message. The git log/PR will not contain this information.
+`<scope>` is optional. DON'T include references to plan or phase numbers in the commit message. The git log/PR will not contain this information.
 </git_commit_style_guide>
