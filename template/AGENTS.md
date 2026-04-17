@@ -2,18 +2,16 @@
 
 This project uses **bd** (beads) for issue tracking. Run `bd prime` to get started.
 
-## GitHub Tooling Policy
+## Tooling Policy
 
-- Use **GitHub CLI (`gh`)** and **git CLI** directly for PR/issue workflows.
-- Do **not** rely on GitKraken MCP tools in this repository.
-- If an agent attempts GitKraken MCP and authentication is missing, switch immediately
-  to `gh` commands.
+**Use `task <name>`** for all operations (run `task --list`). Fall back to `uv run` only
+when no task exists. Never invoke `python` directly.
 
-Quick CLI equivalents:
+For `gh` subcommands without a task wrapper, direct invocation is fine:
 
 ```bash
+gh pr create
 gh pr view --json number,title,headRefName,baseRefName,state,url
-gh pr checks
 gh pr comment <number> --body "..."
 gh pr review <number> --comment --body "..."
 gh issue list --limit 50

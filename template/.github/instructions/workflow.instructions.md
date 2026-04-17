@@ -149,6 +149,7 @@ until `git push` succeeds.
 
    ```bash
    bd close <id>
+   task beads:sync
    git add .beads/ && git commit -m "chore: update beads state"
    ```
 
