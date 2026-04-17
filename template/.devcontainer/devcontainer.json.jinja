@@ -143,6 +143,17 @@
         "github.gitAuthentication": true,
         "githubPullRequests.remotes": ["{{repo_name}}", "origin", "upstream"],
 
+        // Jinja template file associations — gives Jinja + host-language
+        // dual syntax highlighting (requires samuelcolvin.jinjahtml extension)
+        "files.associations": {
+          "Dockerfile.jinja": "jinja-dockerfile",
+          "*.sh.jinja": "jinja-shell",
+          "*.toml.jinja": "jinja-toml",
+          "*.json.jinja": "jinja-json",
+          "*.yml.jinja": "jinja-yaml",
+          "*.md.jinja": "jinja-md"
+        },
+
         // Beads (bd) issue tracker — auto-start daemon on container open
         "beads.autoStartDaemon": true,
 
@@ -161,6 +172,7 @@
         "ms-python.vscode-pylance",
         "charliermarsh.ruff",
         "tamasfe.even-better-toml",
+        "samuelcolvin.jinjahtml",
 {% if robot_framework %}
         "d-biehl.robotcode",
 {% endif %}
