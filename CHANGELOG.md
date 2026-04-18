@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.12.0...v1.13.0) (2026-04-18)
+
+
+### Features
+
+* improve PR template, compress agent instructions, add skills & devcontainer enhancements ([#91](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/91)) ([6d72c5d](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/6d72c5dab49ea078056773fd570701cd259b8ae1))
+
 ## [1.12.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.11.0...v1.12.0) (2026-04-18)
 
 
