@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.13.1...v1.14.0) (2026-04-18)
+
+
+### Features
+
+* **pr-review:** update prompt, fix task precondition, clarify SKILL usage ([#97](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/97)) ([b2c313e](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/b2c313e67d1b639a734cd06491aa20077d14b469))
+
 ## [1.13.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.13.0...v1.13.1) (2026-04-18)
 
 
