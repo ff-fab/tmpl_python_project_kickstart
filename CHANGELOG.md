@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.12.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.11.0...v1.12.0) (2026-04-18)
+
+
+### Features
+
+* **devcontainer:** bake dolt+beads, add ripgrep, sync skills and instructions ([#88](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/88)) ([fd86b85](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/fd86b85e95ebba572c56583d6a8a5b0681d447ac))
+
+## [1.11.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.10.1...v1.11.0) (2026-04-17)
+
+
+### Features
+
+* add ripgrep to templated devcontainer ([#86](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/86)) ([813c539](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/813c5394b5c737370653e7f6686f08a115a8c7bd))
+* beads-kanban extension, prefix question, workspace folder naming ([#84](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/84)) ([1c94712](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/1c9471291186ef8ff88087d21d3194958af6aaa6))
+* **devcontainer:** bake dolt+beads into image, pin go-task, sync skills and instructions from cosalette ([528b612](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/528b612056d378464a3acff4bad5437bf6c5f810))
+
 ## [1.10.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.10.0...v1.10.1) (2026-04-10)
 
 
