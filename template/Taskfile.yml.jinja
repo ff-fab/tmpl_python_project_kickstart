@@ -398,10 +398,6 @@ tasks:
 {% endif %}
 {% raw %}
   # ===========================================================================
-  # CI Helpers
-  # ===========================================================================
-
-  # ===========================================================================
   # PR Helpers
   # ===========================================================================
 
@@ -424,12 +420,13 @@ tasks:
       - gh pr diff {{.CLI_ARGS}}
 
   pr:feedback:
-    desc: 'Fetch all PR feedback as JSON (e.g.: task pr:feedback -- 42)'
-    preconditions:
-      - sh: '[ -n "{{.CLI_ARGS}}" ]'
-        msg: 'Usage: task pr:feedback -- <pr-number>'
+    desc: 'Fetch all PR feedback as JSON (e.g.: task pr:feedback -- 42, or task pr:feedback to auto-detect from current branch)'
     cmds:
       - bash .github/skills/pr-review/fetch-pr-feedback.sh {{.CLI_ARGS}}
+
+  # ===========================================================================
+  # CI Helpers
+  # ===========================================================================
 
   ci:wait:
     desc: 'Wait for CI checks to pass on a PR (e.g.: task ci:wait -- 5)'
