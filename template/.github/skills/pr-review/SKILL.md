@@ -41,13 +41,9 @@ comments, conversation comments, and CI status) in a single deterministic pass w
 pagination.
 
 ```bash
-task pr:feedback -- <PR_NUMBER>
+task pr:feedback -- <PR_NUMBER>   # explicit PR number
+task pr:feedback                  # auto-detects the PR for the current branch
 ```
-
-**This step is mandatory for every PR.** Do not skip it. Do not substitute ad-hoc
-`gh` calls — always use the `task pr:feedback` wrapper. GitHub splits review feedback
-across 3 separate API resources and agents routinely miss inline review comments — the
-most actionable kind — when they only query one endpoint.
 
 The script returns a single JSON object. Confirm you received all keys: `metadata`,
 `changed_files`, `reviews`, `review_comments`, `conversation_comments`, `ci_status`. If
@@ -55,9 +51,9 @@ any key is missing or empty, say so explicitly — never silently skip a section
 
 ## Step 3 — Read changed files
 
-For every file listed in `changed_files`, read the full current file (not just the diff
-hunks). You need surrounding context to judge patterns, architecture, and whether tests
-cover the change.
+For every file listed in `changed_files`, read full current file (not just diff hunks).
+You need surrounding context to judge patterns, architecture, whether tests cover
+change.
 
 ## Step 4 — Analyze via parallel sub-agent fan-out
 
@@ -70,8 +66,8 @@ Pass the collected PR data to all 4 perspective reviewer sub-agents **in paralle
 
 Each returns JSON conforming to `review-findings.schema.json`.
 
-Merge all findings into a unified list. Then convert GitHub reviewer comments (from
-`reviews`, `review_comments`, `conversation_comments`) into the same findings format
+Merge all findings into unified list. Then convert GitHub reviewer comments (from
+`reviews`, `review_comments`, `conversation_comments`) into same findings format
 with `source` set to the reviewer's GitHub login.
 
 ## Step 5 — Teach alongside findings
