@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.11.0...v1.12.0) (2026-04-18)
+
+
+### Features
+
+* **devcontainer:** bake dolt+beads, add ripgrep, sync skills and instructions ([#88](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/88)) ([fd86b85](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/fd86b85e95ebba572c56583d6a8a5b0681d447ac))
+
 ## [1.11.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.10.1...v1.11.0) (2026-04-17)
 
 
