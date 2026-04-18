@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.13.0...v1.13.1) (2026-04-18)
+
+
+### Bug Fixes
+
+* revert workflow_dispatch, trigger release ([#95](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/95)) ([5ba160b](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/5ba160bb56ee189c5e1ac262d7abcf8e62999bb8))
+
 ## [1.13.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.12.0...v1.13.0) (2026-04-18)
 
 
