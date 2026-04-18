@@ -43,13 +43,12 @@ RUN set -eux; \
     for i in 1 2 3; do \
         curl -fsSL "${TASK_CHECKSUMS_URL}" -o /tmp/task_checksums.txt && break || sleep 5; \
     done; \
-    grep "  ${TASK_TARBALL}$" /tmp/task_checksums.txt > /tmp/task.sha256; \
-    echo "  /tmp/task.tar.gz" >> /tmp/task.sha256; \
-    sha256sum -c /tmp/task.sha256; \
+    EXPECTED_SHA=$(grep "  ${TASK_TARBALL}$" /tmp/task_checksums.txt | awk '{print $1}'); \
+    echo "${EXPECTED_SHA}  /tmp/task.tar.gz" | sha256sum -c -; \
     cd /tmp && tar -xzf task.tar.gz task && \
     mv task /usr/local/bin/ && \
     chmod +x /usr/local/bin/task && \
-    rm -f /tmp/task.tar.gz /tmp/task_checksums.txt /tmp/task.sha256
+    rm -f /tmp/task.tar.gz /tmp/task_checksums.txt
 
 # Install dolt (versioned SQL database backend for the beads/bd issue tracker).
 # Baked into the image so the container starts reliably without a runtime download.
