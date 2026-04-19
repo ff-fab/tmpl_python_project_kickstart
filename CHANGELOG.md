@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.0...v1.15.1) (2026-04-19)
+
+
+### Bug Fixes
+
+* **pr:create:** pass title and body as task vars instead of CLI args ([#105](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/105)) ([d5a9229](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/d5a9229f5b9ec3585ee01468476503f157505465))
+* trigger release-please release ([#103](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/103)) ([acb85b0](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/acb85b041b7e60c77f7f1ba621d6d100dfe05d57))
+
 ## [1.15.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.14.0...v1.15.0) (2026-04-19)
 
 
