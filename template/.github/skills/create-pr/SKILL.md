@@ -34,13 +34,9 @@ Use same conventional commit prefix as branch/commits.
 2. **Write title** — derive from commits or branch name.
 3. **Write body** — fill template sections from diff and commit messages.
    Keep concise. Bullet points, not prose.
-4. **Create PR** — use `create_file` to write body, then single `gh` command:
+4. **Create PR** — pass title and body directly via the task wrapper:
    ```
-   # Step A: use the create_file tool to write the rendered body
-   create_file("/tmp/pr-body.md", "<rendered body>")
-
-   # Step B: single terminal command — no heredocs, no compound commands
-   gh pr create --title "<title>" --body-file /tmp/pr-body.md && rm -f /tmp/pr-body.md
+   task pr:create -- --title "<title>" --body "<rendered body>"
    ```
 5. **Report** PR URL.
 
