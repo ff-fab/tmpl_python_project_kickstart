@@ -1,7 +1,6 @@
 ---
 name: pr-review
-user-invokable: false
-disable-model-invocation: true
+user-invocable: false
 description: Review open pull requests — fetch all reviewer feedback, CI results, and code changes, then provide actionable analysis. With a PR number, reviews that single PR. Without arguments, reviews ALL open PRs (excluding release-please).
 ---
 
