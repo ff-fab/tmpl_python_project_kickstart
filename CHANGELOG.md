@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.14.0...v1.15.0) (2026-04-19)
+
+
+### Features
+
+* **pr-review:** pin model, fix typo, remove orchestrator-templates skill ([#99](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/99)) ([91a4d7c](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/91a4d7c0d8ed7095fe605912f4e49b8c5516a7da))
+* **template:** remove obsolete Claude skill files ([#101](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/101)) ([57a1fe1](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/57a1fe12e6a186dc9bd9052550609ceab132da2e))
+
 ## [1.14.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.13.1...v1.14.0) (2026-04-18)
 
 
