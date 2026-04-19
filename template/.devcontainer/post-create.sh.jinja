@@ -79,7 +79,7 @@ fi
 cd /workspaces/{{ repo_name }}
 if [ ! -d ".beads" ]; then
     echo "🔮 Initializing beads issue tracker..."
-    bd init --quiet --skip-hooks --prefix "{{ beads_prefix }}"
+    bd init --quiet --skip-hooks --server --prefix "{{ beads_prefix }}"
     echo "✅ Beads initialized"
 else
     echo "✅ Beads already initialized"
