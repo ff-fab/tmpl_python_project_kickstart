@@ -44,7 +44,7 @@ Use same conventional commit prefix as branch/commits.
 
 - **Never merge** — only create. The user decides when to merge.
 - **Always provide explicit title and body** — do not rely on `--fill`.
-- If quality gates haven't been run, warn user but don't block.
+- If quality gates haven't been run, invoke `pre-pr-gate` skill.
 
 ## Scope Boundary
 
