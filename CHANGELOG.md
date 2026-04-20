@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.15.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.1...v1.15.2) (2026-04-20)
+
+
+### Bug Fixes
+
+* add --server flag to bd init in post-create.sh ([#108](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/108)) ([d0ae0f5](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/d0ae0f519c552c2b248b7d9bdbc665cbd99a27a0))
+* **beads:** add permissions fix and dolt server start to post-start.sh ([#106](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/106)) ([8e82829](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/8e82829ce16a4a4339df42f6a9f8f894b327b178))
+* **pr-review:** resolve schema mismatches and misleading CI state ([#109](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/109)) ([7e31c1f](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/7e31c1f09dbc3660bbf315d8410e54a7e0c7d3fa))
+
 ## [1.15.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.0...v1.15.1) (2026-04-19)
 
 
