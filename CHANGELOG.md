@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.3](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.2...v1.15.3) (2026-04-20)
+
+
+### Bug Fixes
+
+* remove Claud Opus as model ([#111](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/111)) ([922a18b](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/922a18b7a5cb39e8af316889dcdfdb5deb4e4aff))
+
 ## [1.15.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.1...v1.15.2) (2026-04-20)
 
 
