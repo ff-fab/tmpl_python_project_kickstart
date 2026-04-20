@@ -44,9 +44,57 @@ task pr:feedback -- <PR_NUMBER>   # explicit PR number
 task pr:feedback                  # auto-detects the PR for the current branch
 ```
 
-The script returns a single JSON object. Confirm you received all keys: `metadata`,
-`changed_files`, `reviews`, `review_comments`, `conversation_comments`, `ci_status`. If
-any key is missing or empty, say so explicitly — never silently skip a section.
+**Important:** Use the JSON output directly — do **NOT** pipe through `jq` or transform
+it. The script already curates and flattens the data into a compact schema. Piping
+through `jq` risks schema mismatches and wasted API calls.
+
+The script returns a single JSON object with this exact schema:
+
+```json
+{
+  "metadata": {
+    "number": 42,
+    "title": "...",
+    "body": "...",
+    "state": "open",
+    "draft": false,
+    "mergeable_state": "clean",
+    "labels": ["bug", "enhancement"],
+    "author": "octocat",
+    "created_at": "...",
+    "updated_at": "...",
+    "html_url": "..."
+  },
+  "changed_files": [
+    {"filename": "...", "status": "modified", "additions": 5, "deletions": 2, "changes": 7, "patch": "..."}
+  ],
+  "reviews": [
+    {"id": 1, "author": "reviewer", "state": "APPROVED", "body": "...", "submitted_at": "..."}
+  ],
+  "review_comments": [
+    {"id": 1, "author": "reviewer", "path": "file.py", "line": 10, "side": "RIGHT", "diff_hunk": "...", "body": "...", "created_at": "...", "in_reply_to_id": null}
+  ],
+  "conversation_comments": [
+    {"id": 1, "author": "commenter", "body": "...", "created_at": "..."}
+  ],
+  "ci_status": {
+    "state": "success|failure|pending|unknown",
+    "statuses": [
+      {"context": "...", "state": "success", "description": "...", "target_url": "..."}
+    ],
+    "check_runs": [
+      {"name": "...", "status": "completed", "conclusion": "success", "html_url": "...", "output": {"title": "...", "summary": "..."}}
+    ]
+  }
+}
+```
+
+Note: `author` fields are plain strings (GitHub login), not objects. The `ci_status.state`
+is an aggregate computed from both legacy commit statuses and modern check runs.
+
+Confirm you received all keys: `metadata`, `changed_files`, `reviews`,
+`review_comments`, `conversation_comments`, `ci_status`. If any key is missing or empty,
+say so explicitly — never silently skip a section.
 
 ## Step 3 — Read changed files
 
