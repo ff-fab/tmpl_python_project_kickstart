@@ -8,8 +8,13 @@
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/{{ repo_name }},type=bind,consistency=cached",
   // Ensure ~/.config/gh exists on the host before Docker tries to bind-mount it.
   // Without this, Docker creates it as root:root and gh auth breaks.
-  // Runs on the host (or WSL2 context) before the container is created.
-  "initializeCommand": "mkdir -p \"${localEnv:HOME}/.config/gh\"",
+  // Object form uses the devcontainer spec's per-OS lifecycle commands so the
+  // correct native command runs regardless of host OS.
+  "initializeCommand": {
+    "linux": "mkdir -p \"${localEnv:HOME}/.config/gh\"",
+    "mac": "mkdir -p \"${localEnv:HOME}/.config/gh\"",
+    "windows": "cmd /c if not exist \"%USERPROFILE%\\.config\\gh\" mkdir \"%USERPROFILE%\\.config\\gh\""
+  },
   "mounts": [
     "source=${localEnv:HOME}/.config/gh,target=/home/vscode/.config/gh,type=bind,consistency=cached"
   ],
