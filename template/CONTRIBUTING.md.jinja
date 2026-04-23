@@ -23,6 +23,26 @@ code .
 # DevContainer will start automatically, install dependencies, and configure everything
 ```
 
+### GitHub CLI Authentication
+
+The dev container bind-mounts `~/.config/gh` from the host so `gh auth login`
+credentials survive rebuilds and are shared across all devcontainers on the same machine.
+
+The `initializeCommand` in `devcontainer.json` creates the directory on the host
+before Docker can claim it as `root:root`. This command uses `mkdir -p` and runs
+in a POSIX shell, which works on **Linux and macOS** but not on a native Windows
+host.
+
+#### Windows (Docker Desktop, native host)
+
+Create the directory once before opening the devcontainer:
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.config\gh"
+```
+
+After that, credentials written inside the container persist as normal.
+
 That's it! You're ready to develop.
 
 ## Common Commands
@@ -89,23 +109,3 @@ This project follows **GitHub Flow**:
 
 By contributing, you agree that your contributions will be licensed under the
 [MIT License](LICENSE).
-
-## Dev Container: GitHub CLI Authentication
-
-The dev container bind-mounts `~/.config/gh` from the host so `gh auth login`
-credentials survive rebuilds and are shared across all devcontainers on the same machine.
-
-The `initializeCommand` in `devcontainer.json` creates the directory on the host
-before Docker can claim it as `root:root`. This command uses `mkdir -p` and runs
-in a POSIX shell, which works on **Linux and macOS** but not on a native Windows
-host.
-
-### Windows (Docker Desktop, native host)
-
-Create the directory once before opening the devcontainer:
-
-```powershell
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.config\gh"
-```
-
-After that, credentials written inside the container persist as normal.
