@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.6](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.5...v1.15.6) (2026-04-23)
+
+
+### Bug Fixes
+
+* **docs:** move gh auth instructions inline in Setup section ([#117](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/117)) ([b9273bd](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/b9273bdee57ba6af8bd7008cbf7c39ceebec7e08))
+
 ## [1.15.5](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.4...v1.15.5) (2026-04-23)
 
 
