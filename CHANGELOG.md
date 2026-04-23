@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.5](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.4...v1.15.5) (2026-04-23)
+
+
+### Bug Fixes
+
+* **devcontainer:** simplify initializeCommand and update contributing guide for GitHub CLI auth ([#115](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/115)) ([e191090](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/e191090d9c18a8a3cd69bf5fa4987dc0db011d24))
+
 ## [1.15.4](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.3...v1.15.4) (2026-04-23)
 
 
