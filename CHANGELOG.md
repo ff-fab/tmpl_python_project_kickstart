@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.7](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.6...v1.15.7) (2026-04-23)
+
+
+### Bug Fixes
+
+* trigger release-please after hotfix rollback of gh config mount ([#120](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/120)) ([cdf9064](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/cdf90640a035f2cfafa01318ca4328a51ca27e9f))
+
 ## [1.15.6](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.5...v1.15.6) (2026-04-23)
 
 
