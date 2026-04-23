@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.4](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.3...v1.15.4) (2026-04-23)
+
+
+### Bug Fixes
+
+* **devcontainer:** persist gh auth across container rebuilds ([#113](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/113)) ([13d9cb8](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/13d9cb87d7acdfd338db135f9e76c2f70e0dad33))
+
 ## [1.15.3](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.2...v1.15.3) (2026-04-20)
 
 
