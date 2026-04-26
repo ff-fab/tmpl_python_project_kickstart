@@ -47,6 +47,11 @@ context7_api_key:
   help: Optional Context7 API key for local development integrations.
   default: ''
   secret: true
+opencode_api_key:
+  type: str
+  help: Optional OpenCode API key for the opencode-go plan (opencode.ai/auth).
+  default: ''
+  secret: true
 surge_token:
   type: bool
   help: Whether to enable documentation preview deployments on PRs (requires SURGE_TOKEN repository secret).
