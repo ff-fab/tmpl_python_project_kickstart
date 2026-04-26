@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.7...v1.16.0) (2026-04-26)
+
+
+### Features
+
+* add opencode.ai support to template ([#122](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/122)) ([e66e610](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/e66e6104ef16b64f07b3db89075432cee19edca4))
+
 ## [1.15.7](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.6...v1.15.7) (2026-04-23)
 
 
