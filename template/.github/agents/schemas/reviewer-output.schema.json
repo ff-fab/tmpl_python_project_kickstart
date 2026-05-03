@@ -3,7 +3,7 @@
   "title": "Reviewer Agent Output",
   "description": "JSON returned by each perspective reviewer sub-agent (maintainability, performance, quality, security). The orchestrator (pr-review SKILL) merges outputs from all four agents into a unified findings list. Distinct from skills/pr-review/feedback-schema.json, which describes the PR input data fetched from GitHub. Field names map directly to the findings table columns in the pr-review SKILL: Sev → severity, Source → source, File:Line → file + line, Finding → finding, Recommendation → recommendation, Effort → effort.",
   "type": "object",
-  "required": ["perspective", "findings"],
+  "required": ["perspective", "summary", "findings"],
   "additionalProperties": false,
   "properties": {
     "perspective": {
@@ -37,7 +37,7 @@
         "source": {
           "type": "string",
           "const": "agent",
-          "description": "Always 'agent' for findings produced by a reviewer sub-agent. The orchestrator replaces this with the reviewer's GitHub login when converting human review comments into the same structure."
+          "description": "Always 'agent' for findings produced by a reviewer sub-agent. When the orchestrator converts human review comments (reviews, review_comments, conversation_comments) into the same findings shape, it sets source to the GitHub login instead — that merged list is not validated against this schema."
         },
         "file": {
           "type": "string",
