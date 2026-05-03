@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Reviewer Agent Output",
-  "description": "JSON returned by each perspective reviewer sub-agent (maintainability, performance, quality, security). The orchestrator merges outputs from all four agents into a unified findings list for display and implementation. Field names map directly to the findings table columns in the pr-review SKILL: Sev → severity, Source → source, File:Line → file + line, Finding → finding, Recommendation → recommendation, Effort → effort.",
+  "description": "JSON returned by each perspective reviewer sub-agent (maintainability, performance, quality, security). The orchestrator (pr-review SKILL) merges outputs from all four agents into a unified findings list. Distinct from skills/pr-review/feedback-schema.json, which describes the PR input data fetched from GitHub. Field names map directly to the findings table columns in the pr-review SKILL: Sev → severity, Source → source, File:Line → file + line, Finding → finding, Recommendation → recommendation, Effort → effort.",
   "type": "object",
   "required": ["perspective", "findings"],
   "additionalProperties": false,
