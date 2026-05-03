@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.16.0...v1.17.0) (2026-05-03)
+
+
+### Features
+
+* add reviewer-output.schema.json for reviewer agent output ([#124](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/124)) ([19bd704](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/19bd70421ffac83d093ff05e1c8a7efcfd8c2b10))
+
 ## [1.16.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.15.7...v1.16.0) (2026-04-26)
 
 
