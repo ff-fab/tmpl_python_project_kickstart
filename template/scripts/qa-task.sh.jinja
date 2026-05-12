@@ -71,8 +71,9 @@ _run_impl() {
         test)
             # Build target list dynamically: only pass directories that exist.
             # integration/ is absent in projects without integration tests.
-            # NOTE: avoid ${#array[@]} — the {# sequence is a Jinja2 comment
-            # tag opening and would cause a TemplateSyntaxError at copy time.
+            # NOTE: bash array-length syntax (dollar+brace+hash) cannot be used
+            # in .jinja files — Jinja2 lexes brace-hash as a comment tag opening
+            # causing TemplateSyntaxError. Use a flag variable instead.
             _test_dirs=()
             _found_test_dirs=false
             [ -d "${_PKG}/tests/unit/" ]        && { _test_dirs+=("${_PKG}/tests/unit/");        _found_test_dirs=true; }
