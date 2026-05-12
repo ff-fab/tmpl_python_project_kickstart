@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.17.0...v1.18.0) (2026-05-12)
+
+
+### Features
+
+* CI hardening, devcontainer composite action, security tooling, QA wrapper, dep updates ([2a89324](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/2a893240c14c9d2fcecde0e6084b326b64526d66))
+
 ## [1.17.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.16.0...v1.17.0) (2026-05-03)
 
 
