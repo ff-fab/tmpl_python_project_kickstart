@@ -71,10 +71,13 @@ _run_impl() {
         test)
             # Build target list dynamically: only pass directories that exist.
             # integration/ is absent in projects without integration tests.
+            # NOTE: avoid ${#array[@]} — the {# sequence is a Jinja2 comment
+            # tag opening and would cause a TemplateSyntaxError at copy time.
             _test_dirs=()
-            [ -d "${_PKG}/tests/unit/" ]        && _test_dirs+=("${_PKG}/tests/unit/")
-            [ -d "${_PKG}/tests/integration/" ] && _test_dirs+=("${_PKG}/tests/integration/")
-            if [ "${#_test_dirs[@]}" -eq 0 ]; then
+            _found_test_dirs=false
+            [ -d "${_PKG}/tests/unit/" ]        && { _test_dirs+=("${_PKG}/tests/unit/");        _found_test_dirs=true; }
+            [ -d "${_PKG}/tests/integration/" ] && { _test_dirs+=("${_PKG}/tests/integration/"); _found_test_dirs=true; }
+            if [ "${_found_test_dirs}" = "false" ]; then
                 printf 'test: no test directories found under %s/tests/\n' "${_PKG}" >&2
                 return 1
             fi
