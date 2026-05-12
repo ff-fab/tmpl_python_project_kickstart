@@ -1,0 +1,112 @@
+{% raw %}# Reusable composite action — checkout, authenticate to GHCR, and run a command
+# inside the devcontainer. Eliminates DRY violation across CI jobs.
+#
+# Requires the calling workflow to check out the repo first (actions/checkout)
+# so that this local action can be resolved.
+
+name: Run in devcontainer
+description: Authenticate to GHCR and run a command inside the devcontainer
+
+inputs:
+  run-cmd:
+    description: Command to run inside the devcontainer
+    required: true
+  token:
+    description: GitHub token for GHCR authentication
+    required: true
+  cargo-cache:
+    description: >-
+      Restore and save Cargo registry and target caches. Enable only for jobs
+      that compile Rust (maturin/cargo). Gated separately to prevent non-Rust
+      jobs from winning the first-writer-wins save race and poisoning the key.
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Prepare runner for devcontainer
+      shell: bash
+      run: |
+        mkdir -p ~/.ssh  # devcontainer.json mounts ~/.ssh; runners lack it
+        # Initialise workspace cache dirs before cache restore steps
+        mkdir -p .cache/uv .cache/pre-commit .cache/cargo-home/registry .cache/cargo-home/git target
+
+    # Bump vN suffix to force-invalidate when cache format or path layout changes.
+    - name: Restore uv cache
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: .cache/uv
+        key: ${{ runner.os }}-uv-v1-${{ hashFiles('uv.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-uv-v1-
+        save-always: true
+
+    - name: Restore pre-commit cache
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: .cache/pre-commit
+        key: ${{ runner.os }}-pre-commit-v1-${{ hashFiles('.pre-commit-config.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pre-commit-v1-
+        save-always: true
+
+    - name: Restore cargo registry cache
+      if: inputs.cargo-cache == 'true'
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: |
+          .cache/cargo-home/registry
+          .cache/cargo-home/git
+        key: ${{ runner.os }}-cargo-home-v1-${{ hashFiles('Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-home-v1-
+
+    - name: Restore cargo target cache
+      if: inputs.cargo-cache == 'true'
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-target-v1-${{ hashFiles('Cargo.lock', 'pyproject.toml', 'crates/**/Cargo.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-target-v1-
+
+    - name: Log in to GHCR (for devcontainer cache)
+      uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ inputs.token }}
+
+    - name: Set up Docker Buildx
+      # docker-container driver required for type=registry cache-from (mode=max format).
+      # Without it, the docker driver falls back to inline-cache only, missing all
+      # cached layers and triggering a full rebuild that pulls the base image from MCR.
+      # Pin to v3.10.0 SHA to prevent mutable-tag supply-chain risk.
+      uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      with:
+        driver: docker-container
+
+    - name: Run inside devcontainer
+      uses: devcontainers/ci@b63b30de439b47a52267f241112c5b453b673db5 # v0.3
+      with:
+        cacheFrom: type=registry,ref=ghcr.io/{% endraw %}{{ github_org }}/{{ project_name }}{% raw %}-devcontainer:buildcache
+        push: never
+        env: |
+          UV_CACHE_DIR=/workspace/.cache/uv
+          PRE_COMMIT_HOME=/workspace/.cache/pre-commit
+          CARGO_HOME=/workspace/.cache/cargo-home
+          CARGO_TARGET_DIR=/workspace/target
+        runCmd: ${{ inputs.run-cmd }}
+
+    - name: Prune Rust incremental artifacts before cache save
+      if: inputs.cargo-cache == 'true'
+      shell: bash
+      run: find target/debug/incremental -mindepth 1 -delete 2>/dev/null || true
+
+    - name: Save cargo target cache
+      if: inputs.cargo-cache == 'true'
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-target-v1-${{ hashFiles('Cargo.lock', 'pyproject.toml', 'crates/**/Cargo.toml') }}
+{% endraw %}
