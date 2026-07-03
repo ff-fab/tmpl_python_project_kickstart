@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+from typing import Any
 
 
 def _load_render_adr_module():
@@ -13,7 +14,7 @@ def _load_render_adr_module():
     return module
 
 
-def _valid_new_payload() -> dict:
+def _valid_new_payload() -> dict[str, Any]:
     return {
         "type": "new",
         "title": "Test ADR",
