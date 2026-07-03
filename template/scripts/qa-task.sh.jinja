@@ -280,6 +280,7 @@ SAFE_NAME="${TASK_NAME//[:\/ ]/-}"
 _qa_log_dir="${QA_LOG_DIR:-/tmp}"
 _qa_tail="${QA_TAIL_LINES:-160}"
 
+{% endraw %}
 if [ "${TASK_NAME}" = "pre-pr" ]; then
     _log="${PRE_PR_LOG:-${_qa_log_dir}/{{ project_name }}-pre-pr.log}"
     _status="${PRE_PR_STATUS:-${_qa_log_dir}/{{ project_name }}-pre-pr.status}"
