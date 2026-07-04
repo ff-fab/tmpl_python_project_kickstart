@@ -70,13 +70,17 @@ _run_impl() {
 
         test)
 {% raw %}            # Run unit tests if they exist, then integration tests if present.
-            # Only run summary when coverage.json is produced (pytest ran successfully).
+            # Track the worst pytest exit code across runs so a genuine failure
+            # still fails the task, but every stage (and the summary) still runs.
+            # Note: `cmd || rc_test=$?` only assigns on failure, so a later
+            # passing stage cannot reset an earlier recorded failure.
+            rc_test=0
             if [ -d "${_PKG}/tests/unit/" ]; then
                 uv run pytest "${_PKG}/tests/unit/" \
                     -v --tb=short \
                     --junitxml=results-unit.xml \
                     --cov="${_MOD}" --cov-branch --cov-report=json \
-                    || true
+                    || rc_test=$?
             else
                 echo "test: no unit tests found — skipping"
             fi
@@ -87,7 +91,7 @@ _run_impl() {
                 uv run pytest "${_PKG}/tests/integration/" \
                     -v --tb=short -m integration \
                     --junitxml=results-integration.xml \
-                    --unit-only || true
+                    --unit-only || rc_test=$?
             else
                 echo "test: no integration tests found — skipping"
             fi
@@ -96,7 +100,7 @@ _run_impl() {
             if [ -d "${_PKG}/tests/integration/" ]; then
                 uv run pytest "${_PKG}/tests/integration/" \
                     -v --tb=short -m integration \
-                    --junitxml=results-integration.xml || true
+                    --junitxml=results-integration.xml || rc_test=$?
             fi
 {% endraw %}{%- endif %}
 {% raw %}            # Only run the summary when pytest actually produced results
@@ -106,6 +110,7 @@ _run_impl() {
             else
                 echo "test: no coverage.json produced — skipping summary"
             fi
+            return "${rc_test}"
             ;;
 
         test:unit)
@@ -205,9 +210,10 @@ _run_impl() {
         security:secrets)
             if [ "${CI:-}" = "true" ]; then
                 # CI fast path: scan only files changed relative to the merge base.
-                # Fetch origin/main if not already present to ensure merge-base can find it.
-                git fetch --depth=1 origin main:origin/main 2>/dev/null || true
-                _base=$(git merge-base HEAD origin/main 2>/dev/null || echo HEAD~1)
+                # Fetch main into FETCH_HEAD (no local branch or tracking-ref
+                # assumptions) so merge-base works on a shallow single-branch checkout.
+                git fetch --depth=1 origin main 2>/dev/null || true
+                _base=$(git merge-base HEAD FETCH_HEAD 2>/dev/null || echo HEAD~1)
                 _changed_nul=$(git diff --name-only -z "${_base}" HEAD 2>/dev/null || true)
                 if [ -n "${_changed_nul}" ]; then
                     printf '%s' "${_changed_nul}" \
@@ -217,8 +223,9 @@ _run_impl() {
                     echo "security:secrets: no changed files — skipping hook"
                 fi
             else
-                # Local full scan: check all tracked and untracked files.
-                # Use find + printf -0 for portable null-delimited output (avoids BSD sort -z).
+                # Local full scan: check all tracked and untracked (non-ignored) files.
+                # git ls-files -z gives portable null-delimited output and honours
+                # .gitignore, so build artefacts and vendored dirs are never scanned.
                 { git ls-files -z; git ls-files --others --exclude-standard -z; } \
                     | xargs -0 uv run detect-secrets-hook \
                         --baseline .secrets.baseline --
