@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.18.0...v1.19.0) (2026-07-04)
+
+
+### Features
+
+* optional gh remote creation, PR-based template updates, and Claude Code in the devcontainer ([#130](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/130)) ([9be9581](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/9be9581cfff864dc742191bbea6152e77fc4b8f8))
+
 ## [1.18.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.17.0...v1.18.0) (2026-05-12)
 
 
