@@ -117,6 +117,16 @@ init_git_on_copy:
   type: bool
   help: Whether to initialize a Git repository right after scaffolding.
   default: true
+create_remote_repo:
+  type: bool
+  help: Whether to create the GitHub repository and push it via the gh CLI right after scaffolding (requires an authenticated gh CLI).
+  default: false
+repo_visibility:
+  type: str
+  choices: ['public', 'private']
+  help: Visibility of the repository created via the gh CLI (only used when create_remote_repo is enabled).
+  default: 'public'
+  when: '{{ create_remote_repo }}'
 
 _tasks:
   - command:
@@ -150,3 +160,5 @@ _tasks:
 
         raise SystemExit(init.returncode)
     when: "{{ init_git_on_copy and _copier_operation == 'copy' }}"
+  - command: bash scripts/setup-github-remote.sh
+    when: "{{ create_remote_repo and _copier_operation == 'copy' }}"
