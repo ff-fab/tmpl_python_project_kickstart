@@ -3,12 +3,20 @@
 #
 # Invoked automatically by copier's post-copy tasks when `create_remote_repo`
 # is answered "yes". Safe to run again by hand: it skips creation when the repo
-# or an "origin" remote already exists and just pushes the current branch.
+# or an "origin" remote already exists and just pushes 'main'.
 
 set -euo pipefail
 
 repo="{{ github_org }}/{{ repo_name }}"
 visibility="{% if repo_visibility == 'private' %}private{% else %}public{% endif %}"
+
+# Capture the rendered description via a quoted heredoc so that any characters
+# in it (double quotes, $, backticks) are treated literally instead of being
+# re-quoted or expanded by the shell when passed to `gh repo create`.
+description="$(cat <<'GH_REMOTE_DESCRIPTION_EOF'
+{{ description }}
+GH_REMOTE_DESCRIPTION_EOF
+)"
 
 # 1. Preflight — gh must be installed and authenticated. If not, print how to
 #    finish manually and exit 0 so scaffolding still succeeds.
@@ -30,6 +38,12 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     git init -b main >/dev/null 2>&1 || { git init >/dev/null && git checkout -b main; }
 fi
 if ! git rev-parse HEAD >/dev/null 2>&1; then
+    # Ensure a committer identity exists before committing. Copier only sets
+    # user.name/user.email when init_git_on_copy is enabled, so when the remote
+    # flow runs on its own (or global git config is unset) the commit would
+    # otherwise abort. Only set locally when not already configured.
+    git config user.name  >/dev/null 2>&1 || git config user.name  "{{ author_name }}"
+    git config user.email >/dev/null 2>&1 || git config user.email "{{ author_email }}"
     git add -A
     git commit -m "chore: initial scaffold from tmpl_python_project_kickstart" >/dev/null
 fi
@@ -62,7 +76,7 @@ gh repo create "${repo}" \
     --source . \
     --remote origin \
     --push \
-    --description "{{ description }}"
+    --description "${description}"
 
 echo "✅ Created ${repo} and pushed 'main'."
 echo "🔗 https://github.com/${repo}"

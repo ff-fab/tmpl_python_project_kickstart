@@ -146,12 +146,18 @@ RUN set -eux; \
     rm -f /tmp/opencode "${TARBALL}"; \
     opencode --version
 
-# Install Claude Code CLI (Anthropic)
-# Uses the official installer with integrity verification.
+# Install Claude Code CLI (Anthropic — https://claude.com/claude-code)
+# The installer downloads the CLI binary and verifies it against a SHA-256
+# checksum from Anthropic's release manifest before installing. We pin the CLI
+# version (passed through to the installer) so builds are reproducible; bump via
+# Renovate. The bootstrap script itself is fetched over TLS from claude.ai and
+# is trusted rather than checksum-pinned.
+# renovate: datasource=npm depName=@anthropic-ai/claude-code
+ARG CLAUDE_CODE_VERSION=2.1.193
 RUN set -eux; \
     INSTALLER="/tmp/claude-install.sh"; \
     curl -fsSL https://claude.ai/install.sh -o "${INSTALLER}"; \
-    bash "${INSTALLER}"; \
+    bash "${INSTALLER}" "${CLAUDE_CODE_VERSION}"; \
     rm -f "${INSTALLER}"
 
 # Configure uv to use project-local virtual environments
