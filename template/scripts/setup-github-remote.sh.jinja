@@ -48,10 +48,29 @@ if ! git rev-parse HEAD >/dev/null 2>&1; then
     git commit -m "chore: initial scaffold from tmpl_python_project_kickstart" >/dev/null
 fi
 
-# 3. Idempotent: if the repo or an origin remote already exists, just push.
-if git remote get-url origin >/dev/null 2>&1 || gh repo view "${repo}" >/dev/null 2>&1; then
-    echo "ℹ️  ${repo} already exists — pushing 'main'."
-    git remote get-url origin >/dev/null 2>&1 || git remote add origin "https://github.com/${repo}.git"
+# 3. Idempotent: if an origin remote or the GitHub repo already exists, just push.
+#    Guard against pushing the scaffold to an unrelated remote: only reuse an
+#    existing "origin" when its URL actually points at the intended repo.
+if git remote get-url origin >/dev/null 2>&1; then
+    origin_url="$(git remote get-url origin)"
+    case "${origin_url}" in
+        *"github.com/${repo}" | *"github.com/${repo}.git" \
+        | *"github.com:${repo}" | *"github.com:${repo}.git")
+            echo "ℹ️  origin already points at ${repo} — pushing 'main'."
+            git push -u origin main
+            exit 0
+            ;;
+        *)
+            echo "❌ An 'origin' remote already exists but points elsewhere:" >&2
+            echo "     ${origin_url}" >&2
+            echo "   Expected github.com/${repo}. Refusing to push the scaffold" >&2
+            echo "   to an unexpected remote — fix 'origin' or push manually." >&2
+            exit 1
+            ;;
+    esac
+elif gh repo view "${repo}" >/dev/null 2>&1; then
+    echo "ℹ️  ${repo} already exists on GitHub — adding origin and pushing 'main'."
+    git remote add origin "https://github.com/${repo}.git"
     git push -u origin main
     exit 0
 fi

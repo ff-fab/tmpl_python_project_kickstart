@@ -210,9 +210,10 @@ _run_impl() {
         security:secrets)
             if [ "${CI:-}" = "true" ]; then
                 # CI fast path: scan only files changed relative to the merge base.
-                # Fetch origin/main if not already present to ensure merge-base can find it.
-                git fetch --depth=1 origin main:origin/main 2>/dev/null || true
-                _base=$(git merge-base HEAD origin/main 2>/dev/null || echo HEAD~1)
+                # Fetch main into FETCH_HEAD (no local branch or tracking-ref
+                # assumptions) so merge-base works on a shallow single-branch checkout.
+                git fetch --depth=1 origin main 2>/dev/null || true
+                _base=$(git merge-base HEAD FETCH_HEAD 2>/dev/null || echo HEAD~1)
                 _changed_nul=$(git diff --name-only -z "${_base}" HEAD 2>/dev/null || true)
                 if [ -n "${_changed_nul}" ]; then
                     printf '%s' "${_changed_nul}" \

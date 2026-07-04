@@ -318,6 +318,12 @@ tasks:
     cmds:
       - |
         set -eu
+        # Refuse to run on a dirty tree: `git add -A` below would otherwise sweep
+        # unrelated local changes into the template-update commit and PR.
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "❌ Working tree is not clean — commit or stash your changes first." >&2
+          exit 1
+        fi
         branch="chore/template-update-$(date +%Y%m%d-%H%M%S)"
         git switch -c "$branch"
         uvx --python 3.14 --with jinja2-time copier update --trust
@@ -333,7 +339,9 @@ tasks:
         gh pr create --fill \
           --title "chore: update from copier template" \
           --body "Automated template update via \`task update:template:pr\`."
-        gh pr merge --auto --squash || true
+        # Fail loudly if auto-merge can't be enabled (missing perms, branch
+        # protection, required checks) — the whole point of this task is the PR.
+        gh pr merge --auto --squash
 
   update:deps:
     desc: Update all dependencies to latest compatible versions
