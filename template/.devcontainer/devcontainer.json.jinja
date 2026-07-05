@@ -2,7 +2,14 @@
   "name": "{{ _copier_answers.project_name }}",
   "build": {
     "dockerfile": "Dockerfile",
-    "cacheFrom": "ghcr.io/{{ github_org }}/{{ project_name }}-devcontainer"
+    "cacheFrom": "ghcr.io/{{ github_org }}/{{ project_name }}-devcontainer",
+    "args": {
+      // Local/interactive builds (VS Code, `devcontainer up`, ...) install
+      // Claude Code by default. CI's devcontainer-build workflows set
+      // INSTALL_CLAUDE_CODE=false in the runner environment before invoking
+      // the devcontainer CLI, since CI never needs the `claude` binary.
+      "INSTALL_CLAUDE_CODE": "${localEnv:INSTALL_CLAUDE_CODE:true}"
+    }
   },
   "workspaceFolder": "/workspaces/{{ repo_name }}",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/{{ repo_name }},type=bind,consistency=cached",
