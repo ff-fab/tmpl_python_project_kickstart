@@ -54,6 +54,11 @@ jobs:
 
       - name: Build documentation inside devcontainer
         uses: devcontainers/ci@b63b30de439b47a52267f241112c5b453b673db5 # v0.3
+        env:
+          # Read by devcontainer.json's build.args via ${localEnv:...} — skips
+          # installing Claude Code on a cache-miss rebuild since CI never
+          # invokes `claude`. Local devcontainer builds default to installing it.
+          INSTALL_CLAUDE_CODE: 'false'
         with:
           cacheFrom: ${{ env.DEVCONTAINER_IMAGE }}
           runCmd: task docs:build
