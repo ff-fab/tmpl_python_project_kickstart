@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.19.0...v1.19.1) (2026-07-05)
+
+
+### Bug Fixes
+
+* **devcontainer:** make Claude Code CLI a local-only devcontainer install, skip it in CI ([#132](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/132)) ([b5c0899](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/b5c0899ef5d1061659b2d83b86a9926a76e37fc3))
+
 ## [1.19.0](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.18.0...v1.19.0) (2026-07-04)
 
 
