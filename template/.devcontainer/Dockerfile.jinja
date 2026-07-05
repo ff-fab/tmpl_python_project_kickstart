@@ -154,11 +154,27 @@ RUN set -eux; \
 # is trusted rather than checksum-pinned.
 # renovate: datasource=npm depName=@anthropic-ai/claude-code
 ARG CLAUDE_CODE_VERSION=2.1.193
+# Claude Code is a local/interactive dev tool only — CI never invokes `claude`.
+# Default to installing it (local devcontainer builds via VS Code / `devcontainer
+# up` get it out of the box); the CI devcontainer-build workflows set
+# INSTALL_CLAUDE_CODE=false (via devcontainer.json's build.args + localEnv, see
+# .devcontainer/devcontainer.json) so CI image builds skip it entirely, which
+# also sidesteps this whole class of PATH bug in CI.
+ARG INSTALL_CLAUDE_CODE=true
 RUN set -eux; \
-    INSTALLER="/tmp/claude-install.sh"; \
-    curl -fsSL https://claude.ai/install.sh -o "${INSTALLER}"; \
-    bash "${INSTALLER}" "${CLAUDE_CODE_VERSION}"; \
-    rm -f "${INSTALLER}"
+    if [ "${INSTALL_CLAUDE_CODE}" = "true" ]; then \
+      INSTALLER="/tmp/claude-install.sh"; \
+      curl -fsSL https://claude.ai/install.sh -o "${INSTALLER}"; \
+      bash "${INSTALLER}" "${CLAUDE_CODE_VERSION}"; \
+      rm -f "${INSTALLER}"; \
+      # The installer places the binary at "${HOME}/.local/bin/claude" and only
+      # advises adding that dir to PATH via shell rc files (~/.bashrc etc).
+      # Non-interactive Docker RUN layers never source those, so `claude` is
+      # not found in later RUN steps (or in non-login CI/devcontainer shells).
+      # Symlink into /usr/local/bin, already on PATH everywhere, matching how
+      # task/dolt/bd/opencode are installed above.
+      ln -sf "${HOME}/.local/bin/claude" /usr/local/bin/claude; \
+    fi
 
 # Configure uv to use project-local virtual environments
 ENV UV_PROJECT_ENVIRONMENT="/workspaces/{{ repo_name }}/.venv"
@@ -169,4 +185,6 @@ RUN mkdir -p /home/vscode/.vscode-server /home/vscode/.vscode-server/extensions 
     && chown -R vscode:vscode /home/vscode/.vscode-server
 
 # Verify installations
-RUN uv --version && python --version && task --version && fzf --version && dolt version && bd version && opencode --version && claude --version{% if include_sbom %} && syft --version{% endif %}
+RUN set -eux; \
+    uv --version && python --version && task --version && fzf --version && dolt version && bd version && opencode --version{% if include_sbom %} && syft --version{% endif %}; \
+    if [ "${INSTALL_CLAUDE_CODE}" = "true" ]; then claude --version; fi
