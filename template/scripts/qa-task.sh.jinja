@@ -247,7 +247,7 @@ _run_impl() {
             # Pinned to specific version for reproducibility; update via Renovate.
             # failure-threshold=warning: exit on warning-level and above (error, warning)
             # but not info-level messages.
-            HADOLINT_VERSION="${HADOLINT_VERSION:-2.12.0}"
+            HADOLINT_VERSION="${HADOLINT_VERSION:-2.15.1}"
             if ! command -v docker >/dev/null 2>&1; then
                 echo "docker:lint: Docker not available — skipping" >&2
                 return 0

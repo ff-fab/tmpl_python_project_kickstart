@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Caveman Compress CLI
 
@@ -64,7 +63,7 @@ def main():
         print("\nInterrupted by user")
         sys.exit(130)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - CLI catch-all: friendly error + exit 1
         print(f"\n❌ Error: {e}")
         sys.exit(1)
 

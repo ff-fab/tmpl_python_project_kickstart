@@ -25,7 +25,7 @@ packages = ["packages/src/{{ _copier_answers.module_name }}"]
 
 [tool.setuptools_scm]
 version_scheme = "guess-next-dev"
-write_to = "packages/src/{{ _copier_answers.module_name }}/_version.py"
+version_file = "packages/src/{{ _copier_answers.module_name }}/_version.py"
 fallback_version = "0.0.0"
 
 [tool.pytest.ini_options]
@@ -150,19 +150,19 @@ extraPaths = ["packages/src", "."]
 [dependency-groups]
 docs = [
     "mkdocs-autorefs>=1.4.4",
-    "mkdocstrings[python]>=1.0.4",
-    "zensical>=0.0.46",
+    "mkdocstrings[python]>=1.0.6",
+    "zensical>=0.0.52",
 ]
 dev = [
     # Testing
-    "coverage>=7.15.0",
+    "coverage>=7.15.2",
     "pytest>=9.1.1",
     "pytest-asyncio>=1.4.0",
     "pytest-cov>=7.1.0",
     "pytest-httpx>=0.36.2",
     # Linting & Type Checking
-    "ty>=0.0.56",
-    "ruff>=0.15.20",
+    "ty>=0.0.65",
+    "ruff>=0.16.1",
     "flake8>=7.3.0",
     "flake8-cognitive-complexity>=0.1.0",
     # Code Similarity
@@ -171,14 +171,14 @@ dev = [
     "radon>=6.0.1",
     "xenon>=0.9.3",
     # Type Stubs
-    "types-PyYAML>=6.0.12.20260518",
+    "types-PyYAML>=6.0.12.20260724",
     # Development Tools
-    "pre-commit>=4.6.0",
-    "setuptools-scm[toml]>=10.2.0",
+    "pre-commit>=4.6.1",
+    "setuptools-scm[toml]>=10.2.1",
     # Security Tooling
     "pip-audit>=2.10.1",
     "urllib3>=2.7.0",
     "detect-secrets>=1.5.0",
     "actionlint-py>=1.7.12.24",
-    "zizmor>=1.26.1",
+    "zizmor>=1.28.0",
 ]
