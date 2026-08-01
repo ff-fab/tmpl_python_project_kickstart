@@ -10,6 +10,7 @@
   "dependencyDashboard": true,
   "minimumReleaseAge": "7 days",
   "internalChecksFilter": "strict",
+  "ignorePaths": ["template/**"],
   "packageRules": [
     {
       "matchManagers": ["uv"],
