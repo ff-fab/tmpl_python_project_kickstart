@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.2](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.19.1...v1.19.2) (2026-08-01)
+
+
+### Bug Fixes
+
+* **ci:** skip CodeQL and Pages deploy on private repos ([#134](https://github.com/ff-fab/tmpl_python_project_kickstart/issues/134)) ([6bd95e4](https://github.com/ff-fab/tmpl_python_project_kickstart/commit/6bd95e49ed8b2aa959552aa6732238ffdae034f4))
+
 ## [1.19.1](https://github.com/ff-fab/tmpl_python_project_kickstart/compare/v1.19.0...v1.19.1) (2026-07-05)
 
 
